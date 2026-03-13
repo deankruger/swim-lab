@@ -2,13 +2,15 @@ const SWIM_RESULTS_BASE = 'https://www.swimmingresults.org'
 const SWIM_RESULTS_PROXY = '/swimresults'
 
 export class HttpClient{
+    constructor(private direct = false) {}
+
     async get(url: string): Promise<string> {
-        console.log(`Making GET request to: ${url}`);
+        console.log('Fetching URL:', url);
         return this.getWeb(url);
     }
 
     private async getWeb(url: string): Promise<string> {
-        const proxiedUrl = url.replace(SWIM_RESULTS_BASE, SWIM_RESULTS_PROXY);
+        const proxiedUrl = this.direct ? url : url.replace(SWIM_RESULTS_BASE, SWIM_RESULTS_PROXY);
         console.log('Web proxy URL:', proxiedUrl);
 
         const response = await fetch(proxiedUrl, {

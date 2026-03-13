@@ -36,11 +36,9 @@ module.exports={
         hot:true,
         proxy:[
             {
-                context: ['/swimresults'],
-                target: 'https://www.swimmingresults.org',
-                changeOrigin: true,
-                pathRewrite: {'^/swimresults': ''},
-                secure: false
+                context: ['/api'],
+                target: 'http://localhost:8080',
+                changeOrigin: true
             }
         ]
     },

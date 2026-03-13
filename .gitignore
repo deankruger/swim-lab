@@ -141,6 +141,7 @@ vite.config.ts.timestamp-*
 #imported
 node_modules/
 dist/
+dist-server/
 coverage/
 *.log
 nmp-debug.log*

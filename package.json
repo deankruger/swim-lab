@@ -3,10 +3,12 @@
     "version": "1.0.0",
     "description": "Web app to anaylse swimming results",
     "scripts": {
-        "build": "webpack --mode production",
-        "build:dev": "webpack --mode development",
-        "dev": "webpack --mode development --watch",
-        "serve": "webpack serve --mode production",
+        "build": "npm run build:server && webpack --mode=production",
+        "build:server": "tsc -p tsconfig.server.json",
+        "build:dev": "webpack --mode=development",
+        "dev": "webpack --mode=development --watch",
+        "dev:server": "tsc -p tsconfig.server.json && node server.js",
+        "serve": "webpack serve --mode=development",
         "start": "node server.js"
     },
     "keywords": [

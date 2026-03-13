@@ -1,5 +1,6 @@
-import SwimmerService from '../services/swimmerService';
 import DataStore from '../services/dataStore';
+import { StandardsComparator } from '../services/comparators/StandardsComparator';
+import { TimeConverter } from '../services/utils/TimeConverter';
 import { SwimmerData, CountyTimes, CountyTimesStore, ComparisonResult, SwimmerRankings, SwimmerSearchResult } from '../types';
 
 function fileToBase64(file: File): Promise<string> {
@@ -14,16 +15,25 @@ function fileToBase64(file: File): Promise<string> {
     });
 }
 
-const swimmerService = new SwimmerService();
 const dataStore = new DataStore();
+const standardsComparator = new StandardsComparator(new TimeConverter());
+
+async function apiFetch<T>(input: RequestInfo, init?: RequestInit) : Promise<T> {
+    const res = await fetch(input, init);
+    if (!res.ok){
+        const body = await res.text().catch(() => '');
+        throw new Error(`API error ${res.status}: ${body}`)
+    }
+    return res.json() as Promise<T>;
+}
 
 export const mobileAPI = {
     searchSwimmer(name: string): Promise<SwimmerSearchResult[]> {
-        return swimmerService.searchSwimmer(name);
+        return apiFetch<SwimmerSearchResult[]>(`/api/search?surname=${encodeURIComponent(name)}`);
     },
 
     getSwimmerTimes(tiref: string): Promise<SwimmerData> {
-        return swimmerService.getSwimmerTimes(tiref);
+        return apiFetch<SwimmerData>(`/api/swimmer/${encodeURIComponent(tiref)}`);
     },
 
     saveSwimmer(swimmerData: SwimmerData): Promise<SwimmerData> {
@@ -43,7 +53,7 @@ export const mobileAPI = {
     },
 
     compareCountyTimes(swimmerData: SwimmerData, countyTimes: CountyTimes): Promise<ComparisonResult> {
-        return Promise.resolve(swimmerService.compareWithStandards(swimmerData, countyTimes));
+        return Promise.resolve(standardsComparator.compareWithStandards(swimmerData, countyTimes));
     },
 
     pickCountyTimesFile(): Promise<Array<{ countyName: string, times: CountyTimes }> | null> {
@@ -83,6 +93,10 @@ export const mobileAPI = {
     },
 
     getSwimmerRankings(swimmerData: SwimmerData, level: 'C' | 'N', forecast?: boolean, countyCode?: string): Promise<SwimmerRankings> {
-        return swimmerService.getSwimmerRankings(swimmerData, level, forecast, countyCode);
+        return apiFetch<SwimmerRankings>('/api/rankings/',{
+            method: 'POST',
+            headers: { 'Content-Type' : 'application/json' },
+            body: JSON.stringify({ ...swimmerData, level, forecast, countyCode })
+        });
     }
 }

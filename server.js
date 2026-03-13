@@ -1,32 +1,19 @@
 const express = require('express');
-const {createProxyMiddleware} = require('http-proxy-middleware');
 const path = require('path');
 
 const app = express();
 const PORT = process.env.PORT || 8080;
 
-// Proxy API requests to the target server
-app.use('/swimresults', createProxyMiddleware({
-  target: 'https://www.swimmingresults.org',
-  changeOrigin: true,
-  on: {
-    proxyReq: (proxyReq, req) => {
-      console.log(`[proxy] ${req.method} ${req.url} → ${proxyReq.path}`);
-    },
-    proxyRes: (proxyRes, req) => {
-      console.log(`[proxy] ${proxyRes.statusCode} ← ${req.url}`);
-    },
-    error: (err, req, res) => {
-      console.log(`[proxy] error on ${req.url}:`, err.message);
-      res.status(502).send('Proxy error: ', err.message);
-    }
-  }
-}));
+app.use(express.json());
 
-// Serve static files from the 'dist' directory
+//API routes (scraping services - must be before static file serving)
+const apiRouter = require('./dist-server/server/api').default;
+app.use('/api', apiRouter);
+
+// Serve built static files
 app.use(express.static(path.join(__dirname, 'dist')));
 
-// For any other requests, serve the index.html file (SPA Fallback)
+// SPA fallback
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, 'dist', 'index.html'));
 });

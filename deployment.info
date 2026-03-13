@@ -1,0 +1,15 @@
+
+
+
+------------------------------------------------------------
+-- creating azure app : run in gitbash                    --
+------------------------------------------------------------
+az login
+az group create --name swim-lab-rg --location eastus
+az appservice plan create --name swim-lab-plan --resource-group swim-lab-rg --sku B1 --is-linux
+az webapp create --resource-group swim-lab-rg --plan swim-lab-plan --name swim-lab --runtime 'NODE|24-lts'
+
+
+
+az appservice plan create --name swimming-results-plan --resource-group swimming-results-rg --sku B1 --is-linux
+az webapp create --resource-group swimming-results-rg --plan swimming-results-plan --name swimming-results --runtime 'NODE|24-lts'
