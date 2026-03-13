@@ -4,7 +4,7 @@ import { SwimmerTimesParser } from '../parsers/SwimmerTimesParser';
 import {SwimmerSearchResult, SwimmerData } from '../../types'
 
 export class SwimmerScraper {
-    private baseUrl = 'htps://www.swimmingresults.org';
+    private baseUrl = 'https://www.swimmingresults.org';
 
     constructor(
         private httpClient: HttpClient,

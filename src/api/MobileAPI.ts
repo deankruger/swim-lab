@@ -34,11 +34,11 @@ export const mobileAPI = {
         return dataStore.getAllSwimmers();
     },
 
-    deleteSwimmers(tiref: string): Promise<SwimmerData[]> {
+    deleteSwimmer(tiref: string): Promise<boolean> {
         return dataStore.deleteSwimmer(tiref);
     },
 
-    exportToExcel(swimmerData: SwimmerData, comparisonResult?: CountyTimes): Promise<ComparisonResult> {
+    exportToExcel(swimmerData: SwimmerData, comparisonResult: ComparisonResult | null): Promise<string> {
         return dataStore.exportToExcel(swimmerData, comparisonResult);
     },
 

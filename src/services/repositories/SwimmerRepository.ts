@@ -58,11 +58,11 @@ export class SwimmerRepository{
         }
     }
 
-    async findByTiref(tiref: string): Promise<SwimmerData | undefined>{
-        try{
+    async findByTiref(tiref: string): Promise<SwimmerData | null>{
+        try {
             const data = await this.fileStore.read();
-            return data.swimmers.find(x => x.tiref === tiref);            
-        }catch(error){
+            return data.swimmers.find(s => s.tiref === tiref) || null;
+        } catch(error) {
            console.error('Datastore: error getting swimmers:', error)
             throw error; 
         }

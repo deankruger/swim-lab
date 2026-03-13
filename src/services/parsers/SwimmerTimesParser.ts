@@ -1,4 +1,5 @@
 import * as cheerio from 'cheerio';
+import type { AnyNode } from 'domhandler';
 import { SwimmerData, SwimTime } from '../../types';
 import { TimeConverter } from '../utils/TimeConverter';
 
@@ -74,7 +75,7 @@ export class SwimmerTimesParser {
         return timesByEvent;
     }
     
-    private detectCourseFromTable($: cheerio.CheerioAPI, table: cheerio.Element): '25m' | '50m' | null {
+    private detectCourseFromTable($: cheerio.CheerioAPI, table: AnyNode): '25m' | '50m' | null {
         const prevElements = $(table).prevAll();
         
         for (let i = 0; i <  Math.min(5,prevElements.length); i++) {
@@ -90,7 +91,7 @@ export class SwimmerTimesParser {
         return null; // Unable to determine course
     }
 
-    private parseTimeRow($: cheerio.CheerioAPI, row: cheerio.Element, tableCourse: '25m' | '50m' | null): SwimTime | null {
+    private parseTimeRow($: cheerio.CheerioAPI, row: AnyNode, tableCourse: '25m' | '50m' | null): SwimTime | null {
         const cells = $(row).find('td');
         if (cells.length < 5) return null; // Not enough data
 

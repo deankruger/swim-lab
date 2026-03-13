@@ -9,7 +9,11 @@
         "serve": "webpack serve --mode production",
         "start": "node server.js"
     },
-    "keywords": ["swimming", "results", "lab"],
+    "keywords": [
+        "swimming",
+        "results",
+        "lab"
+    ],
     "author": "private",
     "license": "MIT",
     "devDependencies": {
@@ -29,7 +33,7 @@
         "@fortawesome/fontawesome-svg-core": "7.2.0",
         "@fortawesome/free-solid-svg-icons": "7.2.0",
         "@fortawesome/react-fontawesome": "3.2.0",
-        "cheerio": "^1.0.0-rc.10",
+        "cheerio": "^1.2.0",
         "exceljs": "^4.4.0",
         "express": "^4.21.2",
         "http-proxy-middleware": "^3.0.0",

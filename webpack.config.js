@@ -7,6 +7,11 @@ module.exports={
     entry:'./src/renderer/index.tsx',
     target:'web',
     devtool: 'source-map',
+
+    performance: {
+        hints: false
+    },
+
     module:{
         rules:[
             {
@@ -47,7 +52,6 @@ module.exports={
             patterns:[
                 { from:'src/renderer/styles.css', to:'styles.css' },
                 { from:'src/renderer/themes', to:'themes' },
-                { from:'excel', to:'excel' },
                 { from:'node_modules/pdf-parse/dist/worker/pdf.worker.mjs', to:'pdf.worker.mjs' }                
             ]
         })

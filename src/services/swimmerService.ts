@@ -31,7 +31,7 @@ class SwimmerService {
 
 
     async searchSwimmer(surname: string): Promise<SwimmerSearchResult[]> {
-        return this.swimmerScraper.searchSwimmers(surname);
+        return this.swimmerScraper.searchSwimmer(surname);
     }
 
     async getSwimmerTimes(tiref: string): Promise<SwimmerData> {
