@@ -18,14 +18,24 @@ function fileToBase64(file: File): Promise<string> {
 const dataStore = new DataStore();
 const standardsComparator = new StandardsComparator(new TimeConverter());
 
-async function apiFetch<T>(input: RequestInfo, init?: RequestInit) : Promise<T> {
-    const res = await fetch(input, init);
-    if (!res.ok){
+async function apiFetch<T>(input: string, init?: RequestInit): Promise<T> {
+    console.log("API_BASE at runtime =", API_BASE);
+    const url =
+        process.env.NODE_ENV === "production"
+            ? `${API_BASE}${input}`
+            : input; // ⭐ keep relative paths in dev
+
+    const res = await fetch(url, init);
+
+    if (!res.ok) {
         const body = await res.text().catch(() => '');
-        throw new Error(`API error ${res.status}: ${body}`)
+        throw new Error(`API error ${res.status}: ${body}`);
     }
+
     return res.json() as Promise<T>;
 }
+
+
 
 export const mobileAPI = {
     searchSwimmer(name: string): Promise<SwimmerSearchResult[]> {
