@@ -19,11 +19,15 @@ const dataStore = new DataStore();
 const standardsComparator = new StandardsComparator(new TimeConverter());
 
 async function apiFetch<T>(input: string, init?: RequestInit): Promise<T> {
-    console.log("API_BASE at runtime =", API_BASE);
-    const url =
+    console.log(`[apiFetch] At runtime : API_BASE=${API_BASE} NODE_ENV=${process.env.NODE_ENV} `);
+    
+    var url =
         process.env.NODE_ENV === "production"
             ? `${API_BASE}${input}`
             : input; // ⭐ keep relative paths in dev
+
+    //hack
+    url = `https://swim-lab.azurewebsites.net${input}`;
 
     const res = await fetch(url, init);
 
