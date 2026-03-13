@@ -9,7 +9,7 @@ export class HttpClient{
 
     private async getWeb(url: string): Promise<string> {
         const proxiedUrl = url.replace(SWIM_RESULTS_BASE, SWIM_RESULTS_PROXY);
-        console.log('Web procy URL:', proxiedUrl);
+        console.log('Web proxy URL:', proxiedUrl);
 
         const response = await fetch(proxiedUrl, {
             headers: this.getHeaders()
