@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPallet } from '@fortawesome/free-solid-svg-icons';
+import { faPalette } from '@fortawesome/free-solid-svg-icons';
 
 
 interface ThemeSelectorProps{
@@ -61,7 +61,7 @@ const ThemeSelector : React.FC<ThemeSelectorProps> = () => {
                     color: 'var(--primary)'
                 }}
             >
-                <FontAwesomeIcon icon={faPallet} />
+                <FontAwesomeIcon icon={faPalette} />
             </button>
             {open && (
                 <div
