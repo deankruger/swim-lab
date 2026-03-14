@@ -27,7 +27,10 @@ async function apiFetch<T>(input: string, init?: RequestInit): Promise<T> {
             : input; // ⭐ keep relative paths in dev
 
     //hack
-    url = `https://swim-lab.azurewebsites.net${input}`;
+    url =
+        process.env.NODE_ENV === "production"
+            ? `https://swim-lab.azurewebsites.net${input}`
+            : input; // ⭐ keep relative paths in dev    
 
     const res = await fetch(url, init);
 

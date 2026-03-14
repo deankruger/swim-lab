@@ -6,7 +6,7 @@ import { TimeConverter } from '../utils/TimeConverter';
 export class SwimmerTimesParser {
     constructor(private timeConverter: TimeConverter) {}
 
-    parse(html: string, tiref: string): SwimmerData {
+    parse(html: string, tiref: string): SwimmerData {        
         const $ = cheerio.load(html);
         const swimmerInfo: SwimmerData = {
             tiref,
@@ -16,8 +16,10 @@ export class SwimmerTimesParser {
             times: []
         };
 
+        //Extract swimmer basic info
         this.extractSwimmerInfo($, swimmerInfo);
 
+        //Parse times from tables
         const timesByEvent = this.extractTimes($);
 
         swimmerInfo.times = Object.values(timesByEvent);
@@ -30,7 +32,7 @@ export class SwimmerTimesParser {
         const headerText = $('h2, h3').first().text();
         if (headerText) {
             const fullHeader = headerText.trim();
-            const headerMatch = fullHeader.match(/^(.*?)\s*-\s*(.*?)\s*-\s*(.*)$/);
+            const headerMatch = fullHeader.match(/^(.+?)\s*-\s*\(\d+\)\s*-\s(.+)$/);
             if (headerMatch) {
                 swimmerInfo.name = headerMatch[1].trim();
                 swimmerInfo.club = headerMatch[2].trim();
@@ -55,9 +57,8 @@ export class SwimmerTimesParser {
         const timesByEvent: {[key: string]: SwimTime } = {};
 
         $('table').each((tableIndex, table) => {
-
+            //console.log(table);
             const tableCourse = this.detectCourseFromTable($, table);
-
             console.log(`Processing table ${tableIndex + 1} with detected course: ${tableCourse || 'Unknown'}`);
 
             $(table).find('tr').each((_, row) => {
@@ -78,7 +79,7 @@ export class SwimmerTimesParser {
     private detectCourseFromTable($: cheerio.CheerioAPI, table: AnyNode): '25m' | '50m' | null {
         const prevElements = $(table).prevAll();
         
-        for (let i = 0; i <  Math.min(5,prevElements.length); i++) {
+        for (let i = 0; i <  Math.min(5, prevElements.length); i++) {
             const elem = $(prevElements[i]);
             const text = elem.text().toLowerCase();
 
@@ -88,6 +89,7 @@ export class SwimmerTimesParser {
                 return '25m';
             }
         }
+        
         return null; // Unable to determine course
     }
 
@@ -97,15 +99,18 @@ export class SwimmerTimesParser {
 
         const event = $(cells[0]).text().trim();
         const time = $(cells[1]).text().trim();
-        const convertedToSC = tableCourse == '25m' ? time :  $(cells[2]).text().trim();
-        const convertedToLC = tableCourse == '50m' ? time :  $(cells[2]).text().trim();
+        const convertedToSC = tableCourse === '25m' ? time :  $(cells[2]).text().trim();
+        const convertedToLC = tableCourse === '50m' ? time :  $(cells[2]).text().trim();
         const date = $(cells[4]).text().trim();
         const venue = cells.length >= 6 ? $(cells[5]).text().trim() : '';
+        
+        //Determins course
         let course: '25m' | '50m' = tableCourse || '25m'
 
+        //Check course info is in the table cell
         if (cells.length >= 7) {
             const possibleCourse = $(cells[6]).text().trim();
-            if (possibleCourse == '25m' || possibleCourse == '50m') {
+            if (possibleCourse === '25m' || possibleCourse === '50m') {
                 course = possibleCourse;
             }
         }
@@ -135,11 +140,13 @@ export class SwimmerTimesParser {
         if (!event || !time) return false;
 
         const eventLower = event.toLowerCase();
-        if (eventLower.includes('event') || eventLower.includes('stroke') || eventLower.includes('personal best')) 
+        if (eventLower === 'event' || eventLower === 'stroke' || eventLower.includes('personal best')) {
             return false;
+        }
 
-        if (!time.match(/\d+[:\.]\d+/)) 
+        if (!time.match(/\d+[:\.]\d+/)) {
             return false;
+        }
 
         return true;
     }

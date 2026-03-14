@@ -11,10 +11,10 @@ export class SwimmerSearchParser {
             if (index === 0) return; // Skip header row
 
             const cells = $(element).find('td');
-            if (cells.length == 0) return; 
+            if (cells.length === 0) return; 
 
             const link = $(element).find('a');
-            if (link.length == 0) return; 
+            if (link.length === 0) return; 
 
             const href = link.attr('href');
             const tirefMatch = href?.match(/tiref=(\d+)/);

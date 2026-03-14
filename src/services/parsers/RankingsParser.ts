@@ -52,7 +52,7 @@ export class RankingsParser {
 
         let swimmerEntry: RankingEntry | null = null;
 
-        if (nameMatches.length == 1) {
+        if (nameMatches.length === 1) {
             swimmerEntry = nameMatches[0];
             console.log(`Unique match found for ${swimmerName}: Position ${swimmerEntry.position}, Time ${swimmerEntry.time}`);
         } else if (nameMatches.length > 1) {

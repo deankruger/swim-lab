@@ -15,7 +15,7 @@ export class SwimmerRepository{
     async save(swimmerData: SwimmerData): Promise<SwimmerData>{
         try{
             const data = await this.fileStore.read();
-            const existingIndex = data.swimmers.findIndex(s => s.tiref == swimmerData.tiref)
+            const existingIndex = data.swimmers.findIndex(s => s.tiref === swimmerData.tiref)
             
             const swimmer: SwimmerData = {
                 ...swimmerData,

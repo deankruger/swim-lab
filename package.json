@@ -3,7 +3,6 @@
     "version": "1.0.0",
     "description": "Web app to anaylse swimming results",
     "scripts": {
-        "postinstall": "npm run build",
         "build": "npm run build:server && webpack --mode=production",
         "build:server": "tsc -p tsconfig.server.json",
         "build:dev": "webpack --mode=development",

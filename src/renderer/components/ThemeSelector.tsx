@@ -53,13 +53,14 @@ const ThemeSelector : React.FC<ThemeSelectorProps> = () => {
             <button 
                 onClick={() => setOpen(prev => !prev)}
                 title = "Change Theme"
-                className='btn-ghost'
+                className="btn-ghost"
                 style={{
                     padding: '6px 10px',
                     fontSize: '1.1rem',
                     lineHeight: 1,
                     color: 'var(--primary)'
-                }}>
+                }}
+            >
                 <FontAwesomeIcon icon={faPallet} />
             </button>
             {open && (
@@ -87,11 +88,11 @@ const ThemeSelector : React.FC<ThemeSelectorProps> = () => {
                                 width: '100%',
                                 padding: '10px 14px',
                                 border: 'none',
-                                background: currentTheme == theme.id ? 'var(--primary-light, #e8f0fe)' : 'transparent',
+                                background: currentTheme === theme.id ? 'var(--primary-light, #e8f0fe)' : 'transparent',
                                 cursor: 'pointer',
                                 fontSize: '0.9rem',
                                 textAlign: 'left',
-                                fontWeight: currentTheme == theme.id ? 'bold' : 'normal'
+                                fontWeight: currentTheme === theme.id ? 'bold' : 'normal'
                             }}
                         >
                             <span

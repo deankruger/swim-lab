@@ -49,7 +49,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading,
     };
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
-        if (e.key == 'Enter'){
+        if (e.key === 'Enter'){
             handleSearch();
         }
     };
