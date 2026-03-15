@@ -40,7 +40,7 @@ const App: React.FC = () => {
             const swimmers = await mobileAPI.getSavedSwimmers();
             setSavedSwimmers(swimmers);            
         } catch (error) {
-            showToast(`Error loading saved swimmers: ${(error as Error).message}`, 'error');            
+            showToast(`Error loading saved swimmers: ${(error as Error).message}`, 'error');
         }
     };
 
@@ -78,14 +78,27 @@ const App: React.FC = () => {
             setCurrentSwimmerData(swimmerData);
             showToast('Times loaded successfully');
         } catch (error){
-            showToast(`Error loading times: ${(error as Error).message}`, 'error');            
+            showToast(`Error loading times: ${(error as Error).message}`, 'error');
         } finally{
             setLoading(false);
         }
     }
     
     const handleSaveSwimmer = async () => {
-        //todo
+        if (!currentSwimmerData){
+            showToast('No swimmer data to save', 'error');
+            return;
+        }
+        setLoading(true);
+        try{
+            await mobileAPI.saveSwimmer(currentSwimmerData);
+            await loadSavedSwimmers();
+            showToast('Swimmer saved successfully');
+        } catch (error){
+            showToast(`Error saving swimmer: ${(error as Error).message}`, 'error');
+        } finally{
+            setLoading(false);
+        }
     };
 
     const handleExportToExcel = async () => {
@@ -93,11 +106,29 @@ const App: React.FC = () => {
     };
 
     const handleLoadSavedSwimmer = async (swimmer: SwimmerData) => {        
-        //todo
+        setCurrentSwimmerData(swimmer);
+        setComparisonResult(null);
+        setTimeout(() => swimmerDetailsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
     };
 
-    const handleDeleteSwimmer = async (tiref: String) => {
-        //todo
+    const handleDeleteSwimmer = async (tiref: string) => {
+        if (!confirm('Are you sure you want to deleted this swimmer?')){
+            return;
+        }
+        setLoading(true);
+        try{
+            await mobileAPI.deleteSwimmer(tiref);
+            await loadSavedSwimmers();
+            showToast('Swimmer deleted successfully');
+
+            if (currentSwimmerData && currentSwimmerData.tiref === tiref){
+                setCurrentSwimmerData(null);
+            }
+        } catch (error){
+            showToast(`Error deleting swimmer: ${(error as Error).message}`, 'error');
+        } finally{
+            setLoading(false);
+        }
     };
 
     const handleClearDetails = () => {
@@ -106,7 +137,23 @@ const App: React.FC = () => {
     }
 
     const handleUpdateSwimmerTags = async (tiref: string, tags: string[]) => {
-        //todo
+        setLoading(true);
+        try{
+            const swimmer = savedSwimmers.find(s => s.tiref === tiref);
+            if (!swimmer){
+                throw new Error('Swimmer not found');
+            }
+
+            const updateSwimmer = { ...swimmer, tags: tags.length > 0 ? tags : undefined };            
+            await mobileAPI.saveSwimmer(updateSwimmer);
+            await loadSavedSwimmers();
+            
+            showToast(tags.length > 0 ? 'Tags updated' : 'Tags Cleared');
+        } catch (error){
+            showToast(`Error updating tags: ${(error as Error).message}`, 'error');
+        } finally{
+            setLoading(false);
+        }
     };
 
     const handleRefreshCurrentSwimmer = async () => {
