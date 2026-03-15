@@ -164,7 +164,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                             <div>
                                                 <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} >
                                                     <h3 style={{ margin: '0' }}>{swimmer.name || `Tiref ${swimmer.tiref}`}</h3>
-                                                    <button onClick={() => onDelete(swimmer.tiref)} className="btn-clear btn-ghost" title="Delete saved swimmer" style={{ color: 'var (--danger)' }}>
+                                                    <button onClick={() => onDelete(swimmer.tiref)} className="btn-clear btn-ghost" title="Delete saved swimmer" style={{ color: 'var(--danger)' }}>
                                                         <FontAwesomeIcon icon={faTrash} />
                                                     </button>
                                                 </div>
