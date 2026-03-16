@@ -124,7 +124,7 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
                                             <td data-label={course === '50m' ? 'Conv. SC' : 'Conv. LC'}>
                                                 {course === '50m' ? time.convertedToSC || '-' : time.convertedToLC || '-'}
                                             </td>
-                                            <td data-label="Venue">{time.date}</td>
+                                            <td data-label="Date">{time.date}</td>
                                             <td data-label="Venue">{time.venue}</td>
                                         </tr>
                                     ))}
