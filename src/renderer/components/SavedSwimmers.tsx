@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChain, faCheck, faCodeCompare, faPlus, faRotate, faTag, faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faChain, faChartBar, faCheck, faPlus, faRotate, faTag, faTimes, faTrash } from "@fortawesome/free-solid-svg-icons";
 import { SwimmerData } from "../../types";
 
 interface SavedSwimmersProps {
@@ -97,8 +97,8 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                 <div className="action-buttons">
                     {selectedSwimmers.size > 0 ? (
                         <>
-                            <button onClick={handleCompare} className="btn-clear btn-ghost" disabled={selectedSwimmers.size < 2} style={{ color: 'var(--success)' }}>
-                                <FontAwesomeIcon icon={faCodeCompare} />
+                            <button onClick={handleCompare} title="Compare Swimmer(s)" className="btn-clear btn-ghost" disabled={selectedSwimmers.size < 2} style={{ color: 'var(--success)' }}>
+                                <FontAwesomeIcon icon={faChartBar} />
                             </button>
                             <button>Clear Selection</button>
                         </>
