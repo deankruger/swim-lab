@@ -202,7 +202,7 @@ const App: React.FC = () => {
             <header>
                 <div className="header-content">
                     <div className="header-icon">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="52" height="52" viewBox="0 0 124 124" fill="none">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 124 124" fill="none">
                             <rect width="124" height="124" rx="24" fill='currentColor'/>
                             <path d="M19.375 36.7818V100.625C19.375 102.834 21.1659 104.625 23.375 104.625H87.2181C90.7818 104.625 92.5664 100.316 90.0466 97.7966L26.2034 33.9534C23.6836 31.4336 19.375 33.2182 19.375 36.7818Z" fill="white"/>
                             <circle cx="63.2109" cy="37.5391" r="18.1641" fill="black"/>
@@ -211,7 +211,6 @@ const App: React.FC = () => {
                     </div>
                     <div className="header-text">
                         <h1>Swim Lab</h1>
-                        <p>Review and compare swimmer times and rankings from county to national levels.</p>
                     </div>
                     <ThemeSelector />
                 </div>
