@@ -7,12 +7,12 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 
 //Force HTTPS on Azure (X-Forwarded-Proto is set by Azure's front end)
-app.use((req, re, next) => {
-  if (req.headers['x-forwarded-proto' === 'http']){
-    return res.redirect(301, `https://${req.headers.host}${req.url}`)
-  }
-  next();
-});
+// app.use((req, re, next) => {
+//   if (req.headers['x-forwarded-proto' === 'http']){
+//     return res.redirect(301, `https://${req.headers.host}${req.url}`)
+//   }
+//   next();
+// });
 
 //API routes (scraping services - must be before static file serving)
 const apiRouter = require('./dist-server/server/api').default;
