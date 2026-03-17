@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ComparisonResult, CountyTimesStore, SwimmerData } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faClose, faFileExcel, faFloppyDisk, faRotate } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faClose, faFileExcel, faFloppyDisk, faRotate } from "@fortawesome/free-solid-svg-icons";
 import PersonalBests from "./PersonalBests";
 import CountyComparison from "./CountyComparison";
 import Rankings from "./Rankings";
@@ -39,6 +39,7 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
     setLoading,
     showToast
 }) => {
+    const [isCollapsed, setIsCollapsed] = useState(false);        
     const [activeTab, setActiveTab] = useState<'times' | 'comparison' | 'rankings'>('times')
 
     const currentYear = new Date().getFullYear();
@@ -49,12 +50,16 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
         <section className="details-section-card">
             <div className="section-header">
                 <h2>{swimmerData.name}</h2>
-                <div className="action-buttons">
-                    <button onClick={onRefresh} className="btn-refresh btn-ghost" disabled={loading} title="Refresh times from website" style={{ color: 'var(--info)' }}><FontAwesomeIcon icon={faRotate} /></button>
-                    <button onClick={onSave} className="btn-save btn-ghost" disabled={loading} title="Save swimmer" style={{ color: 'var(--success)' }}><FontAwesomeIcon icon={faFloppyDisk} /></button>
-                    <button onClick={onExport} className="btn-export btn-ghost" disabled={loading} title="Export to Excel" style={{ color: 'var(--warning)' }}><FontAwesomeIcon icon={faFileExcel} /></button>
-                    <button onClick={onClear} className="btn-clear btn-ghost" disabled={loading} title="Clear swimmer" style={{ color: 'var(--danger)' }}><FontAwesomeIcon icon={faClose} /></button>
-                </div>
+                <button className="btn-ghost section-toggle" onClick={() => setIsCollapsed(c => !c)} aria-label="Toggle section">
+                    <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!isCollapsed ? ' expanded' : ''}`} />
+                </button>                
+            </div>
+            {!isCollapsed && <>
+            <div className="action-buttons">
+                <button onClick={onRefresh} className="btn-refresh btn-ghost" disabled={loading} title="Refresh times from website" style={{ color: 'var(--info)' }}><FontAwesomeIcon icon={faRotate} /></button>
+                <button onClick={onSave} className="btn-save btn-ghost" disabled={loading} title="Save swimmer" style={{ color: 'var(--success)' }}><FontAwesomeIcon icon={faFloppyDisk} /></button>
+                <button onClick={onExport} className="btn-export btn-ghost" disabled={loading} title="Export to Excel" style={{ color: 'var(--warning)' }}><FontAwesomeIcon icon={faFileExcel} /></button>
+                <button onClick={onClear} className="btn-clear btn-ghost" disabled={loading} title="Clear swimmer" style={{ color: 'var(--danger)' }}><FontAwesomeIcon icon={faClose} /></button>
             </div>
             <div className="swimmer-info">
                 <p><strong>Name:</strong> {swimmerData.name}</p>
@@ -91,6 +96,7 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
                     onRankingsSaved={onRankingsSaved}
                 />
             )}            
+        </>}            
         </section>
     );
 };
