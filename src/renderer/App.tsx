@@ -22,8 +22,21 @@ const App: React.FC = () => {
     const [countyTimesStore, setCountyTimesStore] = useState<CountyTimesStore>({});
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
     const [comparisonSwimmers, setComparisonSwimmers] = useState<SwimmerData[]>([]);
+    const [navOpen, setNavOpen] = useState(false);
     const swimmerDetailsRef = useRef<HTMLDivElement>(null);
     const comparisonRef = useRef<HTMLDivElement>(null);
+    const navRef = useRef<HTMLElement>(null);
+
+    useEffect(() => {
+        if (!navOpen) return;
+        const handler = (e: MouseEvent) => {
+            if (navRef.current && !navRef.current.contains(e.target as Node)){
+                setNavOpen(false);
+            }
+        };
+        document.addEventListener('mousedown', handler);
+        return () => document.removeEventListener('mousedown', handler);
+    }, [navOpen]);
 
     useEffect(() => {
         loadSavedSwimmers();
@@ -198,71 +211,90 @@ const App: React.FC = () => {
     };
 
     return (
-        <div className="container">
+        <>
             <header>
                 <div className="header-content">
                     <div className="header-icon">
                         <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 124 124" fill="none">
-                            <rect width="124" height="124" rx="24" fill='currentColor'/>
-                            <path d="M19.375 36.7818V100.625C19.375 102.834 21.1659 104.625 23.375 104.625H87.2181C90.7818 104.625 92.5664 100.316 90.0466 97.7966L26.2034 33.9534C23.6836 31.4336 19.375 33.2182 19.375 36.7818Z" fill="white"/>
-                            <circle cx="63.2109" cy="37.5391" r="18.1641" fill="black"/>
-                            <rect opacity="0.4" x="81.1328" y="80.7198" width="17.5687" height="17.3876" rx="4" transform="rotate(-45 81.1328 80.7198)" fill="#FDBA74"/>
+                            <rect width="124" height="124" rx="24" fill='currentColor' />
+                            <path d="M19.375 36.7818V100.625C19.375 102.834 21.1659 104.625 23.375 104.625H87.2181C90.7818 104.625 92.5664 100.316 90.0466 97.7966L26.2034 33.9534C23.6836 31.4336 19.375 33.2182 19.375 36.7818Z" fill="white" />
+                            <circle cx="63.2109" cy="37.5391" r="18.1641" fill="black" />
+                            <rect opacity="0.4" x="81.1328" y="80.7198" width="17.5687" height="17.3876" rx="4" transform="rotate(-45 81.1328 80.7198)" fill="#FDBA74" />
                         </svg>
                     </div>
                     <div className="header-text">
                         <h1>Swim Lab</h1>
+                        <button
+                            className='nav-toggle'
+                            onClick={() => setNavOpen(o => !o)}
+                            aria-label='Toggle menu'
+                            aria-expanded={navOpen}
+                        >
+                            <span />
+                            <span />
+                            <span />
+                        </button>
                     </div>
-                    <ThemeSelector />
+                    {navOpen && (
+                        <nav className='nav-drawer'>
+                            <div className='nav-drawer-content'>
+                                <span className='nav-label'>Theme</span>
+                                <ThemeSelector />
+                            </div>
+                        </nav>
+                    )}
                 </div>
             </header>
-            <main>
-                <SearchSection
-                    onSwimmerSelect={handleSearchResults}
-                    loading={loading}
-                    setLoading={setLoading}
-                    showToast={showToast} 
-                />
+            <div className="container">
+                <main>
+                    <SearchSection
+                        onSwimmerSelect={handleSearchResults}
+                        loading={loading}
+                        setLoading={setLoading}
+                        showToast={showToast}
+                    />
 
-                {comparisonSwimmers.length > 0 && (
-                    <div ref={comparisonRef}>
-                        <SwimmerComparison swimmers={comparisonSwimmers} onClose={handleCloseComparison} />
-                    </div>
-                )}
-                
-                {currentSwimmerData && (
-                    <div ref={swimmerDetailsRef}>
-                        <SwimmerDetails 
-                            swimmerData={currentSwimmerData} 
-                            countyTimesStore={countyTimesStore} 
-                            onSave={handleSaveSwimmer}
-                            onExport={handleExportToExcel}
-                            onClear={handleClearDetails}
-                            onRefresh={handleRefreshCurrentSwimmer} 
-                            onLoadCountyTimes={pickAndloadCountyTimes} 
-                            onClearOneCounty={clearOneCounty} 
-                            onCountySelected={handleCountySelected} 
-                            onComparisonChange={setComparisonResult} 
-                            onRankingsSaved={loadSavedSwimmers} 
-                            loading={loading}
-                            setLoading={setLoading}
-                            showToast={showToast}
-                        />
-                    </div>
-                )}
-                
-                <SavedSwimmers 
-                    swimmers={savedSwimmers} 
-                    onLoad={handleLoadSavedSwimmer}
-                    onDelete={handleDeleteSwimmer}
-                    onRefreshAll={handleRefreshAllSwimmers}
-                    onCompare={handleCompareSwimmers}
-                    onUpdateTags={handleUpdateSwimmerTags}
-                />
-            </main>
+                    {comparisonSwimmers.length > 0 && (
+                        <div ref={comparisonRef}>
+                            <SwimmerComparison swimmers={comparisonSwimmers} onClose={handleCloseComparison} />
+                        </div>
+                    )}
 
-            {loading && <LoadingSpinner />}
-            {toast && <Toast message={toast.message} type={toast.type} />}
-        </div>
+                    {currentSwimmerData && (
+                        <div ref={swimmerDetailsRef}>
+                            <SwimmerDetails
+                                swimmerData={currentSwimmerData}
+                                countyTimesStore={countyTimesStore}
+                                onSave={handleSaveSwimmer}
+                                onExport={handleExportToExcel}
+                                onClear={handleClearDetails}
+                                onRefresh={handleRefreshCurrentSwimmer}
+                                onLoadCountyTimes={pickAndloadCountyTimes}
+                                onClearOneCounty={clearOneCounty}
+                                onCountySelected={handleCountySelected}
+                                onComparisonChange={setComparisonResult}
+                                onRankingsSaved={loadSavedSwimmers}
+                                loading={loading}
+                                setLoading={setLoading}
+                                showToast={showToast}
+                            />
+                        </div>
+                    )}
+
+                    <SavedSwimmers
+                        swimmers={savedSwimmers}
+                        onLoad={handleLoadSavedSwimmer}
+                        onDelete={handleDeleteSwimmer}
+                        onRefreshAll={handleRefreshAllSwimmers}
+                        onCompare={handleCompareSwimmers}
+                        onUpdateTags={handleUpdateSwimmerTags}
+                    />
+                </main>
+
+                {loading && <LoadingSpinner />}
+                {toast && <Toast message={toast.message} type={toast.type} />}
+            </div>
+        </>
     );
 };
 

@@ -25,20 +25,24 @@ const ThemeSelector : React.FC<ThemeSelectorProps> = () => {
         const savedTheme = localStorage.getItem('app-theme') as Theme;
         if (savedTheme){
             setCurrentTheme(savedTheme);
-            applyTheme(savedTheme);
+            const existing = document.getElementById('theme-stylesheet') as HTMLLinkElement | null;
+            if (!existing || !existing.href.endsWith(`${savedTheme}.css`)){
+                applyTheme(savedTheme);
+            }
         }        
     })
 
     const applyTheme = (theme: Theme) => {
-        const existingThemeLink = document.getElementById('theme-stylesheet');
-        if (existingThemeLink){
-            existingThemeLink.remove();
+        const existing = document.getElementById('theme-stylesheet') as HTMLLinkElement | null;
+        if (existing) {
+            existing.href = `${theme}.css`;
+        } else {
+            const link = document.createElement('link');
+            link.id = 'theme-stylesheet';
+            link.rel = 'stylesheet';
+            link.href = `./themes/${theme}.css`;
+            document.head.appendChild(link);
         }
-        const link = document.createElement('link');
-        link.id = 'theme-stylesheet';
-        link.rel = 'stylesheet' ;
-        link.href = `./themes/${theme}.css`;
-        document.head.appendChild(link);
     };
 
     const handleThemeSelect = (theme: Theme) => {

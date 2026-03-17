@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
 import { SwimmerSearchResult } from '../../types'   
 import { mobileAPI } from '../../api/MobileAPI'
 
@@ -12,6 +12,7 @@ interface SearchSectionProps{
 }
 
 const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading, setLoading, showToast}) => {
+    const [isCollapsed, setIsCollapsed] = useState(false);        
     const [searchInput, setSearchInput] = useState('');
     const [searchResults, setSearchResults] = useState<SwimmerSearchResult[]>([]);
     const [currentPage, setCurentPage] = useState(1);
@@ -73,8 +74,14 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading,
 
     return (
         <section className="search-section card">
-            <h2>Search for Swimmer</h2>
-            <div className='search-controls'>
+            <div className="section-header">                
+                <h2>Search for Swimmer</h2>
+                <button className="btn-ghost section-toggle" onClick={() => setIsCollapsed(c => !c)} aria-label="Toggle section">
+                    <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!isCollapsed ? ' expanded' : ''}`} />
+                </button>
+            </div>
+            {!isCollapsed && <>            
+            <div className="search-controls">
                 <input 
                     type='text'
                     value={searchInput}
@@ -168,6 +175,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading,
                     </div>
                 )}
             </div>
+            </>}
         </section>
     );    
 };
