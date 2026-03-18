@@ -20,17 +20,17 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
     const [addingTagFor, setAddingTagFor] = useState<string | null>(null);
     const [newTagValue, setNewTagValue] = useState<string>('');
 
-    //Get all unique tags across all swimmer
+    // Get all unique tags across all swimmers
     const allTags = Array.from(new Set(swimmers.flatMap(s => s.tags || []))).sort();
 
-    //Filter the swimmers by selected tag
+    // Filter the swimmers by selected tag
     const filteredSwimmers = selectedTag === 'all'
         ? swimmers 
         : selectedTag === 'Untagged'
         ? swimmers.filter(s => !s.tags || s.tags.length === 0)
         : swimmers.filter(s => s.tags?.includes(selectedTag));
 
-    //Group swimmers by club
+    // Group swimmers by club
     const swimmersByClub = filteredSwimmers.reduce((acc, swimmer) => {
         const club = swimmer.club || 'Unknown Club';
         if (!acc[club]) acc[club] = [];
@@ -39,7 +39,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
     }, {} as Record<string, SwimmerData[]>);
 
     Object.keys(swimmersByClub).forEach(club => {
-        swimmersByClub[club].sort((a, b) => a.name.localeCompare(b.name))
+        swimmersByClub[club].sort((a, b) => a.name.localeCompare(b.name));
     });
 
     const sortedClubs = Object.keys(swimmersByClub).sort();
@@ -54,16 +54,16 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
 
     const toggleSelection = (tiref: string) => {
         const newSelection = new Set(selectedSwimmers);
-        if (newSelection.has(tiref)){
+        if (newSelection.has(tiref)) {
             newSelection.delete(tiref);
         } else {
-            if (newSelection.size > 5) return;
+            if (newSelection.size >= 5) return;
             newSelection.add(tiref);            
         }
         setSelectedSwimmers(newSelection);
     };
 
-    const handleCompare= () => {
+    const handleCompare = () => {
         const swimmersToCompare = swimmers.filter(s => selectedSwimmers.has(s.tiref));
         onCompare(swimmersToCompare);
     };
@@ -76,7 +76,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
         const swimmer = swimmers.find(s => s.tiref === tiref);
         if (!swimmer) return;
         const currentTags = swimmer.tags || [];
-        if (!currentTags.includes(tag)){
+        if (!currentTags.includes(tag)) {
             onUpdateTags(tiref, [...currentTags, tag]);
         }
         setNewTagValue('');
@@ -84,7 +84,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
     };
 
     
-    const handleTagRemove = (tiref: string, tag: string) => {
+    const handleRemoveTag = (tiref: string, tag: string) => {
         const swimmer = swimmers.find(s => s.tiref === tiref);
         if (!swimmer) return;
         const newTags = (swimmer.tags || []).filter(t => t !== tag);
@@ -92,9 +92,9 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
     };
 
     const handleTagInputKeyDown = (e: React.KeyboardEvent, tiref: string) => {
-        if (e.key === 'Enter'){
+        if (e.key === 'Enter') {
             handleAddTag(tiref);
-        } else if (e.key === 'Escape'){
+        } else if (e.key === 'Escape') {
             setAddingTagFor(null);
             setNewTagValue('');
         }        
@@ -109,19 +109,18 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                 </button>                
             </div>
 
-            {!isCollapsed && 
-                <>
+            {!isCollapsed && <>
                     <div className="action-buttons">
                         {selectedSwimmers.size > 0 ? (
                             <>
-                                <button onClick={handleCompare} title="Compare Swimmer(s)" className="btn-clear btn-ghost" disabled={selectedSwimmers.size < 2} style={{ color: 'var(--success)' }}>
-                                    <FontAwesomeIcon icon={faChartBar} />
+                                <button onClick={handleCompare} title="Compare Swimmer(s)" className="btn-save btn-ghost" disabled={selectedSwimmers.size < 2} style={{ color: 'var(--success)' }}>
+                                    <FontAwesomeIcon icon={faChartBar} /> Compare ({selectedSwimmers.size}/5)
                                 </button>
                                 <button onClick={clearSelection} className="btn-clear">Clear Selection</button>
                             </>
                         ) : (
                             swimmers.length > 0 && (
-                                <button onClick={onRefreshAll} className="btn-clear btn-ghost" title='Reload all swimmers times to update recent club information and new times' style={{ color: 'var(--success)' }}>
+                                <button onClick={onRefreshAll} className="btn-save btn-ghost" title="Reload all swimmers times to update recent club information and new times" style={{ color: 'var(--success)' }}>
                                     <FontAwesomeIcon icon={faRotate} />
                                 </button>
                             )
@@ -130,12 +129,12 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                     <div className="group-filter">
                         <label htmlFor="tagFilter">Filter by Tag:</label>
                         <select
-                            id='tagFilter'
+                            id="tagFilter"
                             value={selectedTag}
                             onChange={(e) => setSelectedTag(e.target.value)}
                         >
-                            <option value='all'>All ({swimmers.length})</option>
-                            <option value='Untagged'>Untagged ({swimmers.filter(s => !s.tags || s.tags.length === 0).length})</option>
+                            <option value="all">All ({swimmers.length})</option>
+                            <option value="Untagged">Untagged ({swimmers.filter(s => !s.tags || s.tags.length === 0).length})</option>
                             {allTags.map(tag => (
                                 <option key={tag} value={tag}>
                                     {tag} ({swimmers.filter(s => s.tags?.includes(tag)).length})
@@ -144,9 +143,9 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                         </select>
                     </div>
 
-                    <div id='savedSwimmers'>
+                    <div id="savedSwimmers">
                         {filteredSwimmers.length === 0 ? (
-                            <div className="emtpy-state">
+                            <div className="empty-state">
                                 <p>{selectedTag === 'all' ? 'No saved swimmers yet' : `No swimmers tagged "${selectedTag}"`}</p>
                             </div>
                         ) : (
@@ -158,7 +157,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                     <div 
                                         className="club-header"
                                         onClick={() => toggleClub(club)}
-                                        style={{marginTop: clubIndex > 0 ? '0.5rem' : '0'}}>
+                                        style={{ marginTop: clubIndex > 0 ? '0.5rem' : '0'}}>
                                         <h3 className="club-header-title">
                                             {club} <span className="club-count">({swimmersByClub[club].length} {swimmersByClub[club].length === 1 ? 'swimmer' : 'swimmers'})</span>
                                         </h3>
@@ -178,13 +177,13 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                 >
                                                     {isSelected && <div className="selection-badge"><FontAwesomeIcon icon={faCheck} /></div>}
                                                     <div>
-                                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }} >
-                                                            <h3 style={{ margin: '0' }}>{swimmer.name || `Tiref ${swimmer.tiref}`}</h3>
+                                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+                                                            <h3 style={{ margin: 0 }}>{swimmer.name || `Tiref ${swimmer.tiref}`}</h3>
                                                             <button onClick={() => onDelete(swimmer.tiref)} className="btn-clear btn-ghost" title="Delete saved swimmer" style={{ color: 'var(--danger)' }}>
                                                                 <FontAwesomeIcon icon={faTrash} />
                                                             </button>
                                                         </div>
-                                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.25rem' }} >
+                                                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.25rem' }}>
                                                             <p>{swimmer.times.length} events</p>
                                                             {/* Tags display */}
                                                             {tags.length > 0 && (
@@ -194,7 +193,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                                             {tag}
                                                                             <button
                                                                                 className="swimmer-tag-remove"
-                                                                                onClick={() => handleTagRemove(swimmer.tiref, tag)}
+                                                                                onClick={() => handleRemoveTag(swimmer.tiref, tag)}
                                                                                 title={`Remove tag "${tag}"`}
                                                                             >
                                                                                 <FontAwesomeIcon icon={faTimes} />
@@ -216,7 +215,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                                     value={newTagValue}
                                                                     onChange={(e) => setNewTagValue(e.target.value)}
                                                                     onKeyDown={(e) => handleTagInputKeyDown(e, swimmer.tiref)}
-                                                                    onBlur={(e) => handleAddTag(swimmer.tiref)}
+                                                                    onBlur={() => handleAddTag(swimmer.tiref)}
                                                                     placeholder="Tag name..."
                                                                     className="group-input"
                                                                     autoFocus
@@ -230,7 +229,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                         ) : (
                                                             <button
                                                                 onClick={() => { setAddingTagFor(swimmer.tiref); setNewTagValue(''); }}
-                                                                className="group-butto"
+                                                                className="group-button"
                                                                 title="Add tag"
                                                             >
                                                                 <FontAwesomeIcon icon={faTag} /> <FontAwesomeIcon icon={faPlus} />
