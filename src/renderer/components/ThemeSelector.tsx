@@ -1,15 +1,15 @@
-import React, {useState, useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPalette } from '@fortawesome/free-solid-svg-icons';
 
 
-interface ThemeSelectorProps{
+interface ThemeSelectorProps {
     //No props needed
 }
 
 export type Theme = 'blue' | 'purple' | 'green' | 'orange' | 'dark';
 
-const THEMES: {id: Theme; label: string; color: string}[] = [
+const THEMES: { id: Theme; label: string; color: string }[] = [
     { id: 'blue', label: 'Ocean Blue', color: '#1F4E79' },
     { id: 'purple', label: 'Purple', color: '#6B3FA0' },
     { id: 'green', label: 'Forest Green', color: '#1F6E43' },
@@ -19,23 +19,23 @@ const THEMES: {id: Theme; label: string; color: string}[] = [
 
 const ThemeSelector : React.FC<ThemeSelectorProps> = () => {
     const [currentTheme, setCurrentTheme] = useState<Theme>('blue');
-    const [open,setOpen] = useState(false);
+    const [open, setOpen] = useState(false);
 
     useEffect(() => {
         const savedTheme = localStorage.getItem('app-theme') as Theme;
-        if (savedTheme){
+        if (savedTheme) {
             setCurrentTheme(savedTheme);
             const existing = document.getElementById('theme-stylesheet') as HTMLLinkElement | null;
-            if (!existing || !existing.href.endsWith(`${savedTheme}.css`)){
+            if (!existing || !existing.href.endsWith(`${savedTheme}.css`)) {
                 applyTheme(savedTheme);
             }
         }        
-    })
+    }, []);
 
     const applyTheme = (theme: Theme) => {
         const existing = document.getElementById('theme-stylesheet') as HTMLLinkElement | null;
         if (existing) {
-            existing.href = `${theme}.css`;
+            existing.href = `./themes/${theme}.css`;
         } else {
             const link = document.createElement('link');
             link.id = 'theme-stylesheet';
@@ -53,10 +53,10 @@ const ThemeSelector : React.FC<ThemeSelectorProps> = () => {
     };
 
     return (
-        <div style={{position:'relative', display: 'inline-block'}}>
+        <div style={{ position: 'relative', display: 'inline-block' }}>
             <button 
                 onClick={() => setOpen(prev => !prev)}
-                title = "Change Theme"
+                title="Change theme"
                 className="btn-ghost"
                 style={{
                     padding: '6px 10px',
@@ -80,7 +80,8 @@ const ThemeSelector : React.FC<ThemeSelectorProps> = () => {
                         zIndex: 1000,
                         minWidth: '160px',
                         overflow: 'hidden'
-                    }}>
+                    }}
+                >
                     {THEMES.map(theme => (
                         <button
                             key={theme.id}
@@ -111,8 +112,7 @@ const ThemeSelector : React.FC<ThemeSelectorProps> = () => {
                             />
                             {theme.label}
                         </button>
-                    )
-                    )}
+                    ))}
                 </div>
             )}
         </div>
