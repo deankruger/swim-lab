@@ -153,7 +153,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                 const clubCollapsed = collapsedClubs.has(club);
 
                                 return (
-                                <div key={club} style={{ marginBottom: clubIndex < sortedClubs.length - 1 ? '2rem' : '0' }}>
+                                <div key={club} style={{ marginBottom: '0' }}>
                                     <div 
                                         className="club-header"
                                         onClick={() => toggleClub(club)}
