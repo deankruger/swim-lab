@@ -14,8 +14,8 @@ app.use(express.json());
 //  next();
 //});
 
-const cors = require('cors');
-app.use(cors({ origin: 'http://swim-lab.azurewebsites.net' }));
+//const cors = require('cors');
+//app.use(cors({ origin: 'http://swim-lab.azurewebsites.net' }));
 
 // API routes (scraping services - must be before static file serving)
 const apiRouter = require('./dist-server/server/api').default;
