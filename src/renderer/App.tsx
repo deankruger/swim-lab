@@ -236,7 +236,7 @@ const App: React.FC = () => {
 
             showToast('Times refreshed successfully');
         } catch (error) {
-            showToast(`Error refresshing times: ${(error as Error).message}`, 'error');
+            showToast(`Error refreshing times: ${(error as Error).message}`, 'error');
         } finally {
             setLoading(false);
         }
@@ -388,3 +388,4 @@ const App: React.FC = () => {
 };
 
 export default App;
+
