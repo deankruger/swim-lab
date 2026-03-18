@@ -1,5 +1,5 @@
-import React, {useState, useEffect, useRef } from 'react'
-import './styles.css'
+import React, {useState, useEffect, useRef } from 'react';
+import './styles.css';
 
 import { mobileAPI } from '../api/MobileAPI';
 import { ComparisonResult, CountyTimesStore, SwimmerData } from '../types';
@@ -9,7 +9,7 @@ import ThemeSelector from './components/ThemeSelector';
 import LoadingSpinner from './components/LoadingSpinner';
 import Toast from './components/Toast';
 
-import SearchSection from './components/SearchSection'
+import SearchSection from './components/SearchSection';
 import SwimmerComparison from './components/SwimmerComparison';
 import SavedSwimmers from './components/SavedSwimmers';
 import SwimmerDetails from './components/SwimmerDetails';
@@ -30,7 +30,7 @@ const App: React.FC = () => {
     useEffect(() => {
         if (!navOpen) return;
         const handler = (e: MouseEvent) => {
-            if (navRef.current && !navRef.current.contains(e.target as Node)){
+            if (navRef.current && !navRef.current.contains(e.target as Node)) {
                 setNavOpen(false);
             }
         };
@@ -44,9 +44,9 @@ const App: React.FC = () => {
     }, []);
 
     const showToast = (message: string, type: 'success' | 'error' = 'success') => {
-        setToast({message, type});
+        setToast({ message, type });
         setTimeout(() => setToast(null), 3000);
-    }
+    };
 
     const loadSavedSwimmers = async () => {
         try {
@@ -60,29 +60,60 @@ const App: React.FC = () => {
     const loadCountyTimesStore = async () => {
         try {
             const stored = await mobileAPI.loadCountyTimesStore();
-            if (stored && Object.keys(stored).length > 0){
+            if (stored && Object.keys(stored).length > 0) {
                 setCountyTimesStore(stored);
             }
-        } catch (error) {
+        } catch {
             //swallow: no saved county times loaded yet.
         }
     };
 
-    const pickAndloadCountyTimes = async () => {        
-        //todo
+    const pickAndLoadCountyTimes = async () => {        
+     try {
+      console.log('Opening file picker for county times...');
+      const results = await mobileAPI.pickCountyTimesFile();
+
+      if (results === null) {
+        console.log('File picker cancelled by user');
+        return;
+      }
+
+      setCountyTimesStore(prev => {
+        const next = { ...prev };
+        for (const { countyName, times } of results) {
+          next[countyName] = { ...(next[countyName] || {}), ...times };
+        }
+        mobileAPI.saveCountyTimesStore(next);
+        return next;
+      });
+      const summary = results.map(r => `${r.countyName} (${Object.keys(r.times).length})`).join(', ');
+      showToast(`Loaded: ${summary}`, 'success');
+     } catch (error) {
+      console.error('Error loading county times from file:', error);
+      showToast(`Failed to load county times: ${(error as Error).message}`, 'error');
+     }
     };
 
     const handleCountySelected = async (county: string) => {
-        //todo
+     if (!currentSwimmerData) return;
+     const updated = { ...currentSwimmerData, preferredCounty: county };
+     setCurrentSwimmerData(updated);
+     await mobileAPI.saveSwimmer(updated);
     };
 
     const clearOneCounty = async (county: string) => {
-        //todo
+     setCountyTimesStore(prev => {
+      const next = { ...prev };
+      delete next[county];
+      mobileAPI.saveCountyTimesStore(next);
+      return next;
+     });
+     showToast(`Cleared ${county} times`);
     };
 
-    const handleSearchResults = async (tiref: string, name:string, birthYear: string, gender: string, club: string ) => {
+    const handleSearchResults = async (tiref: string, name: string, birthYear: string, gender: string, club: string) => {
         setLoading(true);
-        try{
+        try {
             const swimmerData = await mobileAPI.getSwimmerTimes(tiref);
             swimmerData.name = name;
             swimmerData.birthYear = birthYear;
@@ -90,56 +121,71 @@ const App: React.FC = () => {
             swimmerData.club = club;
             setCurrentSwimmerData(swimmerData);
             showToast('Times loaded successfully');
-        } catch (error){
+        } catch (error) {
             showToast(`Error loading times: ${(error as Error).message}`, 'error');
-        } finally{
+        } finally {
             setLoading(false);
         }
-    }
+    };
     
     const handleSaveSwimmer = async () => {
-        if (!currentSwimmerData){
+        if (!currentSwimmerData) {
             showToast('No swimmer data to save', 'error');
             return;
         }
+        
         setLoading(true);
-        try{
+        try {
             await mobileAPI.saveSwimmer(currentSwimmerData);
             await loadSavedSwimmers();
             showToast('Swimmer saved successfully');
-        } catch (error){
+        } catch (error) {
             showToast(`Error saving swimmer: ${(error as Error).message}`, 'error');
-        } finally{
+        } finally {
             setLoading(false);
         }
     };
 
     const handleExportToExcel = async () => {
-        //todo
+     if (!currentSwimmerData) {
+      showToast('No swimmer data to export', 'error');
+      return;
+     }
+
+     setLoading(true);
+     try {
+      const filePath = await mobileAPI.exportToExcel(currentSwimmerData, comparisonResult);
+      showToast(`Exported to: ${filePath}`);
+     } catch (error) {
+      showToast(`Error exporting: ${(error as Error).message}`, 'error');
+     } finally {
+      setLoading(false);
+     }
     };
 
-    const handleLoadSavedSwimmer = async (swimmer: SwimmerData) => {        
+    const handleLoadSavedSwimmer = (swimmer: SwimmerData) => {
         setCurrentSwimmerData(swimmer);
         setComparisonResult(null);
         setTimeout(() => swimmerDetailsRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
     };
 
     const handleDeleteSwimmer = async (tiref: string) => {
-        if (!confirm('Are you sure you want to deleted this swimmer?')){
+        if (!confirm('Are you sure you want to delete this swimmer?')) {
             return;
         }
+        
         setLoading(true);
-        try{
+        try {
             await mobileAPI.deleteSwimmer(tiref);
             await loadSavedSwimmers();
             showToast('Swimmer deleted successfully');
 
-            if (currentSwimmerData && currentSwimmerData.tiref === tiref){
+            if (currentSwimmerData && currentSwimmerData.tiref === tiref) {
                 setCurrentSwimmerData(null);
             }
-        } catch (error){
+        } catch (error) {
             showToast(`Error deleting swimmer: ${(error as Error).message}`, 'error');
-        } finally{
+        } finally {
             setLoading(false);
         }
     };
@@ -147,24 +193,24 @@ const App: React.FC = () => {
     const handleClearDetails = () => {
         setCurrentSwimmerData(null);
         setComparisonResult(null);
-    }
+    };
 
     const handleUpdateSwimmerTags = async (tiref: string, tags: string[]) => {
         setLoading(true);
-        try{
+        try {
             const swimmer = savedSwimmers.find(s => s.tiref === tiref);
-            if (!swimmer){
+            if (!swimmer) {
                 throw new Error('Swimmer not found');
             }
 
-            const updateSwimmer = { ...swimmer, tags: tags.length > 0 ? tags : undefined };            
-            await mobileAPI.saveSwimmer(updateSwimmer);
+            const updatedSwimmer = { ...swimmer, tags: tags.length > 0 ? tags : undefined };            
+            await mobileAPI.saveSwimmer(updatedSwimmer);
             await loadSavedSwimmers();
             
             showToast(tags.length > 0 ? 'Tags updated' : 'Tags Cleared');
-        } catch (error){
+        } catch (error) {
             showToast(`Error updating tags: ${(error as Error).message}`, 'error');
-        } finally{
+        } finally {
             setLoading(false);
         }
     };
@@ -173,34 +219,79 @@ const App: React.FC = () => {
         if (!currentSwimmerData) return;
 
         setLoading(true);
-        try{
-            //Fetch fresh times from website
-            const swimmerData = await mobileAPI.getSwimmerTimes(currentSwimmerData.tiref)            ;
+        try {
+            // Fetch fresh times from website
+            const swimmerData = await mobileAPI.getSwimmerTimes(currentSwimmerData.tiref);
             swimmerData.name = currentSwimmerData.name;
             swimmerData.birthYear = currentSwimmerData.birthYear;
             swimmerData.gender = currentSwimmerData.gender;
             swimmerData.club = currentSwimmerData.club;
 
-            //Save updated data
+            // Save updated data
             await mobileAPI.saveSwimmer(swimmerData);
 
             await loadSavedSwimmers();
 
             setCurrentSwimmerData(swimmerData);
 
-            showToast('Times refreshed successfully')
+            showToast('Times refreshed successfully');
         } catch (error) {
-            showToast(`Error refresshing times: ${(error as Error).message}`, 'error')
+            showToast(`Error refresshing times: ${(error as Error).message}`, 'error');
         } finally {
             setLoading(false);
         }
     };
 
     const handleRefreshAllSwimmers = async () => {
-        //todo
+        if (savedSwimmers.length === 0) {
+      showToast('No swimmers to refresh', 'error');
+      return;
+     }
+
+     if (!confirm(`This will reload all ${savedSwimmers.length} saved swimmers from the website to update their club information and times. This may take a few moments. Continue?`)) {
+      return;
+     }
+
+     setLoading(true);
+     let successCount = 0;
+     let errorCount = 0;
+
+     try {
+      for (const swimmer of savedSwimmers) {
+        try {
+          // Fetch fresh data from website
+          const swimmerData = await mobileAPI.getSwimmerTimes(swimmer.tiref);
+          swimmerData.name = swimmer.name;
+          swimmerData.birthYear = swimmer.birthYear;
+          swimmerData.gender = swimmer.gender;
+          swimmerData.club = swimmer.club; // Preserve club
+          swimmerData.tags = swimmer.tags; // Preserve tag assignments
+
+          // Save updated data
+          await mobileAPI.saveSwimmer(swimmerData);
+          successCount++;
+        } catch (error) {
+          console.error(`Error refreshing swimmer ${swimmer.name}:`, error);
+          errorCount++;
+        }
+      }
+
+      // Reload saved swimmers list
+      await loadSavedSwimmers();
+
+      if (errorCount === 0) {
+        showToast(`Successfully refreshed all ${successCount} swimmers!`, 'success');
+      } else {
+        showToast(`Refreshed ${successCount} swimmers, ${errorCount} failed`, 'error');
+      }
+     } catch (error) {
+      showToast(`Error during refresh: ${(error as Error).message}`, 'error');
+     } finally {
+      setLoading(false);
+     }
     };
 
-    const handleCompareSwimmers = async (swimmers: SwimmerData[]) => {
+    const handleCompareSwimmers = (swimmers: SwimmerData[]) => {
         setComparisonSwimmers(swimmers);
         setCurrentSwimmerData(null);
         setTimeout(() => comparisonRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
