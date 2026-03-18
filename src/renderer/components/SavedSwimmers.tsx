@@ -117,7 +117,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                 <button onClick={handleCompare} title="Compare Swimmer(s)" className="btn-clear btn-ghost" disabled={selectedSwimmers.size < 2} style={{ color: 'var(--success)' }}>
                                     <FontAwesomeIcon icon={faChartBar} />
                                 </button>
-                                <button>Clear Selection</button>
+                                <button onClick={clearSelection} className="btn-clear">Clear Selection</button>
                             </>
                         ) : (
                             swimmers.length > 0 && (
