@@ -14,13 +14,12 @@ app.use((req, res, next) => {
   next();
 });
 
-// API routes (scraping services — must be before static file serving)
 //const cors = require('cors');
 //app.use(cors({ origin: 'http://swim-lab.azurewebsites.net' }));
 
-//API routes (scraping services - must be before static file serving)
-//const apiRouter = require('./dist-server/server/api').default;
-//app.use('/api', apiRouter);
+// API routes (scraping services - must be before static file serving)
+const apiRouter = require('./dist-server/server/api').default;
+app.use('/api', apiRouter);
 
 // Serve built static files
 app.use(express.static(path.join(__dirname, 'dist')));
