@@ -40,20 +40,19 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
     showToast
 }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);        
-    const [activeTab, setActiveTab] = useState<'times' | 'comparison' | 'rankings'>('times')
+    const [activeTab, setActiveTab] = useState<'times' | 'comparison' | 'rankings'>('times');
 
     const currentYear = new Date().getFullYear();
-    const ageAtEndOfYear = swimmerData.birthYear 
-        ? currentYear - parseInt(swimmerData.birthYear) : 'Unknown';
+    const ageAtEndOfYear = swimmerData.birthYear ? currentYear - parseInt(swimmerData.birthYear) : 'Unknown';
 
     return (
-        <section className="details-section-card">
+        <section className="details-section card">
             <div className="section-header">
                 <h2>{swimmerData.name}</h2>
                 <button className="btn-ghost section-toggle" onClick={() => setIsCollapsed(c => !c)} aria-label="Toggle section">
                     <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!isCollapsed ? ' expanded' : ''}`} />
                 </button>                
-            </div>
+            </div>            
             {!isCollapsed && <>
             <div className="action-buttons">
                 <button onClick={onRefresh} className="btn-refresh btn-ghost" disabled={loading} title="Refresh times from website" style={{ color: 'var(--info)' }}><FontAwesomeIcon icon={faRotate} /></button>
@@ -70,8 +69,8 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
             </div>
             <div className="tabs">                
                 <button className={`tab-btn ${activeTab === 'times' ? 'active' : ''}`} onClick={() => setActiveTab('times')}>Personal Bests</button>
-                <button className={`tab-btn ${activeTab === 'times' ? 'active' : ''}`} onClick={() => setActiveTab('comparison')}>County Comparison</button>
-                <button className={`tab-btn ${activeTab === 'times' ? 'active' : ''}`} onClick={() => setActiveTab('rankings')}>Rankings</button>                
+                <button className={`tab-btn ${activeTab === 'comparison' ? 'active' : ''}`} onClick={() => setActiveTab('comparison')}>County Comparison</button>
+                <button className={`tab-btn ${activeTab === 'rankings' ? 'active' : ''}`} onClick={() => setActiveTab('rankings')}>Rankings</button>                
             </div>
             {activeTab === 'times' && <PersonalBests times={swimmerData.times} />}
             {activeTab === 'comparison' && (
