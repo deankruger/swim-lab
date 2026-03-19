@@ -69,7 +69,7 @@ export const mobileAPI = {
         return dataStore.exportToExcel(swimmerData, comparisonResult);
     },
 
-    compareCountyTimes(swimmerData: SwimmerData, countyTimes: CountyTimes): Promise<ComparisonResult> {
+    compareWithCountyTimes(swimmerData: SwimmerData, countyTimes: CountyTimes): Promise<ComparisonResult> {
         return Promise.resolve(standardsComparator.compareWithStandards(swimmerData, countyTimes));
     },
 
