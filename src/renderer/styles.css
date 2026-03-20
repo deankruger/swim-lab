@@ -258,6 +258,42 @@ button:active {
     gap: 0rem;
 }
 
+.comparison-action-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.875rem 1.25rem;
+    background: var(--card-bg);
+    border-top: 1px solid var(--border);
+    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12);
+    gap: 1rem;
+    animation: slideUpBar 0.22s ease-out;
+}
+
+@keyframes slideUpBar {
+    from { transform: translateY(100%); opacity: 0; }
+    to   { transform: translateY(0);    opacity: 1; }
+}
+
+.comparison-action-count {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+}
+
+.comparison-action-buttons {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.saved-section.has-action-bar {
+    padding-bottom: 5rem;
+}
+
 /* Search Results */
 #searchResults {
     display: grid;
