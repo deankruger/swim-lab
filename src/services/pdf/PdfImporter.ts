@@ -515,17 +515,17 @@ let workerConfigured = false;
 
 async function extractPdfText(data: Uint8Array): Promise<string> {
   if (!workerConfigured) {
-    // Set worker source only in browser; in Node.js the path resolves as a 
-    // filesystem.absolute path, causing pdf-parse to fail when it tries to 
-    // import the worker module
-    if (typeof (globalThis as { window?: unknown }).window !== 'undefined) {
+    // Set worker source only in browser - in Node.js the path resolves as a 
+    // filesystem absolute path, causing pdf-parse to fail when it tries to 
+    // import the worker module.
+    if (typeof (globalThis as { window?: unknown }).window !== 'undefined') {
       try {
         PDFParse.setWorker('/pdf.worker.mjs');
       } catch {
         // Worker setup is optional - falls back to main-thread rendering
       }
-      workerConfigured = true;
     }
+    workerConfigured = true;
   }
 
   const parser = new PDFParse({ data });
@@ -549,7 +549,7 @@ export class PdfImporter {
     buffer: Buffer | Uint8Array,
     fileName: string,
   ): Promise<{ countyName: string; times: CountyTimes }> {
-    const uint8Array = buffer instance Uint8Array ? buffer : new Uint8Array(buffer);
+    const uint8Array = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
     return this._parse(await extractPdfText(uint8Array), fileName);
   }
   
@@ -562,10 +562,10 @@ export class PdfImporter {
     for (let i = 0; i < binaryString.length; i++) {
       uint8Array[i] = binaryString.charCodeAt(i);
     }
-    return this._parse(awwait extractPdfText(uint8Array), fileName);
+    return this._parse(await extractPdfText(uint8Array), fileName);
   }
   
-  private _parser(text: string, fileName: string): {countyName: string; times: CountyTimes } {
+  private _parse(text: string, fileName: string): { countyName: string; times: CountyTimes } {
 
     console.log('[PdfImporter] full extracted text:\n', text);
 
