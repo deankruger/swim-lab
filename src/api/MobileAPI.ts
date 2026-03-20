@@ -3,18 +3,6 @@ import { StandardsComparator } from '../services/comparators/StandardsComparator
 import { TimeConverter } from '../services/utils/TimeConverter';
 import { SwimmerData, CountyTimes, CountyTimesStore, ComparisonResult, SwimmerRankings, SwimmerSearchResult } from '../types';
 
-function fileToBase64(file: File): Promise<string> {
-    return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => {
-            const result = reader.result as string;
-            resolve(result.split(',')[1]); //Strip data URL prefix
-        };
-        reader.onerror = error => reject(error);
-        reader.readAsDataURL(file);
-    });
-}
-
 const dataStore = new DataStore();
 const standardsComparator = new StandardsComparator(new TimeConverter());
 
@@ -64,9 +52,25 @@ export const mobileAPI = {
     deleteSwimmer(tiref: string): Promise<boolean> {
         return dataStore.deleteSwimmer(tiref);
     },
-
-    exportToExcel(swimmerData: SwimmerData, comparisonResult: ComparisonResult | null): Promise<string> {
-        return dataStore.exportToExcel(swimmerData, comparisonResult);
+    
+    async exportToExcel(swimmerData: SwimmerData, comparisonResult?: ComparisonResult | null): Promise<string> {
+        const res = await fetch('/api/export/excel', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...swimmerData, comparisonResult }),
+        });
+        if (!res.ok) throw new Error(`Export failed: ${await res.text()}`);
+        const fileName = res.headers.get('Content-Disposition')?.match(/filename="([^"]+)"/)?.[1] ?? 'export.xlsx';
+        const blob = await res.blob();
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = fileName;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        return fileName;
     },
 
     compareWithCountyTimes(swimmerData: SwimmerData, countyTimes: CountyTimes): Promise<ComparisonResult> {
@@ -87,8 +91,13 @@ export const mobileAPI = {
                 const loaded :Array<{ countyName: string, times: CountyTimes }> = [];
                 for (const file of Array.from(input.files)) {
                     try {
-                        const base64 = await fileToBase64(file);
-                        const entry = await dataStore.importFromBase64(base64, file.name);                        
+                        const res = await fetch('/api/import', {
+                            method: 'POST',
+                            headers: { 'x-filename': encodeURIComponent(file.name) },
+                            body: file,
+                        });
+                        if (!res.ok) throw new Error(`Import failed: ${await res.text()}`);
+                        const entry = await res.json() as { countyName: string; times: CountyTimes };
                         loaded.push(entry);
                     } catch (error) {
                         console.error(`Error processing file ${file.name}:`, error);
