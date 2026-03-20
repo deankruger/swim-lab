@@ -77,18 +77,18 @@ export const mobileAPI = {
         return Promise.resolve(standardsComparator.compareWithStandards(swimmerData, countyTimes));
     },
 
-    pickCountyTimesFile(): Promise<Array<{ countyName: string, times: CountyTimes }> | null> {
+    pickCountyTimesFile(): Promise<Array<{ countyName: string; times: CountyTimes }> | null> {
         return new Promise((resolve) => {
             const input = document.createElement('input');
             input.type = 'file';
-            input.accept = '.xlsx,.xls,pdf';
+            input.accept = '.pdf,.xlsx,.xls';
             input.multiple = true;
             input.onchange = async () => {
                 if (!input.files || !input.files.length) {
                     resolve(null);
                     return;
                 }
-                const loaded :Array<{ countyName: string, times: CountyTimes }> = [];
+                const loaded: Array<{ countyName: string; times: CountyTimes }> = [];
                 for (const file of Array.from(input.files)) {
                     try {
                         const res = await fetch('/api/import', {
@@ -101,8 +101,8 @@ export const mobileAPI = {
                         loaded.push(entry);
                     } catch (error) {
                         console.error(`Error processing file ${file.name}:`, error);
-                    }                    
-                };
+                    }
+                }
                 resolve(loaded.length ? loaded : null);
             };
             input.oncancel = () => resolve(null);
@@ -118,11 +118,11 @@ export const mobileAPI = {
         return dataStore.loadCountyTimesStore();
     },
 
-    getSwimmerRankings(swimmerData: SwimmerData, level: 'C' | 'N', forecast?: boolean, countyCode?: string): Promise<SwimmerRankings> {
+    getSwimmerRankings(swimmerData: SwimmerData, level?: 'C' | 'N', forecast?: boolean, countyCode?: string): Promise<SwimmerRankings> {
         return apiFetch<SwimmerRankings>('/api/rankings/',{
             method: 'POST',
-            headers: { 'Content-Type' : 'application/json' },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...swimmerData, level, forecast, countyCode })
         });
     }
-}
+};
