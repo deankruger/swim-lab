@@ -74,30 +74,13 @@ function formatDate(d: Date): string {
 
 // ── Main class ─────────────────────────────────────────────────────────────
 export class ExcelExporter {
-  async export(swimmerData: SwimmerData, comparisonResult?: ComparisonResult | null): Promise<string> {
-    try {
-      const workbook = this.createWorkbook(swimmerData, comparisonResult);
-      const fileName = this.generateFileName(swimmerData);
+  async exportToBuffer(swimmerData: SwimmerData, comparisonResult?: ComparisonResult | null): Promise<Buffer | ArrayBuffer> {
+    const workbook = this.createWorkbook(swimmerData, comparisonResult);
+    return workbook.xlsx.writeBuffer();
+  }
 
-      const buffer = await workbook.xlsx.writeBuffer();
-      const blob = new Blob([buffer as ArrayBuffer], {
-        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
-      });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = fileName;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-
-      console.log('Excel file downloaded:', fileName);
-      return fileName;
-    } catch (error) {
-      console.error('Error exporting to Excel:', error);
-      throw new Error(`Failed to export to Excel: ${(error as Error).message}`);
-    }
+  getFileName(swimmerData: SwimmerData): string {
+    return this.generateFileName(swimmerData);
   }
 
   // ── Workbook ──────────────────────────────────────────────────────────────
