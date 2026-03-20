@@ -253,7 +253,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                     >
                         <FontAwesomeIcon icon={faChartBar} /> Compare
                     </button>
-                    <button className="btn btn-ghost" onClick={() => setSelectedSwimmers(new Set())}>
+                    <button className="btn btn-ghost btn-clear" onClick={() => setSelectedSwimmers(new Set())}>
                         Clear
                     </button>
                 </div>
