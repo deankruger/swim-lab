@@ -24,7 +24,7 @@ const scraper = new SwimmerScraper(
 const rankingsFetcher = new RankingsFetcher(httpClient, new RankingsParser());
 const excelImporter = new ExcelImporter(new TimeConverter());
 const excelExporter = new ExcelExporter();
-const pdfExporter = new PdfExporter();
+const pdfImporter = new PdfImporter();
 
 router.get('/search', async (req, res) => {
     const surname = req.query.surname as string;
