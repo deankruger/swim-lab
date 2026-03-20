@@ -268,9 +268,10 @@ button:active {
     align-items: center;
     justify-content: space-between;
     padding: 0.875rem 1.25rem;
-    background: var(--card-bg);
-    border-top: 1px solid var(--border);
-    box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.12);
+    background: var(--bg-primary);
+    opacity: 0.9;
+    border-top: 2px solid var(--primary);
+    box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.2);
     gap: 1rem;
     animation: slideUpBar 0.22s ease-out;
 }
