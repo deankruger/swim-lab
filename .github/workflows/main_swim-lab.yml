@@ -6,7 +6,7 @@ name: Build and deploy Node.js app to Azure Web App - swim-lab
 on:
   push:
     branches:
-      - ** # Triggers on every branch push, deploy job is gated by condition below
+      - '**' # Triggers on every branch push, deploy job is gated by condition below
   workflow_dispatch:
 
 jobs:
