@@ -68,8 +68,6 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
         onCompare(swimmersToCompare);
     };
 
-    const clearSelection = () => setSelectedSwimmers(new Set());
-
     const handleAddTag = (tiref: string) => {
         const tag = newTagValue.trim();
         if (!tag) return;
@@ -101,31 +99,23 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
     };
     
     return (
-        <section className="saved-section card">
+        <>
+        <section className={`saved-section card${selectedSwimmers.size > 0 ? ' has-action-bar' : ''}`}>
             <div className="section-header">
                 <h2>Saved Swimmers</h2>
-                <button className="btn-ghost section-toggle" onClick={() => setIsCollapsed(c => !c)} aria-label="Toggle section">
-                    <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!isCollapsed ? ' expanded' : ''}`} />
-                </button>                
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                    {swimmers.length > 0 && (
+                        <button onClick={onRefreshAll} className="btn-save btn-ghost" title="Reload all swimmers times to update recent club information and new times" style={{ color: 'var(--success)' }}>
+                            <FontAwesomeIcon icon={faRotate} />
+                        </button>
+                    )}
+                    <button className="btn-ghost section-toggle" onClick={() => setIsCollapsed(c => !c)} aria-label="Toggle section">
+                        <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!isCollapsed ? ' expanded' : ''}`} />
+                    </button>
+                </div>                
             </div>
 
             {!isCollapsed && <>
-                    <div className="action-buttons">
-                        {selectedSwimmers.size > 0 ? (
-                            <>
-                                <button onClick={handleCompare} title="Compare Swimmer(s)" className="btn-save btn-ghost" disabled={selectedSwimmers.size < 2} style={{ color: 'var(--success)' }}>
-                                    <FontAwesomeIcon icon={faChartBar} /> Compare ({selectedSwimmers.size}/5)
-                                </button>
-                                <button onClick={clearSelection} className="btn-clear">Clear Selection</button>
-                            </>
-                        ) : (
-                            swimmers.length > 0 && (
-                                <button onClick={onRefreshAll} className="btn-save btn-ghost" title="Reload all swimmers times to update recent club information and new times" style={{ color: 'var(--success)' }}>
-                                    <FontAwesomeIcon icon={faRotate} />
-                                </button>
-                            )
-                        )}
-                    </div>
                     <div className="group-filter">
                         <label htmlFor="tagFilter">Filter by Tag:</label>
                         <select
@@ -250,6 +240,26 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                 </>
             } 
         </section>
+        {selectedSwimmers.size > 0 && (
+            <div className="comparison-action-bar">
+                <span className="comparison-action-count">
+                    {selectedSwimmers.size} swimmer{selectedSwimmers.size > 1 ? 's' : ''} selected
+                </span>
+                <div className="comparison-action-buttons">
+                    <button
+                        className="btn btn-primary"
+                        onClick={handleCompare}
+                        disabled={selectedSwimmers.size < 2}
+                    >
+                        <FontAwesomeIcon icon={faChartBar} /> Compare
+                    </button>
+                    <button className="btn btn-ghost" onClick={() => setSelectedSwimmers(new Set())}>
+                        Clear
+                    </button>
+                </div>
+            </div>
+        )}        
+        </>
     );
 };
 
