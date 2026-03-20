@@ -54,8 +54,7 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: 'src/renderer/styles.css', to: 'styles.css' },
-                { from: 'src/renderer/themes', to: 'themes' },
-                { from: 'node_modules/pdf-parse/dist/worker/pdf.worker.mjs', to: 'pdf.worker.mjs' }
+                { from: 'src/renderer/themes', to: 'themes' }
             ]
         }),
 
