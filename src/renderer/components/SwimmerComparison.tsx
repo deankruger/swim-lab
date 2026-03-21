@@ -136,7 +136,7 @@ const SwimmerComparison: React.FC<SwimmerComparisonProps> = ({swimmers, onClose}
                     <select id='distanceFilter' value={strokeFilter} onChange={(e) => setDistanceFilter(e.target.value)}>
                         <option value='all'>All Distances</option>
                         {distances.map(distance => (
-                            <option key={distance} value=`${distance}`>{distance}</option>
+                            <option key={distance} value={distance}>{distance}</option>
                         ))}
                     </select>
                 </div>
