@@ -118,14 +118,14 @@ const SwimmerComparison: React.FC<SwimmerComparisonProps> = ({swimmers, onClose}
                     <label htmlFor='courseFilter'>Course:</label>
                     <select id='courseFilter' value={courseFilter} onChange={(e) => setCourseFilter(e.target.value as 'all' | '25m' | '50m')}>
                         <option value='all'>All Courses</option>
-                        <option value='25m'>25m Only</option>
-                        <option value='50m'>50m Only</option>
+                        <option value='25m'>Short Course Only</option>
+                        <option value='50m'>Long Course Only</option>
                     </select>
                 </div>
                 <div>
                     <label htmlFor='strokeFilter'>Stroke:</label>
                     <select id='strokeFilter' value={strokeFilter} onChange={(e) => setStrokeFilter(e.target.value)}>
-                        <option value='all'>All Stroke</option>
+                        <option value='all'>All Strokes</option>
                         {strokes.map(stroke => (
                             <option key={stroke} value={stroke}>{stroke}</option>
                         ))}
@@ -136,7 +136,7 @@ const SwimmerComparison: React.FC<SwimmerComparisonProps> = ({swimmers, onClose}
                     <select id='distanceFilter' value={strokeFilter} onChange={(e) => setDistanceFilter(e.target.value)}>
                         <option value='all'>All Distances</option>
                         {distances.map(distance => (
-                            <option key={distance} value={distance}>{distance}</option>
+                            <option key={distance} value=`${distance}`>{distance}</option>
                         ))}
                     </select>
                 </div>
