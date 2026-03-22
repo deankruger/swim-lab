@@ -49,16 +49,18 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
         <section className="details-section card">
             <div className="section-header">
                 <h2>{swimmerData.name}</h2>
-                <button className="btn-ghost section-toggle" onClick={() => setIsCollapsed(c => !c)} aria-label="Toggle section">
-                    <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!isCollapsed ? ' expanded' : ''}`} />
-                </button>                
+                <div>
+                    <button onClick={onClear} className="btn btn-ghost" disabled={loading} title="Close/Clear swimmer" style={{ color: 'var(--danger)' }}><FontAwesomeIcon icon={faClose} /></button>
+                    <button className="btn-ghost section-toggle" onClick={() => setIsCollapsed(c => !c)} aria-label="Toggle section">
+                        <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!isCollapsed ? ' expanded' : ''}`} />
+                    </button>
+                </div>
             </div>            
             {!isCollapsed && <>
             <div className="action-buttons">
                 <button onClick={onRefresh} className="btn-refresh btn-ghost" disabled={loading} title="Refresh times from website" style={{ color: 'var(--info)' }}><FontAwesomeIcon icon={faRotate} /></button>
                 <button onClick={onSave} className="btn-save btn-ghost" disabled={loading} title="Save swimmer" style={{ color: 'var(--success)' }}><FontAwesomeIcon icon={faFloppyDisk} /></button>
-                <button onClick={onExport} className="btn-export btn-ghost" disabled={loading} title="Export to Excel" style={{ color: 'var(--warning)' }}><FontAwesomeIcon icon={faFileExcel} /></button>
-                <button onClick={onClear} className="btn-clear btn-ghost" disabled={loading} title="Clear swimmer" style={{ color: 'var(--danger)' }}><FontAwesomeIcon icon={faClose} /></button>
+                <button onClick={onExport} className="btn-export btn-ghost" disabled={loading} title="Export to Excel" style={{ color: 'var(--warning)' }}><FontAwesomeIcon icon={faFileExcel} /></button>                        
             </div>
             <div className="swimmer-info">
                 <p><strong>Name:</strong> {swimmerData.name}</p>

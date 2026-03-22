@@ -343,12 +343,19 @@ const App: React.FC = () => {
                         showToast={showToast}
                     />
 
+                    <SavedSwimmers
+                        swimmers={savedSwimmers}
+                        onLoad={handleLoadSavedSwimmer}
+                        onDelete={handleDeleteSwimmer}
+                        onRefreshAll={handleRefreshAllSwimmers}
+                        onCompare={handleCompareSwimmers}
+                        onUpdateTags={handleUpdateSwimmerTags}
+                    />
                     {comparisonSwimmers.length > 0 && (
                         <div ref={comparisonRef}>
                             <SwimmerComparison swimmers={comparisonSwimmers} onClose={handleCloseComparison} />
                         </div>
                     )}
-
                     {currentSwimmerData && (
                         <div ref={swimmerDetailsRef}>
                             <SwimmerDetails
@@ -369,15 +376,6 @@ const App: React.FC = () => {
                             />
                         </div>
                     )}
-
-                    <SavedSwimmers
-                        swimmers={savedSwimmers}
-                        onLoad={handleLoadSavedSwimmer}
-                        onDelete={handleDeleteSwimmer}
-                        onRefreshAll={handleRefreshAllSwimmers}
-                        onCompare={handleCompareSwimmers}
-                        onUpdateTags={handleUpdateSwimmerTags}
-                    />
                 </main>
 
                 {loading && <LoadingSpinner />}
