@@ -70,7 +70,7 @@ const App: React.FC = () => {
 
     const pickAndLoadCountyTimes = async () => {        
      try {
-      console.log('Opening file picker for county times...');
+      console.log('Opening file picker for standard times...');
       const results = await mobileAPI.pickCountyTimesFile();
 
       if (results === null) {
@@ -89,8 +89,8 @@ const App: React.FC = () => {
       const summary = results.map(r => `${r.countyName} (${Object.keys(r.times).length})`).join(', ');
       showToast(`Loaded: ${summary}`, 'success');
      } catch (error) {
-      console.error('Error loading county times from file:', error);
-      showToast(`Failed to load county times: ${(error as Error).message}`, 'error');
+      console.error('Error loading standards from file:', error);
+      showToast(`Failed to load standards: ${(error as Error).message}`, 'error');
      }
     };
 
@@ -108,7 +108,7 @@ const App: React.FC = () => {
       mobileAPI.saveCountyTimesStore(next);
       return next;
      });
-     showToast(`Cleared ${county} times`);
+     showToast(`Cleared ${county}`);
     };
 
     const handleSearchResults = async (tiref: string, name: string, birthYear: string, gender: string, club: string) => {

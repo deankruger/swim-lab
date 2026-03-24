@@ -40,9 +40,10 @@ const getFilteredCountyTimes = (birthYear: string, gender: string, allTimes: Cou
 
     const course = parts[courseIndex];
     const keyGender = normalizeGender(parts[courseIndex + 1] || '');
-    const keyAge = parseInt(parts[courseIndex + 2]);
+    const ageFrom = parseInt(parts[courseIndex + 2]);
+    const ageTo = parseInt(parts[courseIndex + 3]);
 
-    if (course === '50m' && keyGender === normGender && keyAge === age) {
+    if (course === '50m' && keyGender === normGender && age >= ageFrom && age <= ageTo) {
       const event = parts.slice(0, courseIndex).join(' ');
       filtered[`${event}_50m`] = allTimes[key];
     }
@@ -100,7 +101,7 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
       return;
     }
     if (!selectedCounty || !countyTimesStore[selectedCounty]) {
-      showToast('No county times loaded. Please load a county times file first.', 'error');
+      showToast('No standards loaded. Please load a standards file first.', 'error');
       return;
     }
 
@@ -139,7 +140,7 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
       <div style={{ marginBottom: '15px', padding: '10px', backgroundColor: 'var(--card-bg)', borderRadius: '5px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <strong>Loaded Counties:</strong>
+            <strong>Loaded Standards:</strong>
             {countyNames.length > 0 ? (
               <div className="swimmer-tags">
                 {countyNames.map(county => (
@@ -158,7 +159,7 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
               </div>
             ) : (
               <span style={{ color: 'var(--danger)' }}>
-                <FontAwesomeIcon icon={faTriangleExclamation} /> No county times loaded
+                <FontAwesomeIcon icon={faTriangleExclamation} /> No standards loaded
               </span>
             )}
           </div>
@@ -168,7 +169,7 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
             className="btn-ghost"
             style={{ padding: '5px 15px', fontSize: '0.9em', color: 'var(--primary)', whiteSpace: 'nowrap' }}
           >
-            <FontAwesomeIcon icon={faFolderOpen} /> Load County Times from File
+            <FontAwesomeIcon icon={faFolderOpen} /> Load Standards from File
           </button>
         </div>
         {swimmerData.region && (
@@ -182,7 +183,7 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
       <div className="comparison-controls" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
         {countyNames.length > 1 && (
           <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95em' }}>
-            County:
+            Standards:
             <select
               value={selectedCounty}
               onChange={e => handleSelectCounty(e.target.value)}
@@ -195,7 +196,7 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
           </label>
         )}
         <button onClick={handleCompare} disabled={loading || countyNames.length === 0}>
-          Compare with {selectedCounty || 'County'} Times
+          Compare with {selectedCounty || 'Standards'}
         </button>
         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95em', cursor: 'pointer' }}>
           <input
@@ -212,7 +213,7 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
         <div className="table-container">
           <div style={{ marginBottom: '10px', padding: '10px', backgroundColor: 'var(--card-bg)', borderRadius: '5px' }}>
             <strong>Comparing Against: </strong>
-            {selectedCounty} County Times
+            {selectedCounty} Standards
             {swimmerData.birthYear && (
               <>
                 {' — '}Age {lookAhead ? calculateAge(swimmerData.birthYear) + 1 : calculateAge(swimmerData.birthYear)}

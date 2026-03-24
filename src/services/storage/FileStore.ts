@@ -16,7 +16,7 @@ export class FileStore<T> {
     }
 
     async write(data: T): Promise<void> {
-        localStorage.setItem(this.key, JSON.stringify(data, null, 2));
+        localStorage.setItem(this.key, JSON.stringify(data));
     }
 
     getPath(): string{
