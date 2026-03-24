@@ -69,7 +69,7 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
             </div>
             <div className="tabs">                
                 <button className={`tab-btn ${activeTab === 'times' ? 'active' : ''}`} onClick={() => setActiveTab('times')}>Personal Bests</button>
-                <button className={`tab-btn ${activeTab === 'comparison' ? 'active' : ''}`} onClick={() => setActiveTab('comparison')}>County Comparison</button>
+                <button className={`tab-btn ${activeTab === 'comparison' ? 'active' : ''}`} onClick={() => setActiveTab('comparison')}>Standards</button>
                 <button className={`tab-btn ${activeTab === 'rankings' ? 'active' : ''}`} onClick={() => setActiveTab('rankings')}>Rankings</button>                
             </div>
             {activeTab === 'times' && <PersonalBests times={swimmerData.times} />}
