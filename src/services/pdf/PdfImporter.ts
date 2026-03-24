@@ -71,7 +71,7 @@ export class PdfImporter {
   
   private _parse(text: string, fileName: string): { countyName: string; times: CountyTimes } {
     console.log('[PdfImporter] full extracted text:\n', text);
-    const parser = PARSERS.find(p => p.detect(text, filename));
+    const parser = PARSERS.find(p => p.detect(text, fileName));
     if (!parser) {      
        throw new Error('Unrecognised standards PDF format. Currently Supported: Kent, Hertfordshire (SEH), Surrey, Hampshire, Middlesex, SE. London.');
     }  
