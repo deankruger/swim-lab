@@ -117,8 +117,12 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
                                 </thead>
                                 <tbody>
                                     {groupedByCourse[course].map((time, index) => (
-                                        <tr key={`${course}-${index}`}>
-                                            <td data-label="Event">{time.event}</td>
+                                        <tr key={`${course}-${index}`}>                                            
+                                            <td data-label="Event">
+                                                {time.sourceUrl
+                                                    ? <a href={time.sourceUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)' }}>{time.event}</a>
+                                                    : time.event}
+                                            </td>
                                             <td data-label="Course">{time.course}</td>
                                             <td data-label="Time">{time.time}</td>
                                             <td data-label={course === '50m' ? 'Conv. SC' : 'Conv. LC'}>

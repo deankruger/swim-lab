@@ -98,6 +98,10 @@ export class SwimmerTimesParser {
         if (cells.length < 5) return null; // Not enough data
 
         const event = $(cells[0]).text().trim();
+        const rawHref = $(cells[0]).find('a').attr('href') ?? '';
+        const sourceUrl = rawHref 
+            ? rawHref.startsWith('http') ? rawHref : `https://www.swimmingresults.org/individualbest/${rawHref}`
+            : undefined;
         const time = $(cells[1]).text().trim();
         const convertedToSC = tableCourse === '25m' ? time :  $(cells[2]).text().trim();
         const convertedToLC = tableCourse === '50m' ? time :  $(cells[2]).text().trim();
@@ -132,7 +136,8 @@ export class SwimmerTimesParser {
             convertedToSC: convertedToSC || undefined,
             convertedToLC: convertedToLC || undefined,
             date,
-            venue
+            venue,
+            sourceUrl
         };
     }
 
