@@ -60,6 +60,37 @@ const COUNTIES: { code: string; name: string }[] = [
   { code: 'YRKE', name: 'Yorkshire' },
 ];
 
+const STROKE_IDS: Record<string, number> = {
+  '50 Freestyle': 1,   '100 Freestyle': 2,   '200 Freestyle': 3,   '400 Freestyle': 4,
+  '800 Freestyle': 5,  '1500 Freestyle': 6,
+  '50 Breaststroke': 7, '100 Breaststroke': 8, '200 Breaststroke': 9,
+  '50 Butterfly': 10,  '100 Butterfly': 11,  '200 Butterfly': 12,
+  '50 Backstroke': 13, '100 Backstroke': 14, '200 Backstroke': 15,
+  '200 Individual Medley': 16, '400 Individual Medley': 17,
+  '100 Individual Medley': 18, '150 Individual Medley': 19,
+};
+
+function buildRankingUrl(
+  event: string,
+  course: '25m' | '50m',
+  sex: string,
+  ageGroup: number,
+  level: 'C' | 'N',
+  countyCode: string,
+): string | undefined {
+  const strokeId = STROKE_IDS[event];
+  if (!strokeId || !ageGroup) return undefined;
+  const pool = course === '50m' ? 'L' : 'S';
+  const date = encodeURIComponent(`31/12/${new Date().getFullYear()}`);
+  let url = `https://www.swimmingresults.org/12months/last12.php?Pool=${pool}&Stroke=${strokeId}&Sex=${sex}&AgeGroup=${ageGroup}&date=${date}&StartNumber=1&RecordsToView=100`;
+  if (level === 'C') {
+    url += `&TargetNationality=P&TargetRegion=P&Level=C&TargetCounty=${countyCode}&TargetClub=XXXX`;
+  } else {
+    url += '&Level=N&TargetNationality=X&TargetRegion=P&TargetCounty=XXXX&TargetClub=XXXX';
+  }
+  return url;
+}
+
 const detectCountyCode = (region: string): string => {
   if (!region) return 'KNTQ';
   const regionLower = region.toLowerCase();
@@ -91,9 +122,10 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
 
   const selectedCountyName = COUNTIES.find(c => c.code === countyCode)?.name ?? countyCode;
 
-  // Check if swimmer is age 9 or 10 (eligible for forecast)
+  // Swimmer demographics used for ranking URL construction
   const currentYear = new Date().getFullYear();
   const swimmerAge = swimmerData.birthYear ? currentYear - parseInt(swimmerData.birthYear) : 0;
+  const swimmerSex = swimmerData.gender?.toUpperCase().includes('FEMALE') ? 'F' : 'M';
   const canShowForecast = swimmerAge === 9 || swimmerAge === 10;
 
   // Get the appropriate rankings based on forecast mode
@@ -122,6 +154,7 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
     course: time.course,
     time: time.time,
     date: time.date,
+    sourceUrl: time.sourceUrl,
     key: `${time.event}_${time.course}`
   }));
 
@@ -351,7 +384,13 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
 
                     return (
                       <tr key={evt.key}>
-                        <td data-label="Event"><strong>{evt.event}</strong></td>
+                        <td data-label="Event">
+                          <strong>
+                            {evt.sourceUrl
+                              ? <a href={evt.sourceUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary) }}>{evt.event}</a>
+                            :evt.event}
+                          </strong>
+                        </td>
                         <td data-label="PB Time">{evt.time}<br/><small style={{ color: 'var(--gray-400)' }}>{evt.date}</small></td>
                         <td data-label={selectedCountyName}>
                           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minHeight: '2.5rem' }}>
@@ -365,27 +404,29 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
                             </button>
                             {cached?.kentCounty ? (
                               cached.kentCounty.entry ? (
-                                <div style={{ flex: 1 }}>
-                                  <strong>{cached.kentCounty.entry.isTied ? '=' : ''}#{cached.kentCounty.entry.position}</strong> of {cached.kentCounty.total}
-                                  {cached.kentCounty.entry.fina && <span> • <strong>{cached.kentCounty.entry.fina}</strong> pts</span>}
-                                  {cached.kentCounty.ageGroup && (
-                                    <span style={{
-                                      marginLeft: '0.5rem',
-                                      padding: '0.15rem 0.4rem',
-                                      backgroundColor: 'var(--primary)',
-                                      borderRadius: '3px',
-                                      fontSize: '0.7rem',
-                                      fontWeight: 'bold',
-                                      opacity: 0.8
-                                    }}>
-                                      Age: {cached.kentCounty.ageGroup}
-                                    </span>
-                                  )}
-                                  <br/>
-                                  <small style={{ color: 'var(--gray-400)' }}>
-                                    {cached.kentCounty.entry.time} • {cached.kentCounty.entry.date}
-                                  </small>
-                                </div>
+                                <a href={buildRankingUrl(evt.event, evt.course, swimmerSex, swimmerAge, 'C', countyCode)} target="_blank" rel="noreferrer" style={{ flex: 1, color: inherit, textDecoration: 'none' }}>
+                                  <div style={{ flex: 1 }}>
+                                    <strong>{cached.kentCounty.entry.isTied ? '=' : ''}#{cached.kentCounty.entry.position}</strong> of {cached.kentCounty.total}
+                                    {cached.kentCounty.entry.fina && <span> • <strong>{cached.kentCounty.entry.fina}</strong> pts</span>}
+                                    {cached.kentCounty.ageGroup && (
+                                      <span style={{
+                                        marginLeft: '0.5rem',
+                                        padding: '0.15rem 0.4rem',
+                                        backgroundColor: 'var(--primary)',
+                                        borderRadius: '3px',
+                                        fontSize: '0.7rem',
+                                        fontWeight: 'bold',
+                                        opacity: 0.8
+                                      }}>
+                                        Age: {cached.kentCounty.ageGroup}
+                                      </span>
+                                    )}
+                                    <br/>
+                                    <small style={{ color: 'var(--gray-400)' }}>
+                                      {cached.kentCounty.entry.time} • {cached.kentCounty.entry.date}
+                                    </small>
+                                  </div>
+                                </a>
                               ) : (
                                 <span style={{ color: 'var(--gray-400)' }}>Not ranked</span>
                               )
@@ -406,27 +447,29 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
                             </button>
                             {cached?.national ? (
                               cached.national.entry ? (
-                                <div style={{ flex: 1 }}>
-                                  <strong>{cached.national.entry.isTied ? '=' : ''}#{cached.national.entry.position}</strong> of {cached.national.total}
-                                  {cached.national.entry.fina && <span> • <strong>{cached.national.entry.fina}</strong> pts</span>}
-                                  {cached.national.ageGroup && (
-                                    <span style={{
-                                      marginLeft: '0.5rem',
-                                      padding: '0.15rem 0.4rem',
-                                      backgroundColor: 'var(--primary)',
-                                      borderRadius: '3px',
-                                      fontSize: '0.7rem',
-                                      fontWeight: 'bold',
-                                      opacity: 0.8
-                                    }}>
-                                      Age: {cached.national.ageGroup}
-                                    </span>
-                                  )}
-                                  <br/>
-                                  <small style={{ color: 'var(--gray-400)' }}>
-                                    {cached.national.entry.time} • {cached.national.entry.date}
-                                  </small>
-                                </div>
+                                <a href={buildRankingUrl(evt.event, evt.course, swimmerSex, swimmerAge, 'N', countyCode)} target="_blank" rel="noreferrer" style={{ flex: 1, color: inherit, textDecoration: 'none' }}>
+                                  <div style={{ flex: 1 }}>
+                                    <strong>{cached.national.entry.isTied ? '=' : ''}#{cached.national.entry.position}</strong> of {cached.national.total}
+                                    {cached.national.entry.fina && <span> • <strong>{cached.national.entry.fina}</strong> pts</span>}
+                                    {cached.national.ageGroup && (
+                                      <span style={{
+                                        marginLeft: '0.5rem',
+                                        padding: '0.15rem 0.4rem',
+                                        backgroundColor: 'var(--primary)',
+                                        borderRadius: '3px',
+                                        fontSize: '0.7rem',
+                                        fontWeight: 'bold',
+                                        opacity: 0.8
+                                      }}>
+                                        Age: {cached.national.ageGroup}
+                                      </span>
+                                    )}
+                                    <br/>
+                                    <small style={{ color: 'var(--gray-400)' }}>
+                                      {cached.national.entry.time} • {cached.national.entry.date}
+                                    </small>
+                                  </div>
+                                </a>                                
                               ) : (
                                 <span style={{ color: 'var(--gray-400)' }}>Not ranked</span>
                               )
