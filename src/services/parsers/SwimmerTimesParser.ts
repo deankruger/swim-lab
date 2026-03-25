@@ -136,7 +136,8 @@ export class SwimmerTimesParser {
             convertedToSC: convertedToSC || undefined,
             convertedToLC: convertedToLC || undefined,
             date,
-            venue
+            venue,
+            sourceUrl
         };
     }
 
