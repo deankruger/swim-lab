@@ -404,7 +404,7 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
                             </button>
                             {cached?.kentCounty ? (
                               cached.kentCounty.entry ? (
-                                <a href={buildRankingUrl(evt.event, evt.course, swimmerSex, swimmerAge, 'C', countyCode)} target="_blank" rel="noreferrer" style={{ flex: 1, color: inherit, textDecoration: 'none' }}>
+                                <a href={buildRankingUrl(evt.event, evt.course, swimmerSex, swimmerAge, 'C', countyCode)} target="_blank" rel="noreferrer" style={{ flex: 1, color: 'inherit', textDecoration: 'none' }}>
                                   <div style={{ flex: 1 }}>
                                     <strong>{cached.kentCounty.entry.isTied ? '=' : ''}#{cached.kentCounty.entry.position}</strong> of {cached.kentCounty.total}
                                     {cached.kentCounty.entry.fina && <span> • <strong>{cached.kentCounty.entry.fina}</strong> pts</span>}
@@ -447,7 +447,7 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
                             </button>
                             {cached?.national ? (
                               cached.national.entry ? (
-                                <a href={buildRankingUrl(evt.event, evt.course, swimmerSex, swimmerAge, 'N', countyCode)} target="_blank" rel="noreferrer" style={{ flex: 1, color: inherit, textDecoration: 'none' }}>
+                                <a href={buildRankingUrl(evt.event, evt.course, swimmerSex, swimmerAge, 'N', countyCode)} target="_blank" rel="noreferrer" style={{ flex: 1, color: 'inherit', textDecoration: 'none' }}>
                                   <div style={{ flex: 1 }}>
                                     <strong>{cached.national.entry.isTied ? '=' : ''}#{cached.national.entry.position}</strong> of {cached.national.total}
                                     {cached.national.entry.fina && <span> • <strong>{cached.national.entry.fina}</strong> pts</span>}
