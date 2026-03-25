@@ -15,6 +15,7 @@ export interface SwimTime{
     convertedToLC?: string; //Converted to Long Course (50m)
     date: string;
     venue: string;
+    sourceUrl: string; // Link to the time-hostiry page on swimmingresults.org
 }
 
 export interface SwimmerData{
