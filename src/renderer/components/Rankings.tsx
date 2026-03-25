@@ -387,7 +387,7 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
                         <td data-label="Event">
                           <strong>
                             {evt.sourceUrl
-                              ? <a href={evt.sourceUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary) }}>{evt.event}</a>
+                              ? <a href={evt.sourceUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)' }}>{evt.event}</a>
                             :evt.event}
                           </strong>
                         </td>
