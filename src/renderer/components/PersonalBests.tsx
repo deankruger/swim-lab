@@ -70,8 +70,8 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
                     <label htmlFor='courseFilter'>Course:</label>
                     <select id='courseFilter' value={courseFilter} onChange={(e) => setCourseFilter(e.target.value as 'all' | '25m' | '50m')}>
                         <option value='all'>All Courses</option>
-                        <option value='25m'>25m Only</option>
-                        <option value='50m'>50m Only</option>
+                        <option value='25m'>Short Course Only</option>
+                        <option value='50m'>Long Course Only</option>
                     </select>
                 </div>
                 <div>
