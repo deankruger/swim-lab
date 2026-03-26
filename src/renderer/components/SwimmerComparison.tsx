@@ -159,7 +159,7 @@ const SwimmerComparison: React.FC<SwimmerComparisonProps> = ({swimmers, onClose}
                             <h3 className="club-header-title">
                                 <FontAwesomeIcon icon={faPersonSwimming} /> {course === '50m' ? 'Long Course (50m)' : 'Short Course (25m)'}
                             </h3>
-                            <FontAwesomeIcon icon={faChevronDown} className=`chevron-icon${!collapsedCourses.has(course) ? ' expanded' : '' }`} />
+                            <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!collapsedCourses.has(course) ? ' expanded' : ''}`} />
                         </div>
 
                         {/* Separate Table for this Course */}
