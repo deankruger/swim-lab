@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { SwimmerData } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPersonSwimming, faXmark } from "@fortawesome/free-solid-svg-icons";
+import { faPersonSwimming, faXmark, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 interface SwimmerComparisonProps {
     swimmers: SwimmerData[];
@@ -12,7 +12,15 @@ const SwimmerComparison: React.FC<SwimmerComparisonProps> = ({swimmers, onClose}
     const [courseFilter, setCourseFilter] = useState<'all' | '25m' | '50m'>('all')
     const [strokeFilter, setStrokeFilter] = useState<string>('all')
     const [distanceFilter, setDistanceFilter] = useState<string>('all')
+    const [collapsedCourses, setCollapsedCourses] = useState<Set<string>>(new Set());
 
+    const toggleCourse = (course: string) => {
+        setCollapsedCourses(prev => {
+            const next = new Set(prev);
+            if (next.has(course)) next.delete(course); else next.add(course);
+            return next;
+        });
+    };
 
     //Extract all unique events across all swimmers
     const extractStrokeAndDistance = (event: string) : {stroke: string, distance: string } => {
@@ -145,23 +153,17 @@ const SwimmerComparison: React.FC<SwimmerComparisonProps> = ({swimmers, onClose}
                 <div className="empty-state" style={{ textAlign: 'center', padding: '2rem' }}><p>No events match the current filters</p></div>
             ) : (
                 sortedCourses.map((course, courseIndex) => (
-                    <div key={course}>
+                    <div key={course} style={{ marginTop: courseIndex > 0 ? '0.5rem' : '0' }}>
                         {/* Course Section Header */}
-                        <h3 style={{
-                            marginTop: courseIndex > 0 ? '2.5rem' : '1rem',
-                            marginBottom: '0.75rem',
-                            padding: '0.75rem 1rem',
-                            backgroundColor: 'var(--primary-color)',
-                            borderRadius: '4px',
-                            fontSize: '1.1rem',
-                            fontWeight: 'bold',
-                            letterSpacing: '0.5px'
-                        }}>
-                            <FontAwesomeIcon icon={faPersonSwimming} /> {course === '50m' ? 'Long Course (50m)' : 'Short Course (25m)'}
-                        </h3>
+                        <div className="club-header" onClick={() => toggleCourse(course)}>
+                            <h3 className="club-header-title">
+                                <FontAwesomeIcon icon={faPersonSwimming} /> {course === '50m' ? 'Long Course (50m)' : 'Short Course (25m)'}
+                            </h3>
+                            <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!collapsedCourses.has(course) ? ' expanded' : ''}`} />
+                        </div>
 
                         {/* Separate Table for this Course */}
-                        <div className="table-container">
+                        {!collapsedCourses.has(course) && <div className="table-container">
                             <table>
                                 <thead>
                                     <tr>
@@ -206,7 +208,7 @@ const SwimmerComparison: React.FC<SwimmerComparisonProps> = ({swimmers, onClose}
                                     })}
                                 </tbody>
                             </table>
-                        </div>
+                        </div>}
                     </div>
                 ))
             )}
