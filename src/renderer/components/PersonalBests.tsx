@@ -19,7 +19,7 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
             if (next.has(course)) next.delete(course);
             else next.add(course);
             return next;
-        };
+        });
     };
     
     if (times.length === 0) {
