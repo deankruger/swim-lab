@@ -11,7 +11,7 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
     const [courseFilter, setCourseFilter] = useState<'all' | '25m' | '50m'>('all');
     const [strokeFilter, setStrokeFilter] = useState<string>('all');
     const [distanceFilter, setDistanceFilter] = useState<string>('all');
-    const [collapsedCourses, setCollapsedCourses = useState<Set<string>>(new Set());
+    const [collapsedCourses, setCollapsedCourses] = useState<Set<string>>(new Set());
 
     const toggleCourse = (course: string) => { 
         setCollapsedCourses(prev => { 
