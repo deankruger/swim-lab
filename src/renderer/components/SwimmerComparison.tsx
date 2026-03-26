@@ -14,7 +14,7 @@ const SwimmerComparison: React.FC<SwimmerComparisonProps> = ({swimmers, onClose}
     const [distanceFilter, setDistanceFilter] = useState<string>('all')
     const [collapsedCourses, setCollapsedCourses] = useState<Set<string>>(new Set());
 
-    const toggleCourse = (course: string) = > {
+    const toggleCourse = (course: string) => {
         setCollapsedCourses(prev => {
             const next = new Set(prev);
             if (next.has(course)) next.delete(course); else next.add(course);
