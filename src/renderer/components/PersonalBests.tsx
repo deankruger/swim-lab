@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPersonSwimming } from "@fortawesome/free-solid-svg-icons";
+import { faPersonSwimming, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { SwimTime } from "../../types";
 
 interface PersonalBestsProps {
@@ -8,10 +8,20 @@ interface PersonalBestsProps {
 }
 
 const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
-    const [courseFilter, setCourseFilter] = useState<'all' | '25m' | '50m'>('all')
-    const [strokeFilter, setStrokeFilter] = useState<string>('all')
-    const [distanceFilter, setDistanceFilter] = useState<string>('all')
+    const [courseFilter, setCourseFilter] = useState<'all' | '25m' | '50m'>('all');
+    const [strokeFilter, setStrokeFilter] = useState<string>('all');
+    const [distanceFilter, setDistanceFilter] = useState<string>('all');
+    const [collapsedCourses, setCollapsedCourses] = useState<Set<string>>(new Set());
 
+    const toggleCourse = (course: string) => { 
+        setCollapsedCourses(prev => { 
+            const next = new Set(prev);
+            if (next.has(course)) next.delete(course);
+            else next.add(course);
+            return next;
+        });
+    };
+    
     if (times.length === 0) {
         return <div className="empty-state"><p>No times found</p></div>
     }
@@ -60,8 +70,8 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
                     <label htmlFor='courseFilter'>Course:</label>
                     <select id='courseFilter' value={courseFilter} onChange={(e) => setCourseFilter(e.target.value as 'all' | '25m' | '50m')}>
                         <option value='all'>All Courses</option>
-                        <option value='25m'>25m Only</option>
-                        <option value='50m'>50m Only</option>
+                        <option value='25m'>Short Course Only</option>
+                        <option value='50m'>Long Course Only</option>
                     </select>
                 </div>
                 <div>
@@ -87,23 +97,17 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
                 <div className="empty-state" style={{ textAlign: 'center', padding: '2rem' }}><p>No times match the current filter</p></div>
             ) : (
                 sortedCourses.map((course, courseIndex) => (
-                    <div key={course}>
+                    <div key={course} style={{ marginTop: courseIndex > 0 ?'0.5rem' : '0' }}>
                         {/* Course section header */}
-                        <h3 style={{
-                            marginTop: courseIndex > 0 ? '2.5rem' : '1rem',
-                            marginBottom: '0.75rem',
-                            padding: '0.75rem 1rem',
-                            backgroundColor: 'var(--primary-color)',
-                            borderRadius: '4px',
-                            fontSize: '1.1rem',
-                            fontWeight: 'bold',
-                            letterSpacing: '0.5px'
-                        }}>
-                            <FontAwesomeIcon icon={faPersonSwimming} /> {course === '50m' ? 'Long Course (50m)' : 'Short Course (25m)'}
-                        </h3>
-
+                        <div className="club-header" onClick={() => toggleCourse(course)}>
+                            <h3 className="club-header-title">
+                                <FontAwesomeIcon icon={faPersonSwimming} /> {course === '50m' ? 'Long Course (50m)' : 'Short Course (25m)'}
+                            </h3>
+                            <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!collapsedCourses.has(course) ? 'expanded' : ''}`} />
+                        </div>
+                        
                         {/* Separate table for this course */}
-                        <div className="table-container">
+                        {!collapsedCourses.has(course) && <div className="table-container">
                             <table>
                                 <thead>
                                     <tr>
@@ -134,7 +138,7 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
                                     ))}
                                 </tbody>
                             </table>
-                        </div>
+                        </div>}
                     </div>
                 ))
             )}
