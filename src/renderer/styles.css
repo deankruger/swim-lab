@@ -659,6 +659,7 @@ table tbody tr:last-child td {
     gap: 0.5rem;
     pading: 0.5rem 0.5rem;
     border-bottom: 1px solid var(--gray-100);
+    margin-bottom: 2px;
     cursor: pointer;
     transition: background 0.1s;
     min-height: 0;
