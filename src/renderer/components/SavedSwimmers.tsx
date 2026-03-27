@@ -174,7 +174,28 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                         {isSelected && <FontAwesomeIcon icon={faCheck} />}
                                                     </div>
                                                     <span className="saved-swimmer-row-name">{swimmer.name || `Tiref ${swimmer.tiref}`}</span>
-                                                    <span className="saved-swimmer-row-meta">{swimmer.times.length} events</span>
+                                                    {addingTagFor === swimmer.tiref ? (
+                                                        <div className="group-edit-container saved-swimmer-row-tag-input" onClick={(e) => e.stopPropagation()}>
+                                                            <input
+                                                                type="text"
+                                                                list={`tags-${swimmer.tiref}`}
+                                                                value={newTagValue}
+                                                                onChange={(e) => setNewTagValue(e.target.value)}
+                                                                onKeyDown={(e) => handleTagInputKeyDown(e, swimmer.tiref)}
+                                                                onBlur={() => handleAddTag(swimmer.tiref)}
+                                                                placeholder="Tag name..."
+                                                                className="group-input"
+                                                                autoFocus
+                                                            />
+                                                            <datalist id={`tags-${swimmer.tiref}`}>
+                                                                {allTags.filter(t => !tags.includes(t)).map(tag => (
+                                                                    <option key={tag} value={tag} />
+                                                                ))}
+                                                            </datalist>
+                                                        </div>
+                                                    ) : (
+                                                        <span className="saved-swimmer-row-meta">{swimmer.times.length} events</span>
+                                                    )}
                                                     {tags.length > 0 && (
                                                         <div className="swimmer-tags" onClick={(e) => e.stopPropagation()}>
                                                             {tags.map(tag => (
@@ -193,26 +214,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                     )}
                                                     <div className="saved-swimmer-row-actions" onClick={(e) => e.stopPropagation()}>
                                                         <button onClick={() => onLoad(swimmer)} title="View"><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
-                                                        {addingTagFor === swimmer.tiref ? (
-                                                            <div className="group-edit-container">
-                                                                <input
-                                                                    type="text"
-                                                                    list={`tags-${swimmer.tiref}`}
-                                                                    value={newTagValue}
-                                                                    onChange={(e) => setNewTagValue(e.target.value)}
-                                                                    onKeyDown={(e) => handleTagInputKeyDown(e, swimmer.tiref)}
-                                                                    onBlur={() => handleAddTag(swimmer.tiref)}
-                                                                    placeholder="Tag name..."
-                                                                    className="group-input"
-                                                                    autoFocus
-                                                                />
-                                                                <datalist id={`tags-${swimmer.tiref}`}>
-                                                                    {allTags.filter(t => !tags.includes(t)).map(tag => (
-                                                                        <option key={tag} value={tag} />
-                                                                    ))}
-                                                                </datalist>
-                                                            </div>
-                                                        ) : (
+                                                        {addingTagFor !== swimmer.tiref && (
                                                             <button
                                                                 onClick={() => { setAddingTagFor(swimmer.tiref); setNewTagValue(''); }}
                                                                 className="group-button"
