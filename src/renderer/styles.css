@@ -657,7 +657,7 @@ table tbody tr:last-child td {
     align-items: center;
     flex-wrap: wrap;
     gap: 0.5rem;
-    pading: 0.35rem 0.5rem;
+    pading: 0.5rem 0.5rem;
     border-bottom: 1px solid var(--gray-100);
     cursor: pointer;
     transition: background 0.1s;
@@ -706,6 +706,15 @@ table tbody tr:last-child td {
     order: 1;
     margin-left: calc(1rem + 0.5rem);
     margin-bottom: 0;
+}
+
+.saved-swimmer-row-tag-input {
+    flex: 1;
+    min-width: 0;
+}
+
+.saved-swimmer-row-tag-input .group-input {
+    width: 100%;
 }
 
 .saved-swimmer-row-actions {
