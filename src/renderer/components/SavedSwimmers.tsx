@@ -106,12 +106,14 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                 <h2>Saved Swimmers</h2>
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                     {swimmers.length > 0 && (
-                        <button onClick={onRefreshAll} className="btn-ghost section-toggle btn-save" title="Reload all swimmers times to update recent club information and new times" style={{ color: 'var(--success)' }}>
-                            <FontAwesomeIcon icon={faRotate} />
-                        </button>
-                        <button className="btn-ghost section-toggle" onClick={() => setIsCompact(c => !c)} title={isCompact ? 'Switch to comfortable view' : 'Switch to compact view'}>
-                            <FontAwesomeIcon icon={isCompact ? faGrip : faList} />
-                        </button>
+                        <div>
+                            <button onClick={onRefreshAll} className="btn-ghost section-toggle btn-save" title="Reload all swimmers times to update recent club information and new times" style={{ color: 'var(--success)' }}>
+                                <FontAwesomeIcon icon={faRotate} />
+                            </button>
+                            <button className="btn-ghost section-toggle" onClick={() => setIsCompact(c => !c)} title={isCompact ? 'Switch to comfortable view' : 'Switch to compact view'}>
+                                <FontAwesomeIcon icon={isCompact ? faGrip : faList} />
+                            </button>
+                        </div>
                     )}                    
                     <button className="btn-ghost section-toggle" onClick={() => setIsCollapsed(c => !c)} aria-label="Toggle section">
                         <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!isCollapsed ? ' expanded' : ''}`} />
