@@ -132,6 +132,7 @@ main {
     padding: 2rem;
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
     border: 1px solid var(--gray-200);
+    min-width: 0;
 }
 
 .section-header {
@@ -298,7 +299,9 @@ button:active {
 /* Search Results */
 #searchResults {
     display: grid;
-    gap: 0.75rem;    
+    gap: 0.75rem;
+    min-width: 0;
+    overflow: hidden;
 }
 
 .swimmer-result {
@@ -640,6 +643,127 @@ table tbody tr:last-child td {
 .club-count {
     font-weight: 400;
     color: var(--gray-500);
+}
+
+/* Saved Swimmers Compact List */
+.saved-swimmers-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+}
+
+.saved-swimmer-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    pading: 0.35rem 0.5rem;
+    border-bottom: 1px solid var(--gray-100);
+    cursor: pointer;
+    transition: background 0.1s;
+    min-height: 0;
+}
+
+.saved-swimmer-row:last-child {
+    border-bottom: none;
+}
+
+.saved-swimmer-row:hover {
+    background: var(--gray-50);
+}
+
+.saved-swimmer-row:selected {
+    background: rgba(37, 99, 235, 0.06);
+}
+
+.saved-swimmer-row-check {
+    width: 1rem;
+    color: var(--primary);
+    font-size: calc(var(--h1) * 0.65);
+    flex-shrink: 0;
+    text-align: center;
+}
+
+.saved-swimmer-row-name {
+    font-size: calc(var(--h1) * 0.8);
+    font-weight: 600;
+    color: var(--gray-900);
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.saved-swimmer-row-meta {
+    font-size: calc(var(--h1) * 0.7);
+    color: var(--gray-500);
+    flex-shrink: 0;
+}
+
+.saved-swimmer-row .swimmer-tags {
+    flex-shrink: 0;
+    margin-bottom: 0;
+    flex-wrap: nowrap;
+}
+
+.saved-swimmer-row-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    flex-shrink: 0;    
+}
+
+.saved-swimmer-row-actions button {
+    padding: 0.2rem 0.5rem;
+    font-size: calc(var(--h1) * 0.65);
+}
+
+.search-results-content {
+    min-width: 0;
+    overflow: hidden;
+}
+
+/* Search Results Compact */
+.swimmer-result-compact {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    pading: 0.35rem 0.5rem;
+    border-bottom: 1px solid var(--gray-100);
+    transition: background 0.1s;
+    min-width: 0;
+    overflow: hidden
+}
+
+.swimmer-result-compact:last-child {
+    border-bottom: none;
+}
+
+.swimmer-result-compact:hover {
+    background: var(--gray-50);
+}
+
+.swimmer-result-compact-name {
+    font-size: calc(var(--h1) * 0.8);
+    font-weight: 600;
+    color: var(--gray-900);
+    flex-shrink: 0;
+}
+
+.swimmer-result-compact-meta {
+    font-size: calc(var(--h1) * 0.7);
+    color: var(--gray-500);
+    flex: 1;
+    min-width: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.swimmer-result-compact button {
+    padding: 0.2rem 0.5rem;
+    font-size: calc(var(--h1) * 0.65);
+    flex-shrink: 0;
 }
 
 /* Saved Swimmers Grid */

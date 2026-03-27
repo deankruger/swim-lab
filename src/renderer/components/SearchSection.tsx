@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faChevronLeft, faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faChevronLeft, faChevronRight, faList, faGrip, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
 import { SwimmerSearchResult } from '../../types'   
 import { mobileAPI } from '../../api/MobileAPI'
 
@@ -12,7 +12,8 @@ interface SearchSectionProps{
 }
 
 const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading, setLoading, showToast}) => {
-    const [isCollapsed, setIsCollapsed] = useState(false);        
+    const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCompact, setIsCompact] = useState(false);
     const [searchInput, setSearchInput] = useState('');
     const [searchResults, setSearchResults] = useState<SwimmerSearchResult[]>([]);
     const [currentPage, setCurentPage] = useState(1);
@@ -76,9 +77,14 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading,
         <section className="search-section card">
             <div className="section-header">                
                 <h2>Search for Swimmer</h2>
-                <button className="btn-ghost section-toggle" onClick={() => setIsCollapsed(c => !c)} aria-label="Toggle section">
+                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
+                  <button className="btn-ghost section-toggle" onClick={() => setIsCompact(c => !c)} title={isCompact ? 'Switch to comfortable view' : 'Switch to compact view'}>
+                    <FontAwesomeIcon icon={isCompact ? faGrip : faList} />
+                  </button>
+                  <button className="btn-ghost section-toggle" onClick={() => setIsCollapsed(c => !c)} aria-label="Toggle section">
                     <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!isCollapsed ? ' expanded' : ''}`} />
-                </button>
+                  </button>
+                </div>
             </div>
             {!isCollapsed && <>            
             <div className="search-controls">
@@ -95,40 +101,52 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading,
 
             <div id='searchResults'>
                 {searchResults.length > 0 && (
-                    <div>
-                        <div className='filter-section'>
+                    <div className="search-results-content">
+                        <div className="filter-section">
                             <div>
-                                <label htmlFor='firstNameFilter'>Filter by Name:</label>
+                                <label htmlFor="firstNameFilter">Filter by Name:</label>
                                 <input
-                                    id='firstNameFilter'
-                                    type='text'
+                                    id="firstNameFilter"
+                                    type="text"
                                     value={firstNameFilter}
                                     onChange={(e) => handleFirstNameFilterChange(e.target.value)}
-                                    placeholder='Type to filter...'
+                                    placeholder="Type to filter..."
                                     disabled={loading}
                                 />
                             </div>
                             <div>
-                                <label htmlFor='clubFilter'>Filter by Club:</label>
+                                <label htmlFor="clubFilter">Filter by Club:</label>
                                 <input
-                                    id='clubFilter'
-                                    type='text'
+                                    id="clubFilter"
+                                    type="text"
                                     value={clubFilter}
                                     onChange={(e) => handleClubFilterChange(e.target.value)}
-                                    placeholder='Type to filter...'
+                                    placeholder="Type to filter..."
                                     disabled={loading}
                                 />
                             </div>
                         </div>
-                        <div className='pagination-info'>
+                        <div className="pagination-info">
                                 Showing {((currentPage  -1) * resultsPerPage) + 1} to {Math.min(currentPage * resultsPerPage, filteredResults.length)} of {filteredResults.length} results
                                 {(firstNameFilter || clubFilter) && `(filtered from ${searchResults.length} total)`}
                         </div>
                         {filteredResults
                             .slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage)
-                            .map((swimmer) => (
-                                <div key={swimmer.tiref} className='swimmer-result'>
-                                    <div className='swimmer-result-info'>
+                            .map((swimmer) => isCompact ? (
+                                  <div key={swimmer.tiref} className="swimmer-result-compact">
+                                    <span className="swimmer-result-compact-name">{swimmer.name}</span>
+                                    <span className="swimmer-result-compact-meta">{swimmer.club} • Born {swimmer.birthYear} • {swimmer.gender}</span>
+                                    <button
+                                      onClick={() => onSwimmerSelect(swimmer.tiref, swimmer.name, swimmer.birthYear, swimmer.gender, swimmer.club)}
+                                      disabled={loading}
+                                      title="View Times"
+                                    >
+                                      <FontAwesomeIcon icon={faMagnifyingGlass} />
+                                    </button>
+                                  </div>
+                                ) : (
+                                <div key={swimmer.tiref} className="swimmer-result">
+                                    <div className="swimmer-result-info">
                                         <h3>{swimmer.name}</h3>
                                         <p>{swimmer.club} • Born {swimmer.birthYear} • {swimmer.gender}</p>
                                     </div>
@@ -142,7 +160,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading,
                             ))
                         }
                         {filteredResults.length > resultsPerPage && (
-                            <div className='pagination'>
+                            <div className="pagination">
                                 <button
                                     onClick={() => setCurentPage(prev => Math.max(1, prev-1))}
                                     disabled={currentPage === 1 || loading}
@@ -163,14 +181,14 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading,
                             </div>
                         )}
                         {filteredResults.length === 0 && (
-                            <div className='empty-state'>
+                            <div className="empty-state">
                                 <p>No swimmers match the current filters</p>
                             </div>
                         )}
                     </div>
                 )}
                 {searchResults.length === 0 && searchInput && (
-                    <div className='empty-state'>
+                    <div className="empty-state">
                         <p>No swimmers found</p>
                     </div>
                 )}

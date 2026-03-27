@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChain, faChartBar, faCheck, faPlus, faRotate, faTag, faTimes, faTrash, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faChain, faChartBar, faCheck, faPlus, faRotate, faTag, faTimes, faTrash, faChevronDown, faList, faGrip, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import { SwimmerData } from "../../types";
 
 interface SavedSwimmersProps {
@@ -14,6 +14,7 @@ interface SavedSwimmersProps {
 
 const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelete, onRefreshAll, onCompare, onUpdateTags }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
+    const [isCompact, setIsCompact] = useState(false);
     const [collapsedClubs, setCollapsedClubs] = useState<Set<string>>(new Set());
     const [selectedSwimmers, setSelectedSwimmers] = useState<Set<string>>(new Set());
     const [selectedTag, setSelectedTag] = useState<string>('all');
@@ -105,10 +106,15 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                 <h2>Saved Swimmers</h2>
                 <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                     {swimmers.length > 0 && (
-                        <button onClick={onRefreshAll} className="btn-save btn-ghost" title="Reload all swimmers times to update recent club information and new times" style={{ color: 'var(--success)' }}>
-                            <FontAwesomeIcon icon={faRotate} />
-                        </button>
-                    )}
+                        <div>
+                            <button onClick={onRefreshAll} className="btn-ghost section-toggle btn-save" title="Reload all swimmers times to update recent club information and new times" style={{ color: 'var(--success)' }}>
+                                <FontAwesomeIcon icon={faRotate} />
+                            </button>
+                            <button className="btn-ghost section-toggle" onClick={() => setIsCompact(c => !c)} title={isCompact ? 'Switch to comfortable view' : 'Switch to compact view'}>
+                                <FontAwesomeIcon icon={isCompact ? faGrip : faList} />
+                            </button>
+                        </div>
+                    )}                    
                     <button className="btn-ghost section-toggle" onClick={() => setIsCollapsed(c => !c)} aria-label="Toggle section">
                         <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!isCollapsed ? ' expanded' : ''}`} />
                     </button>
@@ -153,7 +159,77 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                         </h3>
                                         <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!clubCollapsed ? ' expanded' : ''}`} />
                                     </div>
-                                    {!clubCollapsed && 
+                                    {!clubCollapsed && (isCompact ? (
+                                    <div className="saved-swimmers-list">
+                                        {swimmersByClub[club].map((swimmer) => {
+                                            const isSelected = selectedSwimmers.has(swimmer.tiref);
+                                            const tags = swimmer.tags || [];
+                                            return (
+                                                <div
+                                                    key={swimmer.tiref}
+                                                    className={`saved-swimmer-row ${isSelected ? 'selected' : ''}`}
+                                                    onClick={() => toggleSelection(swimmer.tiref)}
+                                                >
+                                                    <div className="saved-swimmer-row-check">
+                                                        {isSelected && <FontAwesomeIcon icon={faCheck} />}
+                                                    </div>
+                                                    <span className="saved-swimmer-row-name">{swimmer.name || `Tiref ${swimmer.tiref}`}</span>
+                                                    <span className="saved-swimmer-row-meta">{swimmer.times.length} events</span>
+                                                    {tags.length > 0 && (
+                                                        <div className="swimmer-tags" onClick={(e) => e.stopPropagation()}>
+                                                            {tags.map(tag => (
+                                                                <span key={tag} className="swimmer-tag-badge">
+                                                                    {tag}
+                                                                    <button
+                                                                        className="swimmer-tag-remove"
+                                                                        onClick={() => handleRemoveTag(swimmer.tiref, tag)}
+                                                                        title={`Remove tag "${tag}"`}
+                                                                    >
+                                                                        <FontAwesomeIcon icon={faTimes} />
+                                                                    </button>
+                                                                </span>
+                                                            ))}
+                                                        </div>
+                                                    )}
+                                                    <div className="saved-swimmer-row-actions" onClick={(e) => e.stopPropagation()}>
+                                                        <button onClick={() => onLoad(swimmer)} title="View"><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
+                                                        {addingTagFor === swimmer.tiref ? (
+                                                            <div className="group-edit-container">
+                                                                <input
+                                                                    type="text"
+                                                                    list={`tags-${swimmer.tiref}`}
+                                                                    value={newTagValue}
+                                                                    onChange={(e) => setNewTagValue(e.target.value)}
+                                                                    onKeyDown={(e) => handleTagInputKeyDown(e, swimmer.tiref)}
+                                                                    onBlur={() => handleAddTag(swimmer.tiref)}
+                                                                    placeholder="Tag name..."
+                                                                    className="group-input"
+                                                                    autoFocus
+                                                                />
+                                                                <datalist id={`tags-${swimmer.tiref}`}>
+                                                                    {allTags.filter(t => !tags.includes(t)).map(tag => (
+                                                                        <option key={tag} value={tag} />
+                                                                    ))}
+                                                                </datalist>
+                                                            </div>
+                                                        ) : (
+                                                            <button
+                                                                onClick={() => { setAddingTagFor(swimmer.tiref); setNewTagValue(''); }}
+                                                                className="group-button"
+                                                                title="Add tag"
+                                                            >
+                                                                <FontAwesomeIcon icon={faTag} /> <FontAwesomeIcon icon={faPlus} />
+                                                            </button>
+                                                        )}
+                                                        <button onClick={() => onDelete(swimmer.tiref)} className="btn-clear btn-ghost" title="Delete saved swimmer" style={{ color: 'var(--danger)' }}>
+                                                            <FontAwesomeIcon icon={faTrash} />
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            );
+                                        })}
+                                    </div>
+                                ) : (
                                     <div className="saved-swimmers-grid">
                                         {swimmersByClub[club].map((swimmer) => {
                                             const isSelected = selectedSwimmers.has(swimmer.tiref);
@@ -232,7 +308,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                             );
                                         })}
                                     </div>
-                                    }
+                                ))}
                                 </div>
                             )})
                         )}
