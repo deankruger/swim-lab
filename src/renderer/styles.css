@@ -655,14 +655,12 @@ table tbody tr:last-child td {
 .saved-swimmer-row {
     display: flex;
     align-items: center;
-    flex-wrap: wrap;
     gap: 0.5rem;
-    padding: 0.35rem 0.5rem;
+    padding: 0.3rem 0.5rem 0.3rem 0.75rem;
     border-bottom: 1px solid var(--gray-100);
-    margin-bottom: 2px;
+    border-left: 3px solid transparent;
     cursor: pointer;
-    transition: background 0.1s;
-    min-height: 0;
+    transition: background 0.1s, border-left-color 0.1s;
 }
 
 .saved-swimmer-row:last-child {
@@ -675,6 +673,7 @@ table tbody tr:last-child td {
 
 .saved-swimmer-row.selected {
     background: rgba(37, 99, 235, 0.06);
+    border-left-color: var(--primary);
 }
 
 .saved-swimmer-row-check {
@@ -685,15 +684,24 @@ table tbody tr:last-child td {
     text-align: center;
 }
 
+.saved-swimmer-row-info {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    overflow:hidden;
+}
+
 .saved-swimmer-row-name {
     font-size: calc(var(--h1) * 0.8);
     font-weight: 600;
     color: var(--gray-900);
-    flex: 1;
-    min-width: 0;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    flex-shrink: 1;
+    min-width: 0;
 }
 
 .saved-swimmer-row-meta {
@@ -703,10 +711,21 @@ table tbody tr:last-child td {
 }
 
 .saved-swimmer-row .swimmer-tags {
-    flex-basis: 100%;
-    order: 1;
-    margin-left: calc(1rem + 0.5rem);
-    margin-bottom: 0;
+    display: flex;
+    gap: 0.25rem;
+    flex-shrink: 0;
+    overflow: hidden;
+    max-width: 40%;
+    margin: 0;
+}
+
+.saved-swimmer-row .swimmer-tags .swimmer-tag-badge {
+    font-size: calc(var(--h1) * 0.6);
+    padding: 0.1rem 0.35rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipses;
+    max-width: 8rem;
 }
 
 .saved-swimmer-row-tag-input {
