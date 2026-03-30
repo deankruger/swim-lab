@@ -657,7 +657,7 @@ table tbody tr:last-child td {
     align-items: center;
     flex-wrap: wrap;
     gap: 0.5rem;
-    pading: 0.5rem 0.5rem;
+    padding: 0.35rem 0.5rem;
     border-bottom: 1px solid var(--gray-100);
     margin-bottom: 2px;
     cursor: pointer;
@@ -673,7 +673,7 @@ table tbody tr:last-child td {
     background: var(--gray-50);
 }
 
-.saved-swimmer-row:selected {
+.saved-swimmer-row.selected {
     background: rgba(37, 99, 235, 0.06);
 }
 
@@ -740,11 +740,11 @@ table tbody tr:last-child td {
     display: flex;
     align-items: center;
     gap: 0.75rem;
-    pading: 0.35rem 0.5rem;
+    padding: 0.35rem 0.5rem;
     border-bottom: 1px solid var(--gray-100);
     transition: background 0.1s;
     min-width: 0;
-    overflow: hidden
+    overflow: hidden;
 }
 
 .swimmer-result-compact:last-child {
