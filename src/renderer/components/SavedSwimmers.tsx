@@ -173,7 +173,25 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                     <div className="saved-swimmer-row-check">
                                                         {isSelected && <FontAwesomeIcon icon={faCheck} />}
                                                     </div>
-                                                    <span className="saved-swimmer-row-name">{swimmer.name || `Tiref ${swimmer.tiref}`}</span>
+                                                    <div className="saved-swimmer-row-info">
+                                                        <span className="saved-swimmer-row-name">{swimmer.name || `Tiref ${swimmer.tiref}`}</span>
+                                                        {tags.length > 0 && (
+                                                            <div className="swimmer-tags" onClick={(e) => e.stopPropagation()}>
+                                                                {tags.map(tag => (
+                                                                    <span key={tag} className="swimmer-tag-badge">
+                                                                        {tag}
+                                                                        <button
+                                                                            className="swimmer-tag-remove"
+                                                                            onClick={() => handleRemoveTag(swimmer.tiref, tag)}
+                                                                            title={`Remove tag "${tag}"`}
+                                                                        >
+                                                                            <FontAwesomeIcon icon={faTimes} />
+                                                                        </button>
+                                                                    </span>
+                                                                ))}
+                                                            </div>
+                                                        )}
+                                                    </div>
                                                     {addingTagFor === swimmer.tiref ? (
                                                         <div className="group-edit-container saved-swimmer-row-tag-input" onClick={(e) => e.stopPropagation()}>
                                                             <input
@@ -195,22 +213,6 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                         </div>
                                                     ) : (
                                                         <span className="saved-swimmer-row-meta">{swimmer.times.length} events</span>
-                                                    )}
-                                                    {tags.length > 0 && (
-                                                        <div className="swimmer-tags" onClick={(e) => e.stopPropagation()}>
-                                                            {tags.map(tag => (
-                                                                <span key={tag} className="swimmer-tag-badge">
-                                                                    {tag}
-                                                                    <button
-                                                                        className="swimmer-tag-remove"
-                                                                        onClick={() => handleRemoveTag(swimmer.tiref, tag)}
-                                                                        title={`Remove tag "${tag}"`}
-                                                                    >
-                                                                        <FontAwesomeIcon icon={faTimes} />
-                                                                    </button>
-                                                                </span>
-                                                            ))}
-                                                        </div>
                                                     )}
                                                     <div className="saved-swimmer-row-actions" onClick={(e) => e.stopPropagation()}>
                                                         <button onClick={() => onLoad(swimmer)} title="View"><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
