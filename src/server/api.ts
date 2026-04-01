@@ -75,16 +75,16 @@ router.post('/import', express.raw({ type: '*/*', limit: '20mb' }), async (req, 
         return;
     }
     try {
-        let result: { countyName: string; times: unknown };
+        let results: Array<{ countyName: string; times: unknown }>;
         if (fileName.toLowerCase().endsWith('.pdf')) {
-            result = await pdfImporter.importCountyTimesFromBuffer(buffer, fileName);
+            results = await pdfImporter.importCountyTimesFromBuffer(buffer, fileName);
         }
         else {
             const times = await excelImporter.importCountyTimesFromBuffer(buffer);
             const countyName = fileName.replace(/\.[^.]+$/, '') || 'Unknown';
-            result = { countyName, times };
+            results = [{ countyName, times }];
         }
-        res.json(result);
+        res.json(results);
     } catch (err) {
         console.error('[api] /import error:', err);
         res.status(422).json({error : (err as Error).message});
