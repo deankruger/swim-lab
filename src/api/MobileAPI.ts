@@ -97,8 +97,8 @@ export const mobileAPI = {
                             body: file,
                         });
                         if (!res.ok) throw new Error(`Import failed: ${await res.text()}`);
-                        const entry = await res.json() as { countyName: string; times: CountyTimes };
-                        loaded.push(entry);
+                        const entries = await res.json() as Array<{ countyName: string; times: CountyTimes }>;
+                        loaded.push(...entries);
                     } catch (error) {
                         console.error(`Error processing file ${file.name}:`, error);
                     }

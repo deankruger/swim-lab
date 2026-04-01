@@ -7,10 +7,13 @@ import { SurreyParser } from './parsers/SurreyParser';
 import { HampshireParser } from './parsers/HampshireParser';
 import { MiddlesexParser } from './parsers/MiddlesexParser';
 import { SELondonParser } from './parsers/SELondonParser';
+import { SSAParser } from './parsers/SSAParser';
 
 // Order matters: more specific detectors must come before broad ones.
 // SELondon before Hertfordshire because both match QT/CT patterns.
+// SSA first: its highly specific and wont false positive on UK PDF's
 const PARSERS: PdfParser[] = [
+  new SSAParser(),
   new KentParser(),
   new SELondonParser(),
   new HertfordshireParser(),
@@ -55,12 +58,14 @@ async function extractPdfText(data: Uint8Array): Promise<string> {
 // ─── Public API ───────────────────────────────────────────────────────────────
 
 export class PdfImporter {
-  async importCountyTimesFromBuffer(buffer: Buffer | Uint8Array, fileName: string): Promise<{ countyName: string; times: CountyTimes }> {
+  async importCountyTimesFromBuffer(buffer: Buffer | Uint8Array, fileName: string)
+    : Promise<Array<{ countyName: string; times: CountyTimes }>> {
     const uint8Array = buffer instanceof Uint8Array ? buffer : new Uint8Array(buffer);
     return this._parse(await extractPdfText(uint8Array), fileName);
   }
   
-  async importCountyTimesFromBase64(base64: string, fileName: string): Promise<{ countyName: string; times: CountyTimes }> {
+  async importCountyTimesFromBase64(base64: string, fileName: string)
+    : Promise<Array<{ countyName: string; times: CountyTimes }>> {
     const binaryString = atob(base64);
     const uint8Array = new Uint8Array(binaryString.length);
     for (let i = 0; i < binaryString.length; i++) {
@@ -69,12 +74,16 @@ export class PdfImporter {
     return this._parse(await extractPdfText(uint8Array), fileName);
   }
   
-  private _parse(text: string, fileName: string): { countyName: string; times: CountyTimes } {
+  private _parse(text: string, fileName: string) : Array<{ countyName: string; times: CountyTimes }> {
     console.log('[PdfImporter] full extracted text:\n', text);
     const parser = PARSERS.find(p => p.detect(text, fileName));
     if (!parser) {      
-       throw new Error('Unrecognised standards PDF format. Currently Supported: Kent, Hertfordshire (SEH), Surrey, Hampshire, Middlesex, SE. London.');
-    }  
-    return parser.parse(text, fileName);
+       throw new Error('Unrecognised standards PDF format. Currently Supported: SSA Age Group QTs, Kent, Hertfordshire (SEH), Surrey, Hampshire, Middlesex, SE. London.');
+    }
+    if (parser.parseMultiple){
+      return parser.parseMultiple(text, fileName);
+    }
+
+    return [parser.parse(text, fileName)];
   }
 }

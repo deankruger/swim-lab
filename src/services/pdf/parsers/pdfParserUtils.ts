@@ -9,6 +9,8 @@ export interface AgeGroup {
 export interface PdfParser {
   detect(text: string, fileName: string): boolean;
   parse(text: string, fileName: string): { countyName: string; times: CountyTimes };
+  /* Optional: return multiple named sets from a single PDF (eg. SSA Level 3 / Level 3 / SANJ). */
+  parseMultiple? (text: string, fileName: string) : Array<{ countyName: string; times: CountyTimes}>;
 }
 
 const STROKE_MAP: Record<string, string> = {
