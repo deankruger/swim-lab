@@ -226,6 +226,7 @@ const App: React.FC = () => {
             swimmerData.birthYear = currentSwimmerData.birthYear;
             swimmerData.gender = currentSwimmerData.gender;
             swimmerData.club = currentSwimmerData.club;
+            swimmerData.tags = currentSwimmerData.tags; // Preserve tag assignments
 
             // Save updated data
             await mobileAPI.saveSwimmer(swimmerData);
