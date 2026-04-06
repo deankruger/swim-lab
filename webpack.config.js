@@ -37,6 +37,10 @@ module.exports = {
     devServer: {
         port: 3000,
         hot: true,
+        static: {
+            directory: path.join(__dirname, 'assets'),
+            publicPath: '/assets'
+        },
         proxy: [
             {
                 context: ['/api'],
@@ -54,7 +58,8 @@ module.exports = {
         new CopyWebpackPlugin({
             patterns: [
                 { from: 'src/renderer/styles.css', to: 'styles.css' },
-                { from: 'src/renderer/themes', to: 'themes' }
+                { from: 'src/renderer/themes', to: 'themes' },
+                { from: 'assets', to: 'assets' }
             ]
         }),
 

@@ -9,6 +9,8 @@ import Rankings from "./Rankings";
 interface SwimmerDetailsProps {
     swimmerData: SwimmerData;
     countyTimesStore: CountyTimesStore;
+    activeStandards: string[];
+    onActiveStandardsChange: (active: string[]) => void;
     onSave: () => void;
     onExport: () => void;
     onClear: () => void;
@@ -26,6 +28,8 @@ interface SwimmerDetailsProps {
 const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
     swimmerData,
     countyTimesStore,
+    activeStandards,
+    onActiveStandardsChange,
     onSave,
     onExport,
     onClear,
@@ -77,6 +81,8 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
                 <CountyComparison 
                     swimmerData={swimmerData} 
                     countyTimesStore={countyTimesStore}
+                    activeStandards={activeStandards}
+                    onActiveStandardsChange={onActiveStandardsChange}
                     onLoadCountyTimes={onLoadCountyTimes}
                     onClearOneCounty={onClearOneCounty}
                     onCountySelected={onCountySelected}

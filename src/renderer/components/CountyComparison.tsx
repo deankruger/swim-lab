@@ -7,6 +7,8 @@ import { mobileAPI } from '../../api/MobileAPI';
 interface CountyComparisonProps {
   swimmerData: SwimmerData;
   countyTimesStore: CountyTimesStore;
+  activeStandards: string[];
+  onActiveStandardsChange: (active: string[]) => void;
   onLoadCountyTimes: () => void;
   onClearOneCounty: (county: string) => void;
   onCountySelected: (county: string) => void;
@@ -62,6 +64,8 @@ const detectCountyFromRegion = (region: string, countyNames: string[]): string |
 const CountyComparison: React.FC<CountyComparisonProps> = ({
   swimmerData,
   countyTimesStore,
+  activeStandards,
+  onActiveStandardsChange,
   onLoadCountyTimes,
   onClearOneCounty,
   onCountySelected,
@@ -75,6 +79,9 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
   const [selectedCounty, setSelectedCounty] = useState<string>('');
   const [comparison, setComparison] = useState<ComparisonResult | null>(null);
   const [lookAhead, setLookAhead] = useState(false);
+  const [showStandardsModal, setShowStandardsModal] = useState(false);
+
+  const activeCountyNames = countyNames.filter(name => activeStandards.includes(name));
 
   const handleSelectCounty = (county: string) => {
     setSelectedCounty(county);
@@ -82,26 +89,29 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
   };
 
   useEffect(() => {
-    if (countyNames.length === 0) {
+    const activeCountyNames = countyNames.filter(name => activeStandards.includes(name));
+    if (activeCountyNames.length === 0) {
       setSelectedCounty('');
       return;
     }
-    if (selectedCounty && countyNames.includes(selectedCounty)) return;
+    if (selectedCounty && activeCountyNames.includes(selectedCounty)) return;
 
-    const preferred = swimmerData.preferredCounty && countyNames.includes(swimmerData.preferredCounty)
+    const preferred = swimmerData.preferredCounty && activeCountyNames.includes(swimmerData.preferredCounty)
       ? swimmerData.preferredCounty
       : null;
-    const detected = preferred ?? detectCountyFromRegion(swimmerData.region, countyNames) ?? countyNames[0];
+    const detected = preferred ?? detectCountyFromRegion(swimmerData.region, activeCountyNames) ?? activeCountyNames[0];
     setSelectedCounty(detected);
-  }, [countyTimesStore, swimmerData.tiref]);
+  }, [activeStandards, countyTimesStore, swimmerData.region, selectedCounty]);
 
   const handleCompare = async () => {
     if (!swimmerData.birthYear || !swimmerData.gender) {
       showToast('Swimmer birth year or gender not available for comparison', 'error');
       return;
     }
-    if (!selectedCounty || !countyTimesStore[selectedCounty]) {
-      showToast('No standards loaded. Please load a standards file first.', 'error');
+
+    const activeCountyNames = countyNames.filter(name => activeStandards.includes(name));
+    if (!selectedCounty || !activeCountyNames.includes(selectedCounty) || !countyTimesStore[selectedCounty]) {
+      showToast('No active standards selected. Open Load and select one or more standards.', 'error');
       return;
     }
 
@@ -141,16 +151,16 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
             <strong>Loaded Standards:</strong>
-            {countyNames.length > 0 ? (
+            {activeCountyNames.length > 0 ? (
               <div className="swimmer-tags">
-                {countyNames.map(county => (
+                {activeCountyNames.map(county => (
                   <span key={county} className="swimmer-tag-badge">
                     {county}
                     <button
                       className="swimmer-tag-remove"
-                      onClick={() => onClearOneCounty(county)}
+                      onClick={() => onActiveStandardsChange(activeStandards.filter(name => name !== county))}
                       disabled={loading}
-                      title={`Remove ${county}`}
+                      title={`Hide ${county} from comparison`}
                     >
                       <FontAwesomeIcon icon={faXmark} />
                     </button>
@@ -164,24 +174,65 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
             )}
           </div>
           <button
-            onClick={onLoadCountyTimes}
+            onClick={() => setShowStandardsModal(true)}
             disabled={loading}
             className="btn-ghost"
             style={{ padding: '5px 15px', fontSize: '0.9em', color: 'var(--primary)', whiteSpace: 'nowrap' }}
           >
-            <FontAwesomeIcon icon={faFolderOpen} /> Load Standards from File
+            <FontAwesomeIcon icon={faFolderOpen} /> Load
           </button>
         </div>
-        {swimmerData.region && (
-          <div style={{ fontSize: '0.85em', color: 'var(--text-secondary)' }}>
-            Swimmer region: <strong>{swimmerData.region}</strong>
+        {showStandardsModal && (
+          <div className="modal-backdrop" onClick={() => setShowStandardsModal(false)}>
+            <div className="modal" onClick={e => e.stopPropagation()}>
+              <div className="modal-header">
+                <h3>Standards</h3>
+                <button className="modal-close" onClick={() => setShowStandardsModal(false)} aria-label="Close standards modal">×</button>
+              </div>
+              <div className="modal-body">
+                <p>Select which standards should be available in the comparison dropdown.</p>
+                <div className="standards-list">
+                  {countyNames.length > 0 ? (
+                    countyNames.map(county => (
+                      <label key={county} className="standards-item">
+                        <input
+                          type="checkbox"
+                          checked={activeStandards.includes(county)}
+                          onChange={() => onActiveStandardsChange(
+                            activeStandards.includes(county)
+                              ? activeStandards.filter(name => name !== county)
+                              : [...activeStandards, county]
+                          )}
+                        />
+                        <span>{county}</span>
+                      </label>
+                    ))
+                  ) : (
+                    <div className="empty-standards">No standards loaded yet.</div>
+                  )}
+                </div>
+              </div>
+              <div className="modal-actions">
+                <button type="button" className="btn-ghost" onClick={() => onActiveStandardsChange(countyNames)} disabled={countyNames.length === 0}>Select All</button>
+                <button type="button" className="btn-ghost" onClick={() => onActiveStandardsChange([])} disabled={countyNames.length === 0}>Clear All</button>
+                <button type="button" className="btn-ghost" onClick={onLoadCountyTimes} disabled={loading}>
+                  Load Standards from File
+                </button>
+                <button type="button" className="btn" onClick={() => setShowStandardsModal(false)}>Done</button>
+              </div>
+            </div>
           </div>
         )}
       </div>
+      {swimmerData.region && (
+        <div style={{ fontSize: '0.85em', color: 'var(--text-secondary)' }}>
+          Swimmer region: <strong>{swimmerData.region}</strong>
+        </div>
+      )}
 
       {/* Controls */}
       <div className="comparison-controls" style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-        {countyNames.length > 1 && (
+        {activeCountyNames.length > 1 && (
           <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95em' }}>
             Standards:
             <select
@@ -189,13 +240,16 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
               onChange={e => handleSelectCounty(e.target.value)}
               style={{ padding: '4px 8px' }}
             >
-              {countyNames.map(name => (
+              {activeCountyNames.map(name => (
                 <option key={name} value={name}>{name}</option>
               ))}
             </select>
           </label>
         )}
-        <button onClick={handleCompare} disabled={loading || countyNames.length === 0}>
+        {activeCountyNames.length === 1 && (
+          <div style={{ fontSize: '0.95em' }}><strong>Standard:</strong> {activeCountyNames[0]}</div>
+        )}
+        <button onClick={handleCompare} disabled={loading || activeCountyNames.length === 0}>
           Compare with {selectedCounty || 'Standards'}
         </button>
         <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95em', cursor: 'pointer' }}>
