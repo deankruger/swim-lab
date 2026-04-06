@@ -1,5 +1,6 @@
 import { SwimmerData, SwimTime, CountyTimes, ComparisonResult, TimeComparison } from '../../types'
 import { TimeConverter } from "../utils/TimeConverter";
+import { compareEvents } from '../utils/EventOrdering';
 
 export class StandardsComparator{
     constructor(private timeConverter: TimeConverter){}
@@ -38,8 +39,10 @@ export class StandardsComparator{
     }
 
     private generateComparisons(eventTimesMap: Map<string, {lc?: SwimTime; sc?: SwimTime}>, standards: CountyTimes): TimeComparison[]{
-        const comparisons: TimeComparison[] = [];        
-        eventTimesMap.forEach((eventTimes, event) => {
+        const comparisons: TimeComparison[] = [];
+        const sortedEvents = Array.from(eventTimesMap.keys()).sort(compareEvents);
+        sortedEvents.forEach(event => {
+            const eventTimes = eventTimesMap.get(event)!;
             const key = `${event}_50m`;
      
             if (standards[key]) {

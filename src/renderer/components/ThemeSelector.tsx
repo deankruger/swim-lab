@@ -59,13 +59,10 @@ const ThemeSelector : React.FC<ThemeSelectorProps> = () => {
                 title="Change theme"
                 className="btn-ghost"
                 style={{
-                    padding: '6px 10px',
-                    fontSize: '1.1rem',
-                    lineHeight: 1,
                     color: 'var(--primary)'
                 }}
             >
-                <FontAwesomeIcon icon={faPalette} />
+               Theme <FontAwesomeIcon icon={faPalette} />
             </button>
             {open && (
                 <div

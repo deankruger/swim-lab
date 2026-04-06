@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPersonSwimming, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { SwimTime } from "../../types";
+import { compareEvents, sortStrokeValues, sortDistances } from "../../services/utils/EventOrdering";
 
 interface PersonalBestsProps {
     times: SwimTime[];
@@ -34,8 +35,8 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
         return { distance: '', stroke: event };
     };
 
-    const strokes = Array.from(new Set(times.map(t => extractStrokeAndDistance(t.event).stroke))).sort();
-    const distances = Array.from(new Set(times.map(t => extractStrokeAndDistance(t.event).distance).filter(d => d))).sort((a, b) => parseInt(a) - parseInt(b));
+    const strokes = sortStrokeValues(Array.from(new Set(times.map(t => extractStrokeAndDistance(t.event).stroke))));
+    const distances = sortDistances(Array.from(new Set(times.map(t => extractStrokeAndDistance(t.event).distance).filter(d => d))));
 
     //Apply filters
     const filteredTimes = times.filter(time => {
@@ -47,8 +48,10 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
         return courseMatch && strokeMatch && distanceMatch;
     })
 
+    const sortedTimes = [...filteredTimes].sort((a, b) => compareEvents(a.event, b.event));
+
     //Group times by course
-    const groupedByCourse = filteredTimes.reduce((acc, time) => {
+    const groupedByCourse = sortedTimes.reduce((acc, time) => {
         const course = time.course;
         if (!acc[course]) {
             acc[course] = [];
@@ -85,7 +88,7 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
                 </div>
                 <div>
                     <label htmlFor='distanceFilter'>Distance:</label>
-                    <select id='distanceFilter' value={strokeFilter} onChange={(e) => setDistanceFilter(e.target.value)}>
+                    <select id='distanceFilter' value={distanceFilter} onChange={(e) => setDistanceFilter(e.target.value)}>
                         <option value='all'>All Distances</option>
                         {distances.map(distance => (
                             <option key={distance} value={distance}>{distance}</option>
