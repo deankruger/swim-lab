@@ -105,4 +105,40 @@ router.post('/export/excel', async (req, res) => {
     }
 })
 
+router.post('/contact', async (req: any, res: any) => {
+  try {
+    const { name, email, subject, message } = req.body;
+
+    // Basic validation
+    if (!email || !message) {
+      return res.status(400).json({ error: 'Email and message are required' });
+    }
+
+    // Configure nodemailer (using Gmail SMTP)
+    const nodemailer = require('nodemailer');
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'swim.lab.info@gmail.com',
+        pass: process.env.GMAIL_APP_PASSWORD || 'kgkiqeotezzypjke', // Use Gmail app-specific password
+      },
+    });
+
+    // Send email
+    await transporter.sendMail({
+      from: 'swim.lab.info@gmail.com',
+      to: 'swim.lab.info@gmail.com',
+      replyTo: email,
+      subject: `[Swim Lab Contact] ${subject}`,
+      text: `From: ${name} (${email})\n\n${message}`,
+      html: `<p><strong>From:</strong> ${name} (${email})</p><p><strong>Subject:</strong> ${subject}</p><p>${message.replace(/\n/g, '<br>')}</p>`,
+    });
+
+    res.json({ success: true, message: 'Email sent successfully' });
+  } catch (error) {
+    console.error('Contact form error:', error);
+    res.status(500).json({ error: 'Failed to send message. Please try again later.' });
+  }
+})
+
 export default router;

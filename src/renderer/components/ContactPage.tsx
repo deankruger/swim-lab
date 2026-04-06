@@ -12,8 +12,9 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, showToast }) => {
   const [email, setEmail] = useState('');
   const [subject, setSubject] = useState('Contact from Swim Lab');
   const [message, setMessage] = useState('');
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!message.trim()) {
@@ -21,18 +22,39 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, showToast }) => {
       return;
     }
 
-    const bodyLines = [
-      name.trim() ? `Name: ${name.trim()}` : null,
-      email.trim() ? `Email: ${email.trim()}` : null,
-      '',
-      message.trim(),
-    ]
-      .filter(Boolean)
-      .join('\n');
+    if (!email.trim()) {
+      showToast('Please provide your email address so we can reply.', 'error');
+      return;
+    }
 
-    const mailto = `mailto:swim.lab.info@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines)}`;
-    window.location.href = mailto;
-    showToast('Opening your email client to send the message.', 'success');
+    setSubmitting(true);
+    try {
+      const response = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: name.trim() || 'Anonymous',
+          email: email.trim(),
+          subject: subject.trim(),
+          message: message.trim(),
+        }),
+      });
+
+      if (!response.ok) {
+        const error = await response.json().catch(() => ({ error: 'Failed to send message' }));
+        throw new Error(error.error || 'Failed to send message');
+      }
+
+      showToast('Message sent successfully!', 'success');
+      setName('');
+      setEmail('');
+      setSubject('Contact from Swim Lab');
+      setMessage('');
+    } catch (error) {
+      showToast(`Error sending message: ${(error as Error).message}`, 'error');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -44,7 +66,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, showToast }) => {
         <h2>Contact Swim Lab</h2>
       </div>
       <p style={{ marginBottom: '1rem', color: 'var(--text-secondary)' }}>
-        Fill out the form below and your default email client will open so you can send the message to swim-lab@gmail.com.
+        Have a question or feedback? Fill out the form below and we'll get back to you as soon as possible.
       </p>
       <form className="contact-form" onSubmit={handleSubmit}>
         <label>
@@ -53,16 +75,19 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, showToast }) => {
             type="text"
             value={name}
             onChange={e => setName(e.target.value)}
-            placeholder="Your name"
+            placeholder="Your name (optional)"
+            disabled={submitting}
           />
         </label>
         <label>
-          Email
+          Email <span style={{ color: 'var(--danger)' }}>*</span>
           <input
             type="email"
             value={email}
             onChange={e => setEmail(e.target.value)}
             placeholder="Your email address"
+            required
+            disabled={submitting}
           />
         </label>
         <label>
@@ -71,20 +96,22 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, showToast }) => {
             type="text"
             value={subject}
             onChange={e => setSubject(e.target.value)}
+            disabled={submitting}
           />
         </label>
         <label>
-          Message
+          Message <span style={{ color: 'var(--danger)' }}>*</span>
           <textarea
             value={message}
             onChange={e => setMessage(e.target.value)}
             rows={7}
             placeholder="Write your message here..."
             required
+            disabled={submitting}
           />
         </label>
-        <button type="submit" className="btn" style={{ marginTop: '1rem' }}>
-          <FontAwesomeIcon icon={faPaperPlane} /> Send Email
+        <button type="submit" className="btn" style={{ marginTop: '1rem' }} disabled={submitting}>
+          <FontAwesomeIcon icon={faPaperPlane} /> {submitting ? 'Sending...' : 'Send Message'}
         </button>
       </form>
     </section>
