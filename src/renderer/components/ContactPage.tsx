@@ -14,7 +14,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onBack, showToast }) => {
   const [message, setMessage] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     if (!message.trim()) {
