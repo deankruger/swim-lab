@@ -13,6 +13,7 @@ import SearchSection from './components/SearchSection';
 import SwimmerComparison from './components/SwimmerComparison';
 import SavedSwimmers from './components/SavedSwimmers';
 import SwimmerDetails from './components/SwimmerDetails';
+import ContactPage from './components/ContactPage';
 
 import defaultCountyTimes from '../../assets/json/county-times.json';
 
@@ -25,6 +26,7 @@ const App: React.FC = () => {
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
     const [comparisonSwimmers, setComparisonSwimmers] = useState<SwimmerData[]>([]);
     const [navOpen, setNavOpen] = useState(false);
+    const [page, setPage] = useState<'home' | 'contact'>('home');
     const [activeStandards, setActiveStandards] = useState<string[]>([]);
     const swimmerDetailsRef = useRef<HTMLDivElement>(null);
     const comparisonRef = useRef<HTMLDivElement>(null);
@@ -372,8 +374,21 @@ const App: React.FC = () => {
                     {navOpen && (
                         <nav className="nav-drawer">
                             <div className="nav-drawer-content">
-                                <span className="nav-label">Theme</span>
                                 <ThemeSelector />
+                                <strong>
+                                    <button
+                                        className="btn-ghost"
+                                        style={{
+                                            color: 'var(--primary)'
+                                        }}
+                                        onClick={() => {
+                                            setPage('contact');
+                                            setNavOpen(false);
+                                        }}
+                                    >
+                                    Contact
+                                </button>
+                                </strong>
                             </div>
                         </nav>
                     )}
@@ -381,50 +396,56 @@ const App: React.FC = () => {
             
             <div className="container">
                 <main>
-                    <SearchSection
-                        onSwimmerSelect={handleSearchResults}
-                        loading={loading}
-                        setLoading={setLoading}
-                        showToast={showToast}
-                    />
-
-                    {comparisonSwimmers.length > 0 && (
-                        <div ref={comparisonRef}>
-                            <SwimmerComparison swimmers={comparisonSwimmers} onClose={handleCloseComparison} />
-                        </div>
-                    )}
-
-                    {currentSwimmerData && (
-                        <div ref={swimmerDetailsRef}>
-                            <SwimmerDetails
-                                swimmerData={currentSwimmerData}
-                                countyTimesStore={countyTimesStore}
-                                activeStandards={activeStandards}
-                                onActiveStandardsChange={handleActiveStandardsChange}
-                                onSave={handleSaveSwimmer}
-                                onExport={handleExportToExcel}
-                                onClear={handleClearDetails}
-                                onRefresh={handleRefreshCurrentSwimmer}
-                                onLoadCountyTimes={pickAndLoadCountyTimes}
-                                onClearOneCounty={clearOneCounty}
-                                onCountySelected={handleCountySelected}
-                                onComparisonChange={setComparisonResult}
-                                onRankingsSaved={loadSavedSwimmers}
+                    {page === 'home' ? (
+                        <>
+                            <SearchSection
+                                onSwimmerSelect={handleSearchResults}
                                 loading={loading}
                                 setLoading={setLoading}
                                 showToast={showToast}
                             />
-                        </div>
-                    )}
 
-                    <SavedSwimmers
-                        swimmers={savedSwimmers}
-                        onLoad={handleLoadSavedSwimmer}
-                        onDelete={handleDeleteSwimmer}
-                        onRefreshAll={handleRefreshAllSwimmers}
-                        onCompare={handleCompareSwimmers}
-                        onUpdateTags={handleUpdateSwimmerTags}
-                    />
+                            {comparisonSwimmers.length > 0 && (
+                                <div ref={comparisonRef}>
+                                    <SwimmerComparison swimmers={comparisonSwimmers} onClose={handleCloseComparison} />
+                                </div>
+                            )}
+
+                            {currentSwimmerData && (
+                                <div ref={swimmerDetailsRef}>
+                                    <SwimmerDetails
+                                        swimmerData={currentSwimmerData}
+                                        countyTimesStore={countyTimesStore}
+                                        activeStandards={activeStandards}
+                                        onActiveStandardsChange={handleActiveStandardsChange}
+                                        onSave={handleSaveSwimmer}
+                                        onExport={handleExportToExcel}
+                                        onClear={handleClearDetails}
+                                        onRefresh={handleRefreshCurrentSwimmer}
+                                        onLoadCountyTimes={pickAndLoadCountyTimes}
+                                        onClearOneCounty={clearOneCounty}
+                                        onCountySelected={handleCountySelected}
+                                        onComparisonChange={setComparisonResult}
+                                        onRankingsSaved={loadSavedSwimmers}
+                                        loading={loading}
+                                        setLoading={setLoading}
+                                        showToast={showToast}
+                                    />
+                                </div>
+                            )}
+
+                            <SavedSwimmers
+                                swimmers={savedSwimmers}
+                                onLoad={handleLoadSavedSwimmer}
+                                onDelete={handleDeleteSwimmer}
+                                onRefreshAll={handleRefreshAllSwimmers}
+                                onCompare={handleCompareSwimmers}
+                                onUpdateTags={handleUpdateSwimmerTags}
+                            />
+                        </>
+                    ) : (
+                        <ContactPage onBack={() => setPage('home')} showToast={showToast} />
+                    )}
                 </main>
 
                 {loading && <LoadingSpinner />}
