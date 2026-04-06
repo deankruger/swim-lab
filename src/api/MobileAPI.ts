@@ -113,7 +113,7 @@ export const mobileAPI = {
     saveCountyTimesStore(store: CountyTimesStore): Promise<void> {
         return dataStore.saveCountyTimesStore(store);
     },
-
+    
     loadCountyTimesStore(): Promise<CountyTimesStore> {
         return dataStore.loadCountyTimesStore();
     },
@@ -124,5 +124,14 @@ export const mobileAPI = {
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...swimmerData, level, forecast, countyCode })
         });
-    }
+    },
+
+    saveActiveStandards(active: string[]): Promise<void> {
+        return dataStore.saveActiveStandards(active);
+    },
+
+    loadActiveStandards(): Promise<string[]> {
+        return dataStore.loadActiveStandards();
+    },
+
 };

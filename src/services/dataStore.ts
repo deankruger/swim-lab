@@ -46,6 +46,20 @@ class DataStore {
             return {};
         }
     }
+
+    async saveActiveStandards(active: string[]): Promise<void> {
+        const fileStore = FileStore.createInUserData<string[]>('active-standards.json');
+        await fileStore.write(active);
+    }
+
+    async loadActiveStandards(): Promise<string[]> {
+        try {
+            const fileStore = FileStore.createInUserData<string[]>('active-standards.json');
+            return await fileStore.read();
+        } catch {
+            return [];
+        }
+    }
 }
 
 export default DataStore;

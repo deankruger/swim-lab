@@ -14,6 +14,8 @@ import SwimmerComparison from './components/SwimmerComparison';
 import SavedSwimmers from './components/SavedSwimmers';
 import SwimmerDetails from './components/SwimmerDetails';
 
+import defaultCountyTimes from '../../assets/json/county-times.json';
+
 const App: React.FC = () => {
     const [loading, setLoading] = useState(false);
     const [currentSwimmerData, setCurrentSwimmerData] = useState<SwimmerData | null>(null);
@@ -23,6 +25,7 @@ const App: React.FC = () => {
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
     const [comparisonSwimmers, setComparisonSwimmers] = useState<SwimmerData[]>([]);
     const [navOpen, setNavOpen] = useState(false);
+    const [activeStandards, setActiveStandards] = useState<string[]>([]);
     const swimmerDetailsRef = useRef<HTMLDivElement>(null);
     const comparisonRef = useRef<HTMLDivElement>(null);
     const navRef = useRef<HTMLElement>(null);
@@ -41,6 +44,7 @@ const App: React.FC = () => {
     useEffect(() => {
         loadSavedSwimmers();
         loadCountyTimesStore();
+        loadActiveStandards();
     }, []);
 
     const showToast = (message: string, type: 'success' | 'error' = 'success') => {
@@ -57,14 +61,54 @@ const App: React.FC = () => {
         }
     };
 
+    const loadDefaultCountyTimes = async () => {
+        try {
+            return defaultCountyTimes as CountyTimesStore;
+        } catch (error) {
+            console.warn('Default county times load failed:', error);
+            return {} as CountyTimesStore;
+        }
+    };
+
+    const mergeCountyTimesStores = (base: CountyTimesStore, extra: CountyTimesStore): CountyTimesStore => {
+        const merged: CountyTimesStore = { ...base };
+        Object.keys(extra).forEach(county => {
+            merged[county] = { ...(merged[county] || {}), ...extra[county] };
+        });
+        return merged;
+    };
+
     const loadCountyTimesStore = async () => {
         try {
+            const defaultStore = await loadDefaultCountyTimes();
             const stored = await mobileAPI.loadCountyTimesStore();
-            if (stored && Object.keys(stored).length > 0) {
-                setCountyTimesStore(stored);
+            const merged = mergeCountyTimesStores(defaultStore, stored);
+            if (Object.keys(merged).length > 0) {
+                setCountyTimesStore(merged);
             }
-        } catch {
-            //swallow: no saved county times loaded yet.
+        } catch (error) {
+            console.warn('County times store load failed:', error);
+            // swallow: no saved county times loaded yet.
+        }
+    };
+
+    const loadActiveStandards = async () => {
+        try {
+            const active = await mobileAPI.loadActiveStandards();
+            setActiveStandards(active);
+        } catch (error) {
+            console.warn('Active standards load failed:', error);
+            setActiveStandards([]); // Start with no standards active
+        }
+    };
+
+    const handleActiveStandardsChange = async (active: string[]) => {
+        setActiveStandards(active);
+        try {
+            await mobileAPI.saveActiveStandards(active);
+        } catch (error) {
+            console.error('Failed to save active standards:', error);
+            showToast('Failed to save standards selection', 'error');
         }
     };
 
@@ -355,6 +399,8 @@ const App: React.FC = () => {
                             <SwimmerDetails
                                 swimmerData={currentSwimmerData}
                                 countyTimesStore={countyTimesStore}
+                                activeStandards={activeStandards}
+                                onActiveStandardsChange={handleActiveStandardsChange}
                                 onSave={handleSaveSwimmer}
                                 onExport={handleExportToExcel}
                                 onClear={handleClearDetails}
