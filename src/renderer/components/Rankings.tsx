@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPersonSwimming, faSpinner, faRotate, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { SwimmerData, EventRanking, RankingEntry } from '../../types';
 import { mobileAPI } from '../../api/MobileAPI';
+import { compareEvents } from '../../services/utils/EventOrdering';
 
 interface RankingsProps {
   swimmerData: SwimmerData;
@@ -166,8 +167,10 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
     key: `${time.event}_${time.course}`
   }));
 
+  const sortedEvents = [...events].sort((a, b) => compareEvents(a.event, b.event));
+
   // Filter events by course
-  const filteredEvents = events.filter(evt => {
+  const filteredEvents = sortedEvents.filter(evt => {
     if (courseFilter === 'all') return true;
     return evt.course === courseFilter;
   });
@@ -180,6 +183,10 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
     acc[evt.course].push(evt);
     return acc;
   }, {} as Record<string, typeof events>);
+
+  Object.values(groupedByCourse).forEach(group => {
+    group.sort((a, b) => compareEvents(a.event, b.event));
+  });
 
   const sortedCourses = Object.keys(groupedByCourse).sort((a, b) => {
     if (a === '50m') return -1;
@@ -386,11 +393,9 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
                     return (
                       <tr key={evt.key}>
                         <td data-label="Event">
-                          <strong>
-                            {evt.sourceUrl
-                              ? <a href={evt.sourceUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)' }}>{evt.event}</a>
-                            :evt.event}
-                          </strong>
+                          {evt.sourceUrl
+                            ? <a href={evt.sourceUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)' }}>{evt.event}</a>
+                            : evt.event}
                         </td>
                         <td data-label="PB Time">{evt.time}<br/><small style={{ color: 'var(--gray-400)' }}>{evt.date}</small></td>
                         <td data-label={selectedCountyName}>

@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { SwimmerData } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPersonSwimming, faXmark, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { compareEvents, sortStrokeValues, sortDistances } from "../../services/utils/EventOrdering";
 
 interface SwimmerComparisonProps {
     swimmers: SwimmerData[];
@@ -42,8 +43,8 @@ const SwimmerComparison: React.FC<SwimmerComparisonProps> = ({swimmers, onClose}
 
     //Get unique strokes and distances
     const allTimes = swimmers.flatMap(x => x.times);
-    const strokes = Array.from(new Set(allTimes.map(t => extractStrokeAndDistance(t.event).stroke))).sort();
-    const distances = Array.from(new Set(allTimes.map(t => extractStrokeAndDistance(t.event).distance).filter(d => d))).sort((a, b) => parseInt(a) - parseInt(b));
+    const strokes = sortStrokeValues(Array.from(new Set(allTimes.map(t => extractStrokeAndDistance(t.event).stroke))));
+    const distances = sortDistances(Array.from(new Set(allTimes.map(t => extractStrokeAndDistance(t.event).distance).filter(d => d))));
 
     //Filter events
     const filteredEvents = Array.from(allEvents).filter(eventKey => {
@@ -55,7 +56,7 @@ const SwimmerComparison: React.FC<SwimmerComparisonProps> = ({swimmers, onClose}
         const distanceMatch = distanceFilter === 'all' || distance === distanceFilter;
 
         return courseMatch && strokeMatch && distanceMatch;
-    }).sort();
+    }).sort((a, b) => compareEvents(a.split('_')[0], b.split('_')[0]));
     
     //Group events by course
     const  groupedByCourse = filteredEvents.reduce((acc, eventKey) => {
@@ -141,7 +142,7 @@ const SwimmerComparison: React.FC<SwimmerComparisonProps> = ({swimmers, onClose}
                 </div>
                 <div>
                     <label htmlFor='distanceFilter'>Distance:</label>
-                    <select id='distanceFilter' value={strokeFilter} onChange={(e) => setDistanceFilter(e.target.value)}>
+                    <select id='distanceFilter' value={distanceFilter} onChange={(e) => setDistanceFilter(e.target.value)}>
                         <option value='all'>All Distances</option>
                         {distances.map(distance => (
                             <option key={distance} value={distance}>{distance}</option>
