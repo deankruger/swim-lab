@@ -3,6 +3,8 @@ import './styles.css';
 
 import { mobileAPI } from '../api/MobileAPI';
 import { ComparisonResult, CountyTimesStore, SwimmerData } from '../types';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEnvelope, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 
 
 import ThemeSelector from './components/ThemeSelector';
@@ -14,6 +16,7 @@ import SwimmerComparison from './components/SwimmerComparison';
 import SavedSwimmers from './components/SavedSwimmers';
 import SwimmerDetails from './components/SwimmerDetails';
 import ContactPage from './components/ContactPage';
+import AboutPage from './components/AboutPage';
 
 import defaultCountyTimes from '../../assets/json/county-times.json';
 
@@ -26,7 +29,7 @@ const App: React.FC = () => {
     const [toast, setToast] = useState<{ message: string; type: 'success' | 'error' } | null>(null);
     const [comparisonSwimmers, setComparisonSwimmers] = useState<SwimmerData[]>([]);
     const [navOpen, setNavOpen] = useState(false);
-    const [page, setPage] = useState<'home' | 'contact'>('home');
+    const [page, setPage] = useState<'home' | 'contact' | 'about'>('home');
     const [activeStandards, setActiveStandards] = useState<string[]>([]);
     const swimmerDetailsRef = useRef<HTMLDivElement>(null);
     const comparisonRef = useRef<HTMLDivElement>(null);
@@ -372,25 +375,39 @@ const App: React.FC = () => {
                     </button>
                 </div>
                     {navOpen && (
-                        <nav className="nav-drawer">
-                            <div className="nav-drawer-content">
-                                <ThemeSelector />
-                                <strong>
-                                    <button
-                                        className="btn-ghost"
-                                        style={{
-                                            color: 'var(--primary)'
-                                        }}
-                                        onClick={() => {
-                                            setPage('contact');
-                                            setNavOpen(false);
-                                        }}
-                                    >
-                                    Contact
+                    <nav className="nav-drawer">
+                        <div className="nav-drawer-content">
+                            <strong>
+                                <button
+                                    className="btn-ghost"
+                                    style={{
+                                        color: 'var(--primary)'
+                                    }}
+                                    onClick={() => {
+                                        setPage('about');
+                                        setNavOpen(false);
+                                    }}
+                                >
+                                    About <FontAwesomeIcon icon={faInfoCircle} />
                                 </button>
-                                </strong>
-                            </div>
-                        </nav>
+                            </strong>
+                            <strong>
+                                <button
+                                    className="btn-ghost"
+                                    style={{
+                                        color: 'var(--primary)'
+                                    }}
+                                    onClick={() => {
+                                        setPage('contact');
+                                        setNavOpen(false);
+                                    }}
+                                >
+                                    Contact <FontAwesomeIcon icon={faEnvelope} />
+                                </button>
+                            </strong>
+                            <ThemeSelector />
+                        </div>
+                    </nav>
                     )}
             </header>
             
@@ -443,6 +460,8 @@ const App: React.FC = () => {
                                 onUpdateTags={handleUpdateSwimmerTags}
                             />
                         </>
+                    ) : page === 'about' ? (
+                        <AboutPage onBack={() => setPage('home')} />
                     ) : (
                         <ContactPage onBack={() => setPage('home')} showToast={showToast} />
                     )}
