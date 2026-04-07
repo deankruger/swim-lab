@@ -34,6 +34,28 @@ export function extractTimes(str: string): string[] {
   return str.match(/\d{1,2}:\d{2}\.\d{2}|\d{2}\.\d{2}/g) || [];
 }
 
+/** For championships that have consideration times only (no automatic qualifying times). */
+export function addConsiderationEntries(
+  result: CountyTimes,
+  event: string,
+  poolSize: '25m' | '50m',
+  gender: string,
+  ageGroups: AgeGroup[],
+  consTimes: string[],
+): void {
+  consTimes.forEach((consTime, i) => {
+    if (i >= ageGroups.length || !consTime) return;
+    const ag = ageGroups[i];
+    result[`${event}_${poolSize}_${gender}_${ag.ageFrom}_${ag.ageTo}`] = {
+      time: '',
+      considerationTime: consTime,
+      ageFrom: ag.ageFrom,
+      ageTo: ag.ageTo,
+      ageCategory: ag.ageCategory,
+    };
+  });
+}
+
 export function addEntries(
   result: CountyTimes,
   event: string,
