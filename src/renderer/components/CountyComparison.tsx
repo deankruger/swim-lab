@@ -45,9 +45,14 @@ const getFilteredCountyTimes = (birthYear: string, gender: string, allTimes: Cou
     const ageFrom = parseInt(parts[courseIndex + 2]);
     const ageTo = parseInt(parts[courseIndex + 3]);
 
-    if (course === '50m' && keyGender === normGender && age >= ageFrom && age <= ageTo) {
+    if (keyGender === normGender && age >= ageFrom && age <= ageTo) {
       const event = parts.slice(0, courseIndex).join(' ');
-      filtered[`${event}_50m`] = allTimes[key];
+      const outputKey = `${event}_50m`;
+      // Prefer 50m (LC) standards; only use 25m (SC) if no LC entry exists for this event.
+      // This lets SC-only counties like Essex still show their times.
+      if (course === '50m' || !filtered[outputKey]) {
+        filtered[outputKey] = allTimes[key];
+      }
     }
   });
 
