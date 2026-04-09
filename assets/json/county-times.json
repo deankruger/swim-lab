@@ -22320,5 +22320,2939 @@
             "ageTo": 16,
             "ageCategory": "16"
         }
+    },
+    "Sussex": {
+        "50 Freestyle_50m_Male_10_11": {
+            "time": "37.40",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Freestyle_50m_Male_12_12": {
+            "time": "35.40",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Freestyle_50m_Male_13_13": {
+            "time": "31.30",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Freestyle_50m_Male_14_14": {
+            "time": "30.30",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Freestyle_50m_Male_15_15": {
+            "time": "28.30",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Freestyle_50m_Male_16_99": {
+            "time": "26.20",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "50 Freestyle_50m_Female_10_11": {
+            "time": "41.50",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Freestyle_50m_Female_12_12": {
+            "time": "38.50",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Freestyle_50m_Female_13_13": {
+            "time": "34.40",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Freestyle_50m_Female_14_14": {
+            "time": "32.40",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Freestyle_50m_Female_15_15": {
+            "time": "30.30",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Freestyle_50m_Female_16_99": {
+            "time": "30.30",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "50 Backstroke_50m_Male_10_11": {
+            "time": "44.60",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Backstroke_50m_Male_12_12": {
+            "time": "41.50",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Backstroke_50m_Male_13_13": {
+            "time": "37.50",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Backstroke_50m_Male_14_14": {
+            "time": "35.40",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Backstroke_50m_Male_15_15": {
+            "time": "33.40",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Backstroke_50m_Male_16_99": {
+            "time": "31.40",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "50 Backstroke_50m_Female_10_11": {
+            "time": "49.60",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Backstroke_50m_Female_12_12": {
+            "time": "44.60",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Backstroke_50m_Female_13_13": {
+            "time": "40.50",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Backstroke_50m_Female_14_14": {
+            "time": "38.50",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Backstroke_50m_Female_15_15": {
+            "time": "35.40",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Backstroke_50m_Female_16_99": {
+            "time": "35.40",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "50 Breaststroke_50m_Male_10_11": {
+            "time": "51.40",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Breaststroke_50m_Male_12_12": {
+            "time": "47.30",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Breaststroke_50m_Male_13_13": {
+            "time": "42.30",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Breaststroke_50m_Male_14_14": {
+            "time": "39.20",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Breaststroke_50m_Male_15_15": {
+            "time": "38.20",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Breaststroke_50m_Male_16_99": {
+            "time": "35.10",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "50 Breaststroke_50m_Female_10_11": {
+            "time": "55.40",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Breaststroke_50m_Female_12_12": {
+            "time": "50.40",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Breaststroke_50m_Female_13_13": {
+            "time": "46.30",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Breaststroke_50m_Female_14_14": {
+            "time": "43.30",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Breaststroke_50m_Female_15_15": {
+            "time": "40.20",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Breaststroke_50m_Female_16_99": {
+            "time": "40.20",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "50 Butterfly_50m_Male_10_11": {
+            "time": "46.60",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Butterfly_50m_Male_12_12": {
+            "time": "39.50",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Butterfly_50m_Male_13_13": {
+            "time": "36.50",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Butterfly_50m_Male_14_14": {
+            "time": "34.50",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Butterfly_50m_Male_15_15": {
+            "time": "31.40",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Butterfly_50m_Male_16_99": {
+            "time": "30.40",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "50 Butterfly_50m_Female_10_11": {
+            "time": "50.60",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Butterfly_50m_Female_12_12": {
+            "time": "47.60",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Butterfly_50m_Female_13_13": {
+            "time": "40.50",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Butterfly_50m_Female_14_14": {
+            "time": "36.50",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Butterfly_50m_Female_15_15": {
+            "time": "33.40",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Butterfly_50m_Female_16_99": {
+            "time": "33.40",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "100 Freestyle_50m_Male_10_11": {
+            "time": "1:27.00",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Freestyle_50m_Male_12_12": {
+            "time": "1:20.00",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Freestyle_50m_Male_13_13": {
+            "time": "1:10.80",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Freestyle_50m_Male_14_14": {
+            "time": "1:06.80",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Freestyle_50m_Male_15_15": {
+            "time": "1:00.60",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Freestyle_50m_Male_16_99": {
+            "time": "58.60",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "100 Freestyle_50m_Female_10_11": {
+            "time": "1:34.10",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Freestyle_50m_Female_12_12": {
+            "time": "1:26.00",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Freestyle_50m_Female_13_13": {
+            "time": "1:16.90",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Freestyle_50m_Female_14_14": {
+            "time": "1:10.80",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Freestyle_50m_Female_15_15": {
+            "time": "1:06.80",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Freestyle_50m_Female_16_99": {
+            "time": "1:04.70",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "100 Backstroke_50m_Male_10_11": {
+            "time": "1:40.20",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Backstroke_50m_Male_12_12": {
+            "time": "1:30.10",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Backstroke_50m_Male_13_13": {
+            "time": "1:19.00",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Backstroke_50m_Male_14_14": {
+            "time": "1:15.90",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Backstroke_50m_Male_15_15": {
+            "time": "1:12.90",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Backstroke_50m_Male_16_99": {
+            "time": "1:07.80",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "100 Backstroke_50m_Female_10_11": {
+            "time": "1:47.30",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Backstroke_50m_Female_12_12": {
+            "time": "1:37.20",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Backstroke_50m_Female_13_13": {
+            "time": "1:28.10",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Backstroke_50m_Female_14_14": {
+            "time": "1:22.00",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Backstroke_50m_Female_15_15": {
+            "time": "1:17.00",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Backstroke_50m_Female_16_99": {
+            "time": "1:15.90",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "100 Breaststroke_50m_Male_10_11": {
+            "time": "1:56.90",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Breaststroke_50m_Male_12_12": {
+            "time": "1:45.80",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Breaststroke_50m_Male_13_13": {
+            "time": "1:32.60",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Breaststroke_50m_Male_14_14": {
+            "time": "1:27.60",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Breaststroke_50m_Male_15_15": {
+            "time": "1:23.50",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Breaststroke_50m_Male_16_99": {
+            "time": "1:18.40",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "100 Breaststroke_50m_Female_10_11": {
+            "time": "2:01.00",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Breaststroke_50m_Female_12_12": {
+            "time": "1:54.90",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Breaststroke_50m_Female_13_13": {
+            "time": "1:42.80",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Breaststroke_50m_Female_14_14": {
+            "time": "1:34.70",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Breaststroke_50m_Female_15_15": {
+            "time": "1:28.60",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Breaststroke_50m_Female_16_99": {
+            "time": "1:26.60",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "100 Butterfly_50m_Male_10_11": {
+            "time": "1:58.40",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Butterfly_50m_Male_12_12": {
+            "time": "1:45.30",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Butterfly_50m_Male_13_13": {
+            "time": "1:25.10",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Butterfly_50m_Male_14_14": {
+            "time": "1:19.00",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Butterfly_50m_Male_15_15": {
+            "time": "1:12.00",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Butterfly_50m_Male_16_99": {
+            "time": "1:08.90",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "100 Butterfly_50m_Female_10_11": {
+            "time": "2:19.50",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Butterfly_50m_Female_12_12": {
+            "time": "2:01.40",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Butterfly_50m_Female_13_13": {
+            "time": "1:41.20",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Butterfly_50m_Female_14_14": {
+            "time": "1:30.20",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Butterfly_50m_Female_15_15": {
+            "time": "1:20.10",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Butterfly_50m_Female_16_99": {
+            "time": "1:17.00",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "200 Freestyle_50m_Male_10_11": {
+            "time": "3:06.10",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Freestyle_50m_Male_12_12": {
+            "time": "2:40.90",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Freestyle_50m_Male_13_13": {
+            "time": "2:31.70",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Freestyle_50m_Male_14_14": {
+            "time": "2:23.60",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Freestyle_50m_Male_15_15": {
+            "time": "2:18.50",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Freestyle_50m_Male_16_99": {
+            "time": "2:12.40",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "200 Freestyle_50m_Female_10_11": {
+            "time": "3:31.40",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Freestyle_50m_Female_12_12": {
+            "time": "3:05.10",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Freestyle_50m_Female_13_13": {
+            "time": "2:42.90",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Freestyle_50m_Female_14_14": {
+            "time": "2:31.70",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Freestyle_50m_Female_15_15": {
+            "time": "2:24.60",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Freestyle_50m_Female_16_99": {
+            "time": "2:22.60",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "200 Backstroke_50m_Male_10_11": {
+            "time": "3:31.40",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Backstroke_50m_Male_12_12": {
+            "time": "3:08.20",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Backstroke_50m_Male_13_13": {
+            "time": "2:50.00",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Backstroke_50m_Male_14_14": {
+            "time": "2:40.90",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Backstroke_50m_Male_15_15": {
+            "time": "2:35.90",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Backstroke_50m_Male_16_99": {
+            "time": "2:30.80",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "200 Backstroke_50m_Female_10_11": {
+            "time": "3:45.50",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Backstroke_50m_Female_12_12": {
+            "time": "3:25.40",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Backstroke_50m_Female_13_13": {
+            "time": "3:00.20",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Backstroke_50m_Female_14_14": {
+            "time": "2:51.10",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Backstroke_50m_Female_15_15": {
+            "time": "2:43.00",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Backstroke_50m_Female_16_99": {
+            "time": "2:42.00",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "200 Breaststroke_50m_Male_10_11": {
+            "time": "3:54.80",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Breaststroke_50m_Male_12_12": {
+            "time": "3:42.60",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Breaststroke_50m_Male_13_13": {
+            "time": "3:20.40",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Breaststroke_50m_Male_14_14": {
+            "time": "3:10.20",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Breaststroke_50m_Male_15_15": {
+            "time": "2:58.10",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Breaststroke_50m_Male_16_99": {
+            "time": "2:54.00",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "200 Breaststroke_50m_Female_10_11": {
+            "time": "4:16.90",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Breaststroke_50m_Female_12_12": {
+            "time": "3:47.70",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Breaststroke_50m_Female_13_13": {
+            "time": "3:33.50",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Breaststroke_50m_Female_14_14": {
+            "time": "3:20.40",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Breaststroke_50m_Female_15_15": {
+            "time": "3:09.20",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Breaststroke_50m_Female_16_99": {
+            "time": "3:06.20",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "200 Butterfly_50m_Male_10_11": {
+            "time": "4:05.70",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Butterfly_50m_Male_12_12": {
+            "time": "3:41.60",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Butterfly_50m_Male_13_13": {
+            "time": "3:21.40",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Butterfly_50m_Male_14_14": {
+            "time": "3:00.30",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Butterfly_50m_Male_15_15": {
+            "time": "2:46.10",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Butterfly_50m_Male_16_99": {
+            "time": "2:40.00",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "200 Butterfly_50m_Female_10_11": {
+            "time": "4:11.70",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Butterfly_50m_Female_12_12": {
+            "time": "4:06.70",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Butterfly_50m_Female_13_13": {
+            "time": "3:28.50",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Butterfly_50m_Female_14_14": {
+            "time": "3:21.40",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Butterfly_50m_Female_15_15": {
+            "time": "3:10.30",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Butterfly_50m_Female_16_99": {
+            "time": "3:01.30",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "200 I.M._50m_Male_10_11": {
+            "time": "3:22.10",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 I.M._50m_Male_12_12": {
+            "time": "3:04.90",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 I.M._50m_Male_13_13": {
+            "time": "2:50.70",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 I.M._50m_Male_14_14": {
+            "time": "2:45.60",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 I.M._50m_Male_15_15": {
+            "time": "2:30.40",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 I.M._50m_Male_16_99": {
+            "time": "2:28.40",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "200 I.M._50m_Female_10_11": {
+            "time": "3:58.30",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 I.M._50m_Female_12_12": {
+            "time": "3:38.20",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 I.M._50m_Female_13_13": {
+            "time": "3:05.90",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 I.M._50m_Female_14_14": {
+            "time": "2:54.80",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 I.M._50m_Female_15_15": {
+            "time": "2:45.60",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 I.M._50m_Female_16_99": {
+            "time": "2:40.60",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "400 I.M._50m_Male_10_11": {
+            "time": "6:40.60",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "400 I.M._50m_Male_12_12": {
+            "time": "6:15.30",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "400 I.M._50m_Male_13_13": {
+            "time": "6:00.10",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "400 I.M._50m_Male_14_14": {
+            "time": "5:39.90",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "400 I.M._50m_Male_15_15": {
+            "time": "5:29.70",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "400 I.M._50m_Female_10_11": {
+            "time": "6:35.60",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "400 I.M._50m_Female_12_12": {
+            "time": "6:18.40",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "400 I.M._50m_Female_13_13": {
+            "time": "5:55.10",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "400 I.M._50m_Female_14_14": {
+            "time": "5:44.90",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "400 I.M._50m_Female_15_15": {
+            "time": "5:44.90",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "400 Freestyle_50m_Male_10_11": {
+            "time": "7:01.70",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "400 Freestyle_50m_Male_12_12": {
+            "time": "5:52.00",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "400 Freestyle_50m_Male_13_13": {
+            "time": "5:26.70",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "400 Freestyle_50m_Male_14_14": {
+            "time": "5:10.50",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "400 Freestyle_50m_Male_15_15": {
+            "time": "4:50.20",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "400 Freestyle_50m_Male_16_99": {
+            "time": "4:38.00",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        },
+        "400 Freestyle_50m_Female_10_11": {
+            "time": "7:21.80",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "400 Freestyle_50m_Female_12_12": {
+            "time": "6:46.50",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "400 Freestyle_50m_Female_13_13": {
+            "time": "6:01.10",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "400 Freestyle_50m_Female_14_14": {
+            "time": "5:35.80",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "400 Freestyle_50m_Female_15_15": {
+            "time": "5:05.40",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "400 Freestyle_50m_Female_16_99": {
+            "time": "5:00.40",
+            "ageFrom": 16,
+            "ageTo": 99,
+            "ageCategory": "16+"
+        }
+    },
+    "Essex": {
+        "50 Freestyle_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "00:36.47",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Freestyle_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "00:35.52",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Freestyle_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "00:33.89",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Freestyle_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "00:31.10",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Freestyle_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "00:29.95",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Freestyle_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "00:27.70",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "50 Freestyle_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "00:27.70",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "50 Freestyle_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "00:27.70",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "50 Freestyle_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "00:36.66",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Freestyle_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "00:34.55",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Freestyle_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "00:33.05",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Freestyle_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "00:32.05",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Freestyle_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "00:31.20",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Freestyle_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "00:30.90",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "50 Freestyle_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "00:30.90",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "50 Freestyle_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "00:30.90",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "100 Freestyle_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "01:21.20",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Freestyle_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "01:19.95",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Freestyle_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "01:14.50",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Freestyle_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "01:08.95",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Freestyle_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "01:07.24",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Freestyle_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "01:07.20",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "100 Freestyle_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "01:07.20",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "100 Freestyle_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "01:07.20",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "100 Freestyle_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "01:23.30",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Freestyle_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "01:20.30",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Freestyle_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "01:14.95",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Freestyle_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "01:09.40",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Freestyle_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "01:08.35",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Freestyle_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "01:08.20",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "100 Freestyle_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "01:08.20",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "100 Freestyle_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "01:08.20",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "200 Freestyle_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "02:56.60",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Freestyle_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "02:49.65",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Freestyle_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "02:38.00",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Freestyle_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "02:27.75",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Freestyle_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "02:22.05",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Freestyle_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "02:17.60",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "200 Freestyle_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "02:17.60",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "200 Freestyle_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "02:17.60",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "200 Freestyle_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "03:00.20",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Freestyle_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "02:51.25",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Freestyle_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "02:43.20",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Freestyle_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "02:28.35",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Freestyle_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "02:25.90",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Freestyle_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "02:25.60",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "200 Freestyle_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "02:25.60",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "200 Freestyle_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "02:25.60",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "400 Freestyle_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "06:03.30",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "400 Freestyle_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "05:53.65",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "400 Freestyle_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "05:39.55",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "400 Freestyle_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "05:15.85",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "400 Freestyle_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "05:13.40",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "400 Freestyle_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "05:05.30",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "400 Freestyle_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "05:05.30",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "400 Freestyle_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "05:05.30",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "400 Freestyle_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "06:29.30",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "400 Freestyle_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "05:45.75",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "400 Freestyle_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "05:44.10",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "400 Freestyle_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "05:16.60",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "400 Freestyle_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "05:10.00",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "400 Freestyle_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "05:08.85",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "400 Freestyle_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "05:08.85",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "400 Freestyle_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "05:08.85",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "800 Freestyle_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "12:49.50",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "800 Freestyle_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "10:58.10",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "800 Freestyle_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "10:35.10",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "800 Freestyle_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "09:57.15",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "800 Freestyle_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "09:36.60",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "800 Freestyle_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "09:36.60",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "800 Freestyle_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "09:36.60",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "800 Freestyle_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "13:51.15",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "800 Freestyle_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "13:01.50",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "800 Freestyle_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "12:25.85",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "800 Freestyle_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "11:11.60",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "800 Freestyle_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "10:53.00",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "800 Freestyle_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "10:53.00",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "800 Freestyle_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "10:53.00",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "1500 Freestyle_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "22:40.55",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "1500 Freestyle_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "21:57.95",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "1500 Freestyle_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "21:10.40",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "1500 Freestyle_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "18:57.75",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "1500 Freestyle_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "18:50.85",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "1500 Freestyle_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "18:50.85",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "1500 Freestyle_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "18:50.85",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "1500 Freestyle_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "24:30.20",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "1500 Freestyle_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "24:26.10",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "1500 Freestyle_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "20:23.95",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "1500 Freestyle_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "20:20.90",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "1500 Freestyle_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "19:39.80",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "1500 Freestyle_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "19:39.80",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "1500 Freestyle_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "19:39.80",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "50 Backstroke_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "00:42.40",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Backstroke_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "00:41.85",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Backstroke_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "00:38.60",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Backstroke_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "00:35.90",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Backstroke_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "00:35.60",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Backstroke_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "00:33.45",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "50 Backstroke_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "00:33.45",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "50 Backstroke_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "00:33.45",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "50 Backstroke_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "00:43.25",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Backstroke_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "00:41.20",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Backstroke_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "00:39.60",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Backstroke_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "00:37.15",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Backstroke_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "00:36.50",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Backstroke_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "00:36.10",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "50 Backstroke_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "00:36.10",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "50 Backstroke_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "00:36.10",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "100 Backstroke_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "01:33.90",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Backstroke_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "01:30.45",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Backstroke_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "01:27.05",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Backstroke_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "01:19.30",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Backstroke_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "01:17.15",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Backstroke_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "01:13.35",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "100 Backstroke_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "01:13.35",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "100 Backstroke_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "01:13.35",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "100 Backstroke_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "01:33.50",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Backstroke_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "01:31.75",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Backstroke_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "01:25.70",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Backstroke_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "01:19.35",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Backstroke_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "01:18.90",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Backstroke_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "01:18.60",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "100 Backstroke_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "01:18.60",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "100 Backstroke_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "01:18.60",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "200 Backstroke_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "03:20.30",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Backstroke_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "03:08.05",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Backstroke_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "03:02.40",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Backstroke_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "02:52.75",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Backstroke_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "02:43.90",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Backstroke_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "02:38.90",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "200 Backstroke_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "02:38.90",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "200 Backstroke_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "02:38.90",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "200 Backstroke_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "03:41.65",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Backstroke_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "03:18.00",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Backstroke_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "03:06.60",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Backstroke_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "02:50.15",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Backstroke_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "02:49.25",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Backstroke_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "02:46.20",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "200 Backstroke_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "02:46.20",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "200 Backstroke_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "02:46.20",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "50 Breaststroke_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "00:48.10",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Breaststroke_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "00:48.05",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Breaststroke_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "00:46.35",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Breaststroke_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "00:43.25",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Breaststroke_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "00:40.05",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Breaststroke_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "00:37.21",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "50 Breaststroke_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "00:37.21",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "50 Breaststroke_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "00:37.21",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "50 Breaststroke_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "00:49.40",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Breaststroke_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "00:47.70",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Breaststroke_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "00:44.40",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Breaststroke_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "00:42.80",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Breaststroke_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "00:42.75",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Breaststroke_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "00:42.05",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "50 Breaststroke_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "00:42.05",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "50 Breaststroke_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "00:42.05",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "100 Breaststroke_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "01:48.10",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Breaststroke_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "01:46.55",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Breaststroke_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "01:42.70",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Breaststroke_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "01:33.60",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Breaststroke_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "01:28.00",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Breaststroke_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "01:27.90",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "100 Breaststroke_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "01:27.90",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "100 Breaststroke_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "01:27.90",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "100 Breaststroke_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "01:48.90",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Breaststroke_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "01:46.65",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Breaststroke_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "01:39.85",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Breaststroke_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "01:35.45",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Breaststroke_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "01:34.95",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Breaststroke_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "01:33.45",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "100 Breaststroke_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "01:33.45",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "100 Breaststroke_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "01:33.45",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "200 Breaststroke_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "04:12.80",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Breaststroke_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "03:43.75",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Breaststroke_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "03:36.80",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Breaststroke_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "03:17.55",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Breaststroke_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "03:14.50",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Breaststroke_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "02:55.30",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "200 Breaststroke_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "02:55.30",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "200 Breaststroke_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "02:55.30",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "200 Breaststroke_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "03:50.00",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Breaststroke_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "03:48.20",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Breaststroke_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "03:30.25",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Breaststroke_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "03:21.00",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Breaststroke_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "03:18.70",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Breaststroke_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "03:17.05",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "200 Breaststroke_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "03:17.05",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "200 Breaststroke_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "03:17.05",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "50 Butterfly_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "00:43.50",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Butterfly_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "00:40.20",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Butterfly_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "00:38.80",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Butterfly_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "00:33.60",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Butterfly_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "00:32.70",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Butterfly_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "00:31.10",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "50 Butterfly_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "00:31.10",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "50 Butterfly_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "00:31.10",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "50 Butterfly_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "00:43.30",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "50 Butterfly_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "00:41.00",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "50 Butterfly_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "00:39.45",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "50 Butterfly_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "00:36.50",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "50 Butterfly_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "00:35.80",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "50 Butterfly_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "00:34.45",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "50 Butterfly_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "00:34.45",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "50 Butterfly_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "00:34.45",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "100 Butterfly_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "01:49.20",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Butterfly_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "01:39.00",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Butterfly_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "01:36.40",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Butterfly_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "01:24.55",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Butterfly_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "01:19.50",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Butterfly_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "01:15.40",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "100 Butterfly_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "01:15.40",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "100 Butterfly_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "01:15.40",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "100 Butterfly_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "01:52.80",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "100 Butterfly_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "01:46.50",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "100 Butterfly_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "01:36.40",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "100 Butterfly_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "01:34.55",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "100 Butterfly_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "01:26.35",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "100 Butterfly_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "01:21.50",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "100 Butterfly_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "01:21.50",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "100 Butterfly_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "01:21.50",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "200 Butterfly_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "04:50.00",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Butterfly_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "04:25.90",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Butterfly_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "04:25.00",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Butterfly_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "04:03.95",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Butterfly_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "03:20.00",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Butterfly_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "03:03.90",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "200 Butterfly_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "03:03.90",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "200 Butterfly_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "03:03.90",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "200 Butterfly_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "05:00.00",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Butterfly_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "04:41.95",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Butterfly_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "04:34.00",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Butterfly_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "03:38.40",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Butterfly_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "03:37.00",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Butterfly_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "03:36.25",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "200 Butterfly_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "03:36.25",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "200 Butterfly_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "03:36.25",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "200 Individual Medley_25m_Male_10_11": {
+            "time": "",
+            "considerationTime": "03:20.40",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Individual Medley_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "03:04.40",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Individual Medley_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "02:57.50",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Individual Medley_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "02:41.80",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Individual Medley_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "02:37.70",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Individual Medley_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "02:37.00",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "200 Individual Medley_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "02:37.00",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "200 Individual Medley_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "02:37.00",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "200 Individual Medley_25m_Female_10_11": {
+            "time": "",
+            "considerationTime": "03:23.60",
+            "ageFrom": 10,
+            "ageTo": 11,
+            "ageCategory": "10/11"
+        },
+        "200 Individual Medley_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "03:15.90",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "200 Individual Medley_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "03:00.90",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "200 Individual Medley_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "02:50.70",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "200 Individual Medley_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "02:49.90",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "200 Individual Medley_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "02:47.20",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "200 Individual Medley_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "02:47.20",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "200 Individual Medley_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "02:47.20",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "400 Individual Medley_25m_Male_12_12": {
+            "time": "",
+            "considerationTime": "07:11.00",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "400 Individual Medley_25m_Male_13_13": {
+            "time": "",
+            "considerationTime": "06:33.30",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "400 Individual Medley_25m_Male_14_14": {
+            "time": "",
+            "considerationTime": "06:22.45",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "400 Individual Medley_25m_Male_15_15": {
+            "time": "",
+            "considerationTime": "06:20.00",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "400 Individual Medley_25m_Male_16_16": {
+            "time": "",
+            "considerationTime": "06:13.55",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "400 Individual Medley_25m_Male_17_17": {
+            "time": "",
+            "considerationTime": "06:13.55",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "400 Individual Medley_25m_Male_18_99": {
+            "time": "",
+            "considerationTime": "06:13.55",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        },
+        "400 Individual Medley_25m_Female_12_12": {
+            "time": "",
+            "considerationTime": "07:00.00",
+            "ageFrom": 12,
+            "ageTo": 12,
+            "ageCategory": "12"
+        },
+        "400 Individual Medley_25m_Female_13_13": {
+            "time": "",
+            "considerationTime": "06:35.10",
+            "ageFrom": 13,
+            "ageTo": 13,
+            "ageCategory": "13"
+        },
+        "400 Individual Medley_25m_Female_14_14": {
+            "time": "",
+            "considerationTime": "06:33.00",
+            "ageFrom": 14,
+            "ageTo": 14,
+            "ageCategory": "14"
+        },
+        "400 Individual Medley_25m_Female_15_15": {
+            "time": "",
+            "considerationTime": "06:32.00",
+            "ageFrom": 15,
+            "ageTo": 15,
+            "ageCategory": "15"
+        },
+        "400 Individual Medley_25m_Female_16_16": {
+            "time": "",
+            "considerationTime": "06:31.00",
+            "ageFrom": 16,
+            "ageTo": 16,
+            "ageCategory": "16"
+        },
+        "400 Individual Medley_25m_Female_17_17": {
+            "time": "",
+            "considerationTime": "06:31.00",
+            "ageFrom": 17,
+            "ageTo": 17,
+            "ageCategory": "17"
+        },
+        "400 Individual Medley_25m_Female_18_99": {
+            "time": "",
+            "considerationTime": "06:31.00",
+            "ageFrom": 18,
+            "ageTo": 99,
+            "ageCategory": "18+"
+        }
     }
 }
