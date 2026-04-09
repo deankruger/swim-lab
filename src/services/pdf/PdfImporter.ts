@@ -9,6 +9,7 @@ import { MiddlesexParser } from './parsers/MiddlesexParser';
 import { SELondonParser } from './parsers/SELondonParser';
 import { SSAParser } from './parsers/SSAParser';
 import { EssexParser } from './parsers/EssexParser';
+import { SussexParser } from './parsers/SussexParser';
 
 // Order matters: more specific detectors must come before broad ones.
 // SELondon before Hertfordshire because both match QT/CT patterns.
@@ -16,6 +17,7 @@ import { EssexParser } from './parsers/EssexParser';
 const PARSERS: PdfParser[] = [
   new SSAParser(),
   new EssexParser(),
+  new SussexParser(),
   new KentParser(),
   new SELondonParser(),
   new HertfordshireParser(),
@@ -80,7 +82,7 @@ export class PdfImporter {
     console.log('[PdfImporter] full extracted text:\n', text);
     const parser = PARSERS.find(p => p.detect(text, fileName));
     if (!parser) {      
-       throw new Error('Unrecognised standards PDF format. Currently Supported: SSA Age Group QTs, Kent, Essex, Hertfordshire (SEH), Surrey, Hampshire, Middlesex, SE. London.');
+       throw new Error('Unrecognised standards PDF format. Currently Supported: SSA Age Group QTs, Kent, Essex, Sussex, Hertfordshire (SEH), Surrey, Hampshire, Middlesex, SE. London.');
     }
     if (parser.parseMultiple){
       return parser.parseMultiple(text, fileName);
