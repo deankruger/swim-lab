@@ -276,6 +276,7 @@ const App: React.FC = () => {
             swimmerData.gender = currentSwimmerData.gender;
             swimmerData.club = currentSwimmerData.club;
             swimmerData.tags = currentSwimmerData.tags; // Preserve tag assignments
+            swimmerData.rankings = currentSwimmerData.rankings; // Preserve rankings
 
             // Save updated data
             await mobileAPI.saveSwimmer(swimmerData);
@@ -316,6 +317,7 @@ const App: React.FC = () => {
           swimmerData.gender = swimmer.gender;
           swimmerData.club = swimmer.club; // Preserve club
           swimmerData.tags = swimmer.tags; // Preserve tag assignments
+          swimmerData.rankings = swimmer.rankings; // Preserve rankings
 
           // Save updated data
           await mobileAPI.saveSwimmer(swimmerData);
