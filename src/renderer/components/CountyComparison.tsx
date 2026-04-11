@@ -60,7 +60,7 @@ const getFilteredCountyTimes = (birthYear: string, gender: string, allTimes: Cou
 };
 
 /** Try to find a county name that matches the swimmer's region field */
-type StandardCategory = 'County' | 'Regional' | 'National / International';
+type StandardCategory = 'County' | 'Regional' | 'National / International' | 'Other';
 
 const getStandardCategory = (name: string): StandardCategory => {
   const normalized = name.toLowerCase();
@@ -71,6 +71,10 @@ const getStandardCategory = (name: string): StandardCategory => {
 
   if (normalized.includes('london') || normalized.includes('regional') || normalized.includes('se ')) {
     return 'Regional';
+  }
+
+  if (normalized.includes('custom')) {
+    return 'Other';
   }
 
   return 'County';
@@ -174,7 +178,7 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
             <p><strong>Loaded Standards:</strong></p>
             {activeCountyNames.length > 0 ? (
               <div className="standards-group-list" style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
-                {(['County', 'Regional', 'National / International'] as StandardCategory[])
+                {(['County', 'Regional', 'National / International', 'Other'] as StandardCategory[])
                   .map(category => {
                     const categoryItems = activeCountyNames.filter(name => getStandardCategory(name) === category);
                     if (categoryItems.length === 0) return null;
@@ -226,7 +230,7 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
                 <p>Select which standards should be available in the comparison dropdown. Standards are grouped into County, Regional, and National / International categories.</p>
                 <div className="standards-list">
                   {countyNames.length > 0 ? (
-                    (['County', 'Regional', 'National / International'] as StandardCategory[])
+                    (['County', 'Regional', 'National / International', 'Other'] as StandardCategory[])
                       .map(category => {
                         const namesInCategory = countyNames.filter(name => getStandardCategory(name) === category);
                         if (namesInCategory.length === 0) return null;
@@ -287,7 +291,7 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
               onChange={e => handleSelectCounty(e.target.value)}
               style={{ padding: '4px 8px' }}
             >
-              {(['County', 'Regional', 'National / International'] as StandardCategory[])
+              {(['County', 'Regional', 'National / International', 'Other'] as StandardCategory[])
                 .map(category => {
                   const namesInCategory = activeCountyNames.filter(name => getStandardCategory(name) === category);
                   if (namesInCategory.length === 0) return null;

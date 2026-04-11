@@ -11,6 +11,7 @@ import { SESERegionalParser } from './parsers/SESERegionalParser';
 import { SSAParser } from './parsers/SSAParser';
 import { EssexParser } from './parsers/EssexParser';
 import { SussexParser } from './parsers/SussexParser';
+import { GenericPdfParser } from './parsers/GenericPdfParser';
 
 // Order matters: more specific detectors must come before broad ones.
 // SELondon before Hertfordshire because both match QT/CT patterns.
@@ -25,7 +26,8 @@ const PARSERS: PdfParser[] = [
   new HertfordshireParser(),
   new SurreyParser(),
   new HampshireParser(),
-  new MiddlesexParser()
+  new MiddlesexParser(),
+  new GenericPdfParser(),
 ];
 
 // ─── PDF text extraction ──────────────────────────────────────────────────────
