@@ -32,47 +32,54 @@ const EVENT_MAP: Record<string, string> = {
   '400 IM':     '400 Individual Medley',
 };
 
-function normalizeQualifyingTime(value: string): string {
-  let normalized = value.replace(/,/g, '.').replace(/：/g, ':');
+function normalizeQualifyingTime(value : string) {
+    let normalized = value.replace(/,/g, '.').replace(/：/g, ':');
 
-  const mmsscc = normalized.match(/^([0-9]+):([0-9]{2})\.([0-9]{2})$/);
-  if (mmsscc) {
-    return `${parseInt(mmsscc[1], 10)}:${mmsscc[2]}.${mmsscc[3]}`;
-  }
+    // mm:ss.cc  (e.g. "6:00.12")
+    const mmsscc = normalized.match(/^([0-9]+):([0-9]{2})\.([0-9]{2})$/);
+    if (mmsscc) {
+        return `${parseInt(mmsscc[1], 10)}:${mmsscc[2]}.${mmsscc[3]}`;
+    }
 
-  const dotMsCs = normalized.match(/^([0-9]+)\.([0-9]{2})\.([0-9]{1,2})$/);
-  if (dotMsCs) {
-    return `${parseInt(dotMsCs[1], 10)}:${dotMsCs[2]}.${dotMsCs[3].padEnd(2, '0')}`;
-  }
+    // mm:ss.c or mm:ss.  (e.g. "6:00.1" or "6:00.")
+    const mmssc = normalized.match(/^([0-9]+):([0-9]{2})\.([0-9]{0,2})$/);
+    if (mmssc) {
+        const cs = (mmssc[3] || '').padEnd(2, '0'); // "" → "00", "1" → "10"
+        return `${parseInt(mmssc[1], 10)}:${mmssc[2]}.${cs}`;
+    }
 
-  const colonMissing = normalized.match(/^([0-9]{1,2}):\.([0-9]{2})\.([0-9]{1,2})$/);
-  if (colonMissing) {
-    return `${parseInt(colonMissing[1], 10)}:${colonMissing[2]}.${colonMissing[3].padEnd(2, '0')}`;
-  }
+    // s.cc or s.c  (e.g. "32.4" → "32.40")
+    const dotMsCs = normalized.match(/^([0-9]+)\.([0-9]{1,2})$/);
+    if (dotMsCs) {
+        return `${parseInt(dotMsCs[1], 10)}.${dotMsCs[2].padEnd(2, '0')}`;
+    }
 
-  const sscc = normalized.match(/^([0-9]{1,2})\.([0-9]{2})$/);
-  if (sscc) {
-    return `${parseInt(sscc[1], 10)}.${sscc[2]}`;
-  }
+    // colonMissing: "6:.00.1" (if you really need this odd format)
+    const colonMissing = normalized.match(/^([0-9]{1,2}):\.([0-9]{2})\.([0-9]{1,2})$/);
+    if (colonMissing) {
+        return `${parseInt(colonMissing[1], 10)}:${colonMissing[2]}.${colonMissing[3].padEnd(2, '0')}`;
+    }
 
-  const ssColon = normalized.match(/^([0-9]{1,2}):([0-9]{2})$/);
-  if (ssColon) {
-    return `${parseInt(ssColon[1], 10)}.${ssColon[2]}`;
-  }
+    // ss.cc
+    const sscc = normalized.match(/^([0-9]{1,2})\.([0-9]{2})$/);
+    if (sscc) {
+        return `${parseInt(sscc[1], 10)}.${sscc[2]}`;
+    }
 
-  // Plain seconds, e.g. "32" -> "32.00"
-  const plainSeconds = normalized.match(/^([0-9]{1,2})$/);
-  if (plainSeconds) {
-    return `${plainSeconds[1]}.00`;
-  }
+    // ss:cc  (looks like you want "12:34" → "12.34")
+    const ssColon = normalized.match(/^([0-9]{1,2}):([0-9]{2})$/);
+    if (ssColon) {
+        return `${parseInt(ssColon[1], 10)}.${ssColon[2]}`;
+    }
 
-  // Not a time, return empty to filter out
-  return '';
-}
+    // Plain seconds, e.g. "32" -> "32.00"
+    const plainSeconds = normalized.match(/^([0-9]{1,2})$/);
+    if (plainSeconds) {
+        return `${plainSeconds[1]}.00`;
+    }
 
-function isTimeToken(value: string): boolean {
-  const normalized = normalizeQualifyingTime(value);
-  return /^\d{1,2}(?::\d{2})?\.\d{1,2}$/.test(normalized);
+    // Not a time, return empty to filter out
+    return '';
 }
 
 function parseEventRow(line: string, gender: string, result: CountyTimes): void {
@@ -93,32 +100,50 @@ function parseEventRow(line: string, gender: string, result: CountyTimes): void 
 
   const courseToken = match[3];
   const poolSize = courseToken === 'LC' ? '50m' : '25m';
-  const tokens = line.slice(match[0].length).trim().split(/\s+/);
+  var tokens = line.slice(match[0].length).trim().split(/\s+/);
   console.log('[SESERegionalParser] tokens:', tokens);
-  const normalizedTimes = tokens.map(normalizeQualifyingTime);
-  console.log('[SESERegionalParser] normalized:', normalizedTimes);
-  const times = normalizedTimes.filter(t => t !== '');
-  console.log('[SESERegionalParser] filtered times:', times);
 
-  if (times.length < 7) {
-    console.log('[SESERegionalParser] not enough times:', times.length);
+  // Apply special-case trimming rules
+  if (tokens.length === 15) {
+    console.log('[SESERegionalParser] trimming 15-length row (removing 0,7,8,9)');
+    const skip = new Set([0, 7, 8, 9]);
+    tokens = tokens.filter((_, idx) => !skip.has(idx));
+    console.log('[SESERegionalParser] trimmed tokens:', tokens);
+  }
+  
+
+  var normalizedTimes = tokens.map(normalizeQualifyingTime);
+  console.log('[SESERegionalParser] normalized:', normalizedTimes);
+
+  
+  if (normalizedTimes.filter(t => t !== '').length < 7) {
+    console.log('[SESERegionalParser] not enough times:', normalizedTimes.filter(t => t !== '').length);
     return;
   }
 
   const qtTimes: string[] = [];
   const ctTimes: string[] = [];
 
-  for (let i = 0; i < times.length; i += 1) {
-    if (i < 8) {
-      if (i % 2 === 0) {
-        ctTimes.push(times[i]);
-      } else {
-        qtTimes.push(times[i]);
+  for (let i = 0; i < normalizedTimes.length; i += 1) {
+      var time = normalizedTimes[i];
+
+      if (i < 8) {
+          if (time === '') {
+              console.log(`[SESERegionalParser] skipping invalid time at index ${i}: "${tokens[i]}"`);
+              continue;
+          }
+
+          if (i % 2 === 0) {
+              ctTimes.push(time);
+          }
+          else {
+              qtTimes.push(time);
+          }
       }
-    } else {
-      qtTimes.push(times[i]);
-    }
-  }
+      else {
+          qtTimes.push(time);
+      }
+  }  
 
   console.log('[SESERegionalParser] qtTimes:', qtTimes, 'ctTimes:', ctTimes);
   addEntries(result, eventName, poolSize, gender, SESE_AGE_GROUPS, qtTimes, ctTimes);

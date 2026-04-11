@@ -20,7 +20,7 @@ const PARSERS: PdfParser[] = [
   new EssexParser(),
   new SussexParser(),
   new KentParser(),
-  // new SESERegionalParser(),
+  new SESERegionalParser(),
   new SELondonParser(),
   new HertfordshireParser(),
   new SurreyParser(),
