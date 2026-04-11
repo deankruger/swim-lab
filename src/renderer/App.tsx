@@ -392,7 +392,7 @@ const App: React.FC = () => {
                                         setNavOpen(false);
                                     }}
                                 >
-                                    About <FontAwesomeIcon icon={faInfoCircle} />
+                                    About
                                 </button>
                             </strong>
                             <strong>
@@ -406,7 +406,7 @@ const App: React.FC = () => {
                                         setNavOpen(false);
                                     }}
                                 >
-                                    Contact <FontAwesomeIcon icon={faEnvelope} />
+                                    Contact
                                 </button>
                             </strong>
                             <ThemeSelector />

@@ -62,7 +62,7 @@ const ThemeSelector : React.FC<ThemeSelectorProps> = () => {
                     color: 'var(--primary)'
                 }}
             >
-               Theme <FontAwesomeIcon icon={faPalette} />
+               <FontAwesomeIcon icon={faPalette} />
             </button>
             {open && (
                 <div

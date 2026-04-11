@@ -7,6 +7,7 @@ import { SurreyParser } from './parsers/SurreyParser';
 import { HampshireParser } from './parsers/HampshireParser';
 import { MiddlesexParser } from './parsers/MiddlesexParser';
 import { SELondonParser } from './parsers/SELondonParser';
+import { SESERegionalParser } from './parsers/SESERegionalParser';
 import { SSAParser } from './parsers/SSAParser';
 import { EssexParser } from './parsers/EssexParser';
 import { SussexParser } from './parsers/SussexParser';
@@ -19,6 +20,7 @@ const PARSERS: PdfParser[] = [
   new EssexParser(),
   new SussexParser(),
   new KentParser(),
+  // new SESERegionalParser(),
   new SELondonParser(),
   new HertfordshireParser(),
   new SurreyParser(),

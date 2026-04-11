@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCheck, faTriangleExclamation, faFolderOpen, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCheck, faTriangleExclamation, faFolderOpen, faXmark, faCheckSquare } from '@fortawesome/free-solid-svg-icons';
 import { SwimmerData, CountyTimes, CountyTimesStore, ComparisonResult } from '../../types';
 import { mobileAPI } from '../../api/MobileAPI';
 
@@ -60,6 +60,22 @@ const getFilteredCountyTimes = (birthYear: string, gender: string, allTimes: Cou
 };
 
 /** Try to find a county name that matches the swimmer's region field */
+type StandardCategory = 'County' | 'Regional' | 'National / International';
+
+const getStandardCategory = (name: string): StandardCategory => {
+  const normalized = name.toLowerCase();
+
+  if (normalized.includes('national') || normalized.includes('international') || normalized.includes('ssa') || normalized.includes('british') || normalized.includes('fina')) {
+    return 'National / International';
+  }
+
+  if (normalized.includes('london') || normalized.includes('regional') || normalized.includes('se ')) {
+    return 'Regional';
+  }
+
+  return 'County';
+};
+
 const detectCountyFromRegion = (region: string, countyNames: string[]): string | null => {
   if (!region) return null;
   const regionLower = region.toLowerCase();
@@ -155,22 +171,34 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
       <div style={{ marginBottom: '15px', padding: '10px', backgroundColor: 'var(--card-bg)', borderRadius: '5px' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', flexWrap: 'wrap' }}>
-            <strong>Loaded Standards:</strong>
+            <p><strong>Loaded Standards:</strong></p>
             {activeCountyNames.length > 0 ? (
-              <div className="swimmer-tags">
-                {activeCountyNames.map(county => (
-                  <span key={county} className="swimmer-tag-badge">
-                    {county}
-                    <button
-                      className="swimmer-tag-remove"
-                      onClick={() => onActiveStandardsChange(activeStandards.filter(name => name !== county))}
-                      disabled={loading}
-                      title={`Hide ${county} from comparison`}
-                    >
-                      <FontAwesomeIcon icon={faXmark} />
-                    </button>
-                  </span>
-                ))}
+              <div className="standards-group-list" style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap' }}>
+                {(['County', 'Regional', 'National / International'] as StandardCategory[])
+                  .map(category => {
+                    const categoryItems = activeCountyNames.filter(name => getStandardCategory(name) === category);
+                    if (categoryItems.length === 0) return null;
+                    return (
+                      <div key={category} className="standards-group" style={{ minWidth: '180px' }}>
+                        <div className="standards-group-title" style={{ fontSize: '0.85em', fontWeight: 600, marginBottom: '4px' }}>{category}</div>
+                        <div className="swimmer-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '4px' }}>
+                          {categoryItems.map(county => (
+                            <span key={county} className="swimmer-tag-badge">
+                              {county}
+                              <button
+                                className="swimmer-tag-remove"
+                                onClick={() => onActiveStandardsChange(activeStandards.filter(name => name !== county))}
+                                disabled={loading}
+                                title={`Hide ${county} from comparison`}
+                              >
+                                <FontAwesomeIcon icon={faXmark} />
+                              </button>
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    );
+                  })}
               </div>
             ) : (
               <span style={{ color: 'var(--danger)' }}>
@@ -195,35 +223,49 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
                 <button className="modal-close" onClick={() => setShowStandardsModal(false)} aria-label="Close standards modal">×</button>
               </div>
               <div className="modal-body">
-                <p>Select which standards should be available in the comparison dropdown.</p>
+                <p>Select which standards should be available in the comparison dropdown. Standards are grouped into County, Regional, and National / International categories.</p>
                 <div className="standards-list">
                   {countyNames.length > 0 ? (
-                    countyNames.map(county => (
-                      <label key={county} className="standards-item">
-                        <input
-                          type="checkbox"
-                          checked={activeStandards.includes(county)}
-                          onChange={() => onActiveStandardsChange(
-                            activeStandards.includes(county)
-                              ? activeStandards.filter(name => name !== county)
-                              : [...activeStandards, county]
-                          )}
-                        />
-                        <span>{county}</span>
-                      </label>
-                    ))
+                    (['County', 'Regional', 'National / International'] as StandardCategory[])
+                      .map(category => {
+                        const namesInCategory = countyNames.filter(name => getStandardCategory(name) === category);
+                        if (namesInCategory.length === 0) return null;
+                        return (
+                          <div key={category} className="standards-category">
+                            <div className="standards-category-title">{category}</div>
+                            {namesInCategory.map(county => (
+                              <label key={county} className="standards-item">
+                                <input
+                                  type="checkbox"
+                                  checked={activeStandards.includes(county)}
+                                  onChange={() => onActiveStandardsChange(
+                                    activeStandards.includes(county)
+                                      ? activeStandards.filter(name => name !== county)
+                                      : [...activeStandards, county]
+                                  )}
+                                />
+                                <span>{county}</span>
+                              </label>
+                            ))}
+                          </div>
+                        );
+                      })
                   ) : (
                     <div className="empty-standards">No standards loaded yet.</div>
                   )}
                 </div>
               </div>
               <div className="modal-actions">
-                <button type="button" className="btn-ghost" onClick={() => onActiveStandardsChange(countyNames)} disabled={countyNames.length === 0}>Select All</button>
-                <button type="button" className="btn-ghost" onClick={() => onActiveStandardsChange([])} disabled={countyNames.length === 0}>Clear All</button>
-                <button type="button" className="btn-ghost" onClick={onLoadCountyTimes} disabled={loading}>
-                  Load Standards from File
+                <button type="button" className="btn" style={{opacity:0.8}} onClick={() => onActiveStandardsChange(countyNames)} disabled={countyNames.length === 0}>
+                  <FontAwesomeIcon icon={faCheckSquare} /> Select All</button>
+                <button type="button" className="btn" style={{opacity:0.8}} onClick={() => onActiveStandardsChange([])} disabled={countyNames.length === 0}>
+                  Clear All</button>
+                <button type="button" className="btn" style={{opacity:0.8}} onClick={onLoadCountyTimes} disabled={loading}>
+                  <FontAwesomeIcon icon={faFolderOpen} /> Load from File
                 </button>
-                <button type="button" className="btn" onClick={() => setShowStandardsModal(false)}>Done</button>
+                <button type="button" className="btn" onClick={() => setShowStandardsModal(false)}>
+                  Done
+                </button>
               </div>
             </div>
           </div>
@@ -245,9 +287,18 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
               onChange={e => handleSelectCounty(e.target.value)}
               style={{ padding: '4px 8px' }}
             >
-              {activeCountyNames.map(name => (
-                <option key={name} value={name}>{name}</option>
-              ))}
+              {(['County', 'Regional', 'National / International'] as StandardCategory[])
+                .map(category => {
+                  const namesInCategory = activeCountyNames.filter(name => getStandardCategory(name) === category);
+                  if (namesInCategory.length === 0) return null;
+                  return (
+                    <optgroup key={category} label={category}>
+                      {namesInCategory.map(name => (
+                        <option key={name} value={name}>{name}</option>
+                      ))}
+                    </optgroup>
+                  );
+                })}
             </select>
           </label>
         )}
