@@ -160,7 +160,7 @@ export class StandardsComparator{
                 considerationTime: countyEntry.considerationTime,
                 meetsConsideration,
                 difference: this.timeConverter.formatSecondsToTime(Math.abs(difference)),
-                isFaster: difference < 0,
+                isFaster: difference <= 0,
                 percentDiff,        
                 ageCategory: countyEntry.ageCategory,
                 date: fastestOption.date,
