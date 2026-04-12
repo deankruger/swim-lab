@@ -117,8 +117,8 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
                                         <th style={{ width: '210px' }}>Event</th>
                                         <th>Course</th>
                                         <th>Time</th>
-                                        <th>Course</th>
                                         <th>{course === '50m' ? 'Conv. to SC' : 'Conv. to LC'}</th>
+                                        <th>Date</th>
                                         <th>Venue</th>
                                     </tr>
                                 </thead>
