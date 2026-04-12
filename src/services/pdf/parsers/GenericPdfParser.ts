@@ -14,39 +14,39 @@ const SESE_AGE_GROUPS: AgeGroup[] = [
 ];
 
 const EVENT_MAP: Record<string, string> = {
-    '50 Free': '50 Freestyle',
-    '100 Free': '100 Freestyle',
-    '200 Free': '200 Freestyle',
-    '400 Free': '400 Freestyle',
-    '800 Free': '800 Freestyle',
-    '1500 Free': '1500 Freestyle',
-    '50 Freestyle': '50 Freestyle',
-    '100 Freestyle': '100 Freestyle',
-    '200 Freestyle': '200 Freestyle',
-    '400 Freestyle': '400 Freestyle',
-    '800 Freestyle': '800 Freestyle',
-    '1500 Freestyle': '1500 Freestyle',
-    '50 Back': '50 Backstroke',
-    '100 Back': '100 Backstroke',
-    '200 Back': '200 Backstroke',
-    '50 Backstroke': '50 Backstroke',
-    '100 Backstroke': '100 Backstroke',
-    '200 Backstroke': '200 Backstroke',
-    '50 Breaststroke': '50 Breaststroke',
-    '100 Breaststroke': '100 Breaststroke',
-    '200 Breaststroke': '200 Breaststroke',
-    '50 Fly': '50 Butterfly',
-    '100 Fly': '100 Butterfly',
-    '200 Fly': '200 Butterfly',
-    '50 Butterfly': '50 Butterfly',
-    '100 Butterfly': '100 Butterfly',
-    '200 Butterfly': '200 Butterfly',
-    '100 IM': '100 Individual Medley',
-    '200 IM': '200 Individual Medley',
-    '400 IM': '400 Individual Medley',
-    '100 Individual Medley': '100 Individual Medley',
-    '200 Individual Medley': '200 Individual Medley',
-    '400 Individual Medley': '400 Individual Medley',
+    '50 free': '50 Freestyle',
+    '100 free': '100 Freestyle',
+    '200 free': '200 Freestyle',
+    '400 free': '400 Freestyle',
+    '800 free': '800 Freestyle',
+    '1500 free': '1500 Freestyle',
+    '50 freestyle': '50 Freestyle',
+    '100 freestyle': '100 Freestyle',
+    '200 freestyle': '200 Freestyle',
+    '400 freestyle': '400 Freestyle',
+    '800 freestyle': '800 Freestyle',
+    '1500 freestyle': '1500 Freestyle',
+    '50 back': '50 Backstroke',
+    '100 back': '100 Backstroke',
+    '200 back': '200 Backstroke',
+    '50 backstroke': '50 Backstroke',
+    '100 backstroke': '100 Backstroke',
+    '200 backstroke': '200 Backstroke',
+    '50 breaststroke': '50 Breaststroke',
+    '100 breaststroke': '100 Breaststroke',
+    '200 breaststroke': '200 Breaststroke',
+    '50 fly': '50 Butterfly',
+    '100 fly': '100 Butterfly',
+    '200 fly': '200 Butterfly',
+    '50 butterfly': '50 Butterfly',
+    '100 butterfly': '100 Butterfly',
+    '200 butterfly': '200 Butterfly',
+    '100 im': '100 Individual Medley',
+    '200 im': '200 Individual Medley',
+    '400 im': '400 Individual Medley',
+    '100 individual medley': '100 Individual Medley',
+    '200 individual medley': '200 Individual Medley',
+    '400 individual medley': '400 Individual Medley',
 };
 
 function normalizeQualifyingTime(value : string) {
@@ -105,7 +105,7 @@ function parseEventRow(line: string, gender: string, result: CountyTimes): void 
         return;
 
     const eventKey = `${match[1]} ${match[2]}`;
-    const eventName = EVENT_MAP[eventKey];
+    const eventName = EVENT_MAP[eventKey.toLowerCase()];
     if (!eventName)
         return;
 
@@ -115,7 +115,10 @@ function parseEventRow(line: string, gender: string, result: CountyTimes): void 
 
     var normalizedTimes = tokens.map(normalizeQualifyingTime);
     console.log('[GenericPdfParser] normalized:', normalizedTimes);
-    if (normalizedTimes.filter(t => t !== '').length < 7) {
+    
+    const numberOfAgeGroups = SESE_AGE_GROUPS.length;
+
+    if (normalizedTimes.filter(t => t !== '').length < (numberOfAgeGroups / 2)) {
         console.log('[GenericPdfParser] not enough times:', normalizedTimes.filter(t => t !== '').length);
         return;
     }
