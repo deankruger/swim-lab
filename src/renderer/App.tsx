@@ -19,6 +19,8 @@ import ContactPage from './components/ContactPage';
 import AboutPage from './components/AboutPage';
 
 import defaultCountyTimes from '../../assets/json/county-times.json';
+import AuthButton from './components/AuthButton';
+import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
 
 const App: React.FC = () => {
     const [loading, setLoading] = useState(false);
@@ -408,8 +410,15 @@ const App: React.FC = () => {
                                 >
                                     Contact
                                 </button>
-                            </strong>
+                            </strong>                            
                             <ThemeSelector />
+                            <AuthButton />
+                            <AuthenticatedTemplate>
+                                <div>Signed In</div>
+                            </AuthenticatedTemplate>
+                            <UnauthenticatedTemplate>
+                                <div>Please sign in to continue.</div>
+                            </UnauthenticatedTemplate>
                         </div>
                     </nav>
                     )}
