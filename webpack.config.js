@@ -59,7 +59,13 @@ module.exports = {
             patterns: [
                 { from: 'src/renderer/styles.css', to: 'styles.css' },
                 { from: 'src/renderer/themes', to: 'themes' },
-                { from: 'assets', to: 'assets' }
+                { from: 'src/renderer/manifest.webmanifest', to: 'manifest.webmanifest' },
+                {
+                    from: 'src/renderer/service-worker.js',
+                    to: 'service-worker.js',
+                    transform: (content) => content.toString().replace(/__BUILD_VERSION__/g, String(Date.new()))
+                },
+                { from: 'src/renderer/icons/*.png', to: 'icons/[name][ext]' }
             ]
         }),
 
