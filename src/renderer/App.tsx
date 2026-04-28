@@ -10,6 +10,9 @@ import { faEnvelope, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
 import ThemeSelector from './components/ThemeSelector';
 import LoadingSpinner from './components/LoadingSpinner';
 import Toast from './components/Toast';
+import InstallPrompt from './components/InstallPrompt';
+import BottomNav from './components/BottomNav';
+import HeaderMenu from './components/HeaderMenu';
 
 import SearchSection from './components/SearchSection';
 import SwimmerComparison from './components/SwimmerComparison';
@@ -31,8 +34,11 @@ const App: React.FC = () => {
     const [navOpen, setNavOpen] = useState(false);
     const [page, setPage] = useState<'home' | 'contact' | 'about'>('home');
     const [activeStandards, setActiveStandards] = useState<string[]>([]);
+    const [swimmerActiveTab, setSwimmerActiveTab] = useState<'times' | 'comparison' | 'rankings'>('times');
     const swimmerDetailsRef = useRef<HTMLDivElement>(null);
     const comparisonRef = useRef<HTMLDivElement>(null);
+    const searchRef = useRef<HTMLDivElement>(null);
+    const savedRef = useRef<HTMLDivElement>(null);
     const navRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
@@ -367,6 +373,12 @@ const App: React.FC = () => {
                         </div>
                     </a>
                     <h1>Swim Lab</h1>
+                    <span className="header-theme">
+                        <ThemeSelector />
+                    </span>
+                    <span className="header-menu-wrap">
+                        <HeaderMenu onSelect={(p) => setPage(p)} />
+                    </span>
                     <button
                             className="nav-toggle"
                             onClick={() => setNavOpen(o => !o)}
@@ -419,12 +431,14 @@ const App: React.FC = () => {
                 <main>
                     {page === 'home' ? (
                         <>
-                            <SearchSection
-                                onSwimmerSelect={handleSearchResults}
-                                loading={loading}
-                                setLoading={setLoading}
-                                showToast={showToast}
-                            />
+                            <div ref={searchRef}>
+                                <SearchSection
+                                    onSwimmerSelect={handleSearchResults}
+                                    loading={loading}
+                                    setLoading={setLoading}
+                                    showToast={showToast}
+                                />
+                            </div>
 
                             {comparisonSwimmers.length > 0 && (
                                 <div ref={comparisonRef}>
@@ -439,6 +453,8 @@ const App: React.FC = () => {
                                         countyTimesStore={countyTimesStore}
                                         activeStandards={activeStandards}
                                         onActiveStandardsChange={handleActiveStandardsChange}
+                                        activeTab={swimmerActiveTab}
+                                        onActiveTabChange={setSwimmerActiveTab}
                                         onSave={handleSaveSwimmer}
                                         onExport={handleExportToExcel}
                                         onClear={handleClearDetails}
@@ -455,14 +471,16 @@ const App: React.FC = () => {
                                 </div>
                             )}
 
-                            <SavedSwimmers
-                                swimmers={savedSwimmers}
-                                onLoad={handleLoadSavedSwimmer}
-                                onDelete={handleDeleteSwimmer}
-                                onRefreshAll={handleRefreshAllSwimmers}
-                                onCompare={handleCompareSwimmers}
-                                onUpdateTags={handleUpdateSwimmerTags}
-                            />
+                            <div ref={savedRef}>
+                                <SavedSwimmers
+                                    swimmers={savedSwimmers}
+                                    onLoad={handleLoadSavedSwimmer}
+                                    onDelete={handleDeleteSwimmer}
+                                    onRefreshAll={handleRefreshAllSwimmers}
+                                    onCompare={handleCompareSwimmers}
+                                    onUpdateTags={handleUpdateSwimmerTags}
+                                />
+                            </div>
                         </>
                     ) : page === 'about' ? (
                         <AboutPage onBack={() => setPage('home')} />
@@ -473,7 +491,22 @@ const App: React.FC = () => {
 
                 {loading && <LoadingSpinner />}
                 {toast && <Toast message={toast.message} type={toast.type} />}
+                <InstallPrompt />
             </div>
+            <BottomNav
+                swimmerLoaded={!!currentSwimmerData}
+                activeTab={swimmerActiveTab}
+                onActiveTabChange={setSwimmerActiveTab}
+                onCloseSwimmer={handleClearDetails}
+                onJumpToSearch={() => {
+                    setPage('home');
+                    setTimeout(() => searchRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+                }}
+                onJumpToSaved={() => {
+                    setPage('home');
+                    setTimeout(() => savedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+                }}
+            />
         </>
     );
 };
