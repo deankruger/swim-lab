@@ -13,3 +13,13 @@ root.render(
         <App />
     </React.StrictMode>
 );
+
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker
+            .register('/service-worker.js', { updateViaCache: 'none' })
+            .catch((err) => {
+                console.warn('SW registration failed:', err);
+            });
+    });
+}
