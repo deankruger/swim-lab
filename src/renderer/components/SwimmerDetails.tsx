@@ -11,6 +11,8 @@ interface SwimmerDetailsProps {
     countyTimesStore: CountyTimesStore;
     activeStandards: string[];
     onActiveStandardsChange: (active: string[]) => void;
+    activeTab: 'times' | 'comparison' | 'rankings';
+    onActiveTabChange: (tab: 'times' | 'comparison' | 'rankings') => void;
     onSave: () => void;
     onExport: () => void;
     onClear: () => void;
@@ -30,6 +32,8 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
     countyTimesStore,
     activeStandards,
     onActiveStandardsChange,
+    activeTab,
+    onActiveTabChange,
     onSave,
     onExport,
     onClear,
@@ -43,8 +47,7 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
     setLoading,
     showToast
 }) => {
-    const [isCollapsed, setIsCollapsed] = useState(false);        
-    const [activeTab, setActiveTab] = useState<'times' | 'comparison' | 'rankings'>('times');
+    const [isCollapsed, setIsCollapsed] = useState(false);
 
     const currentYear = new Date().getFullYear();
     const ageAtEndOfYear = swimmerData.birthYear ? currentYear - parseInt(swimmerData.birthYear) : 'Unknown';
@@ -71,10 +74,10 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
                 <p><strong>Tiref:</strong> {swimmerData.tiref} </p>
                 <p><strong>Total Events:</strong> {swimmerData.times.length}</p>
             </div>
-            <div className="tabs">                
-                <button className={`tab-btn ${activeTab === 'times' ? 'active' : ''}`} onClick={() => setActiveTab('times')}>Personal Bests</button>
-                <button className={`tab-btn ${activeTab === 'comparison' ? 'active' : ''}`} onClick={() => setActiveTab('comparison')}>Standards</button>
-                <button className={`tab-btn ${activeTab === 'rankings' ? 'active' : ''}`} onClick={() => setActiveTab('rankings')}>Rankings</button>                
+            <div className="tabs">
+                <button className={`tab-btn ${activeTab === 'times' ? 'active' : ''}`} onClick={() => onActiveTabChange('times')}>Personal Bests</button>
+                <button className={`tab-btn ${activeTab === 'comparison' ? 'active' : ''}`} onClick={() => onActiveTabChange('comparison')}>Standards</button>
+                <button className={`tab-btn ${activeTab === 'rankings' ? 'active' : ''}`} onClick={() => onActiveTabChange('rankings')}>Rankings</button>
             </div>
             {activeTab === 'times' && <PersonalBests times={swimmerData.times} />}
             {activeTab === 'comparison' && (
