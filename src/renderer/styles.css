@@ -22,10 +22,23 @@ body {
     line-height: 1.6;
 }
 
+/* Prevent iOS Safari from zooming in when an input is focused.
+   Only applies to coarse-pointer devices so desktop sizing is unchanged. */
+@media (pointer: coarse) {
+    input,
+    select,
+    textarea {
+        font-size: 16px;
+    }
+}
+
 .container {
     max-width: 1400px;
     margin: 0 auto;
     padding: 2rem;
+    padding-left: max(2rem, env(safe-area-inset-left));
+    padding-right: max(2rem, env(safe-area-inset-right));
+    padding-bottom: max(2rem, env(safe-area-inset-bottom));
 }
 
 header {
@@ -35,6 +48,7 @@ header {
     background: var(--bg-primary);
     border-bottom: 2px solid var(--primary);
     box-shadow: 0 1p 3px 0 rgba(0, 0, 0, 0.1);
+    padding-top: env(safe-area-inset-top);
 }
 
 .header-content {
@@ -42,6 +56,8 @@ header {
     align-items: center;
     gap: 0.875rem;
     padding: 0.75rem 2rem;
+    padding-left: max(2rem, env(safe-area-inset-left));
+    padding-right: max(2rem, env(safe-area-inset-right));
     max-width: 1400px;
     margin: 0 auto;
 }
@@ -1228,8 +1244,8 @@ table tbody tr:last-child td {
 /* Toast */
 .toast {
     position: fixed;
-    bottom: 1.5rem;
-    right: 1.5rem;
+    bottom: max(1.5rem, calc(env(safe-area-inset-bottom) + 0.5rem));
+    right: max(1.5rem, calc(env(safe-area-inset-right) + 0.5rem));
     max-width: 400px;
     padding: 1rem 1.25rem;
     background: var(--gray-800);
@@ -1252,8 +1268,265 @@ table tbody tr:last-child td {
     background: var(--success);
 }
 
-.toast.error { 
+.toast.error {
     background: var(--danger);
+}
+
+/* Install Prompt */
+.install-prompt {
+    position: fixed;
+    bottom: max(1rem, calc(env(safe-area-inset-bottom) + 0.5rem));
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: min(500px, calc(100% - 2rem));
+    width: max-content;
+    padding: 0.75rem 0.85rem 0.75rem 1rem;
+    background: var(--primary);
+    color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    z-index: 1000;
+    font-size: 0.95rem;
+}
+
+.install-prompt-text {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.install-prompt-btn {
+    background: #ffffff;
+    color: var(--primary);
+    border: none;
+    padding: 0.45rem 0.95rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.install-prompt-btn:hover {
+    filter: brightness(0.95);
+}
+
+.install-prompt-btn-block {
+    display: block;
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.6rem 1rem;
+    background: var(--primary);
+    color: #ffffff;
+}
+
+.install-prompt-close {
+    background: transparent;
+    color: #ffffff;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0 0.25rem;
+    opacity: 0.8;
+}
+
+.install-prompt-close:hover {
+    opacity: 1;
+}
+
+.install-prompt-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1002;
+    padding: 1rem;
+}
+
+.install-prompt-modal-content {
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    padding: 1.5rem;
+    border-radius: 12px;
+    max-width: 420px;
+    width: 100%;
+    box-shadow: 0 20px 40px -10px rgba(0, 0, 0, 0.35);
+}
+
+.install-prompt-modal-content h3 {
+    margin: 0 0 0.75rem;
+    color: var(--primary);
+}
+
+.install-prompt-modal-content ol {
+    margin: 0;
+    padding-left: 1.25rem;
+    line-height: 1.7;
+    color: var(--text-primary);
+}
+
+@media (max-width: 420px) {
+    .install-prompt-text {
+        font-size: 0.88rem;
+    }
+    .install-prompt {
+        padding: 0.65rem 0.5rem 0.65rem 0.85rem;
+        gap: 0.5rem;
+    }
+}
+
+/* Bottom Nav (mobile only) */
+.bottom-nav {
+    display: none;
+}
+
+.header-theme {
+    display: none;
+}
+
+.header-menu-wrap {
+    display: none;
+}
+
+/* Header kebab menu — used at narrow widths */
+.header-menu {
+    position: relative;
+    display: inline-block;
+}
+
+.header-menu-trigger {
+    padding: 0.4rem 0.5rem;
+    font-size: 1.05rem;
+}
+
+.header-menu-popover {
+    position: absolute;
+    top: 110%;
+    right: 0;
+    background: var(--bg-primary);
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+    z-index: 1000;
+    min-width: 160px;
+    overflow: hidden;
+    padding: 0.25rem 0;
+}
+
+.header-menu-item {
+    display: flex;
+    align-items: center;
+    gap: 0.625rem;
+    width: 100%;
+    padding: 0.625rem 0.875rem;
+    border: none;
+    background: transparent;
+    color: var(--text-primary);
+    cursor: pointer;
+    font-size: 0.95rem;
+    text-align: left;
+}
+
+.header-menu-item:hover,
+.header-menu-item:focus-visible {
+    background: var(--gray-100);
+}
+
+@media (max-width: 768px) {
+    .bottom-nav {
+        display: flex;
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: var(--bg-primary);
+        border-top: 1px solid var(--gray-200);
+        padding: 0.25rem 0;
+        padding-bottom: calc(0.25rem + env(safe-area-inset-bottom));
+        padding-left: env(safe-area-inset-left);
+        padding-right: env(safe-area-inset-right);
+        box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);
+    }
+
+    .bottom-nav-item {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 0.15rem;
+        padding: 0.5rem 0.25rem;
+        min-height: 48px;
+        background: transparent;
+        border: none;
+        color: var(--gray-600);
+        cursor: pointer;
+        font-size: 0.7rem;
+        transition: color 0.15s ease;
+    }
+
+    .bottom-nav-item:active {
+        background: var(--gray-100);
+    }
+
+    .bottom-nav-item.active {
+        color: var(--primary);
+    }
+
+    .bottom-nav-icon {
+        font-size: 1.2rem;
+    }
+
+    .bottom-nav-label {
+        font-weight: 500;
+        letter-spacing: 0.01em;
+    }
+
+    /* Hide hamburger + drawer; bottom nav replaces them */
+    .nav-toggle,
+    .nav-drawer {
+        display: none !important;
+    }
+
+    /* Inline theme selector takes the hamburger's place in the header */
+    .header-theme {
+        display: inline-flex;
+        align-items: center;
+        margin-left: auto;
+    }
+
+    /* Kebab menu (About/Contact) sits beside the theme palette */
+    .header-menu-wrap {
+        display: inline-flex;
+        align-items: center;
+    }
+
+    /* The in-card tabs row is replaced by the bottom nav at this width */
+    .details-section .tabs {
+        display: none;
+    }
+
+    /* Push fixed-bottom UI above the bottom nav (~64px + safe area) */
+    .install-prompt {
+        bottom: calc(64px + env(safe-area-inset-bottom) + 0.5rem);
+    }
+
+    .toast {
+        bottom: calc(64px + env(safe-area-inset-bottom) + 0.5rem);
+    }
+
+    .comparison-action-bar {
+        bottom: calc(64px + env(safe-area-inset-bottom));
+        padding-bottom: 0.875rem;
+    }
 }
 
 /* Empty State */
@@ -1294,6 +1567,9 @@ table tbody tr:last-child td {
 @media (max-width: 768px) {
     .container {
         padding: 1rem;
+        padding-bottom: calc(64px + env(safe-area-inset-bottom) + 1rem);
+        padding-left: max(1rem, env(safe-area-inset-left));
+        padding-right: max(1rem, env(safe-area-inset-right));
     }
 
     .header-content {
@@ -1358,6 +1634,9 @@ table tbody tr:last-child td {
 
     .container {
         padding: 0.625rem;
+        padding-bottom: calc(64px + env(safe-area-inset-bottom) + 0.625rem);
+        padding-left: max(0.625rem, env(safe-area-inset-left));
+        padding-right: max(0.625rem, env(safe-area-inset-right));
     }
 
     .header-content {
