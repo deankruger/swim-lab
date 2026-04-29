@@ -63,7 +63,7 @@ module.exports = {
                 {
                     from: 'src/renderer/service-worker.js',
                     to: 'service-worker.js',
-                    transform: (content) => content.toString().replace(/__BUILD_VERSION__/g, String(Date.new()))
+                    transform: (content) => content.toString().replace(/__BUILD_VERSION__/g, String(Date.now()))
                 },
                 { from: 'src/renderer/icons/*.png', to: 'icons/[name][ext]' }
             ]
