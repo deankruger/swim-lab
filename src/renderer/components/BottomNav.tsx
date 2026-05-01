@@ -6,7 +6,9 @@ import {
     faRankingStar,
     faXmark,
     faMagnifyingGlass,
-    faBookmark
+    faBookmark,
+    faInfoCircle,
+    faEnvelope
 } from '@fortawesome/free-solid-svg-icons';
 
 export type SwimmerTab = 'times' | 'comparison' | 'rankings';
