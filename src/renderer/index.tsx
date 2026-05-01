@@ -22,4 +22,11 @@ if ('serviceWorker' in navigator) {
                 console.warn('SW registration failed:', err);
             });
     });
+
+    let refreshing = false;
+    navigator.serviceWorker.addEventListener('controllerchange', () => {
+        if (refreshing) return;
+        refreshing = true;
+        window.location.reload();
+    });
 }
