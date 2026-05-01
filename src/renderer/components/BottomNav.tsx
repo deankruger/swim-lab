@@ -12,6 +12,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 
 export type SwimmerTab = 'times' | 'comparison' | 'rankings';
+export type AppPage = 'home' | 'about' | 'contact';
 
 interface BottomNavProps {
     swimmerLoaded: boolean;
