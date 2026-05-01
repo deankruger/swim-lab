@@ -3,16 +3,13 @@ import './styles.css';
 
 import { mobileAPI } from '../api/MobileAPI';
 import { ComparisonResult, CountyTimesStore, SwimmerData } from '../types';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faInfoCircle } from '@fortawesome/free-solid-svg-icons';
-
 
 import ThemeSelector from './components/ThemeSelector';
 import LoadingSpinner from './components/LoadingSpinner';
 import Toast from './components/Toast';
 import InstallPrompt from './components/InstallPrompt';
 import BottomNav from './components/BottomNav';
-import HeaderMenu from './components/HeaderMenu';
+import PullToRefreshIndicator from './components/PullToRefreshIndicator';
 
 import SearchSection from './components/SearchSection';
 import SwimmerComparison from './components/SwimmerComparison';
@@ -20,6 +17,8 @@ import SavedSwimmers from './components/SavedSwimmers';
 import SwimmerDetails from './components/SwimmerDetails';
 import ContactPage from './components/ContactPage';
 import AboutPage from './components/AboutPage';
+
+import { usePullToRefresh } from './hooks/usePullToRefresh';
 
 import defaultCountyTimes from '../../assets/json/county-times.json';
 
@@ -359,8 +358,27 @@ const App: React.FC = () => {
         setComparisonSwimmers([]);
     };
 
+    const PTR_THRESHOLD = 80;
+    const { pullDistance, refreshing: ptrRefreshing } = usePullToRefresh({
+        threshold: PTR_THRESHOLD,
+        enabled: page === 'home',
+        onRefresh: async () => {
+            if (currentSwimmerData) {
+                await handleRefreshCurrentSwimmer();
+            } else {
+                await loadSavedSwimmers();
+                showToast('Refreshed');
+            }
+        }
+    });
+
     return (
         <>
+            <PullToRefreshIndicator
+                pullDistance={pullDistance}
+                refreshing={ptrRefreshing}
+                threshold={PTR_THRESHOLD}
+            />
             <header ref={navRef}>
                 <div className="header-content">
                     <a href="/" className="logo"> 
@@ -375,9 +393,6 @@ const App: React.FC = () => {
                     <h1>Swim Lab</h1>
                     <span className="header-theme">
                         <ThemeSelector />
-                    </span>
-                    <span className="header-menu-wrap">
-                        <HeaderMenu onSelect={(p) => setPage(p)} />
                     </span>
                     <button
                             className="nav-toggle"
@@ -495,9 +510,12 @@ const App: React.FC = () => {
             </div>
             <BottomNav
                 swimmerLoaded={!!currentSwimmerData}
+                comparisonActive={comparisonSwimmers.length > 0}
+                page={page}
                 activeTab={swimmerActiveTab}
                 onActiveTabChange={setSwimmerActiveTab}
                 onCloseSwimmer={handleClearDetails}
+                onCloseComparison={handleCloseComparison}
                 onJumpToSearch={() => {
                     setPage('home');
                     setTimeout(() => searchRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
@@ -506,6 +524,8 @@ const App: React.FC = () => {
                     setPage('home');
                     setTimeout(() => savedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
                 }}
+                onJumpToAbout={() => setPage('about')}
+                onJumpToContact={() => setPage('contact')}
             />
         </>
     );
