@@ -6,18 +6,26 @@ import {
     faRankingStar,
     faXmark,
     faMagnifyingGlass,
-    faBookmark
+    faBookmark,
+    faInfoCircle,
+    faEnvelope
 } from '@fortawesome/free-solid-svg-icons';
 
 export type SwimmerTab = 'times' | 'comparison' | 'rankings';
+export type AppPage = 'home' | 'about' | 'contact';
 
 interface BottomNavProps {
     swimmerLoaded: boolean;
+    comparisonActive: boolean;
+    page: AppPage;
     activeTab: SwimmerTab;
     onActiveTabChange: (tab: SwimmerTab) => void;
     onCloseSwimmer: () => void;
+    onCloseComparison: () => void;
     onJumpToSearch: () => void;
     onJumpToSaved: () => void;
+    onJumpToAbout: () => void;
+    onJumpToContact: () => void;
 }
 
 interface ItemProps {
@@ -42,11 +50,16 @@ const NavItem: React.FC<ItemProps> = ({ label, icon, active, onClick, ariaCurren
 
 const BottomNav: React.FC<BottomNavProps> = ({
     swimmerLoaded,
+    comparisonActive,
+    page,
     activeTab,
     onActiveTabChange,
     onCloseSwimmer,
+    onCloseComparison,
     onJumpToSearch,
-    onJumpToSaved
+    onJumpToSaved,
+    onJumpToAbout,
+    onJumpToContact
 }) => (
     <nav className="bottom-nav" role="navigation" aria-label="Primary">
         {swimmerLoaded ? (
@@ -76,8 +89,33 @@ const BottomNav: React.FC<BottomNavProps> = ({
             </>
         ) : (
             <>
-                <NavItem label="Search" icon={faMagnifyingGlass} onClick={onJumpToSearch} />
-                <NavItem label="Saved" icon={faBookmark} onClick={onJumpToSaved} />
+                <NavItem
+                    label="Search"
+                    icon={faMagnifyingGlass}
+                    onClick={onJumpToSearch}
+                />
+                <NavItem
+                    label="Saved"
+                    icon={faBookmark}
+                    onClick={onJumpToSaved}
+                />
+                <NavItem
+                    label="About"
+                    icon={faInfoCircle}
+                    active={page === 'about'}
+                    ariaCurrent={page === 'about'}
+                    onClick={onJumpToAbout}
+                />
+                <NavItem
+                    label="Contact"
+                    icon={faEnvelope}
+                    active={page === 'contact'}
+                    ariaCurrent={page === 'contact'}
+                    onClick={onJumpToContact}
+                />
+                {comparisonActive && (
+                    <NavItem label="Close" icon={faXmark} onClick={onCloseComparison} />
+                )}
             </>
         )}
     </nav>
