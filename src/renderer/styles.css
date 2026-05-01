@@ -1272,6 +1272,50 @@ table tbody tr:last-child td {
     background: var(--danger);
 }
 
+/* Pull-to-refresh (touch devices only) */
+.ptr-indicator {
+    position: fixed;
+    top: -56px;
+    left: 0;
+    right: 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 200;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+.ptr-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: var(--bg-primary);
+    border: 1px solid var(--gray-200);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--gray-700);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+    transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.ptr-icon.triggered {
+    color: var(--primary);
+    transform: rotate(180deg);
+}
+
+.ptr-icon.refreshing {
+    color: var(--primary);
+}
+
+@media (pointer: fine) {
+    .ptr-indicator {
+        display: none;
+    }
+}
+
 /* Install Prompt */
 .install-prompt {
     position: fixed;
@@ -1391,54 +1435,6 @@ table tbody tr:last-child td {
     display: none;
 }
 
-.header-menu-wrap {
-    display: none;
-}
-
-/* Header kebab menu — used at narrow widths */
-.header-menu {
-    position: relative;
-    display: inline-block;
-}
-
-.header-menu-trigger {
-    padding: 0.4rem 0.5rem;
-    font-size: 1.05rem;
-}
-
-.header-menu-popover {
-    position: absolute;
-    top: 110%;
-    right: 0;
-    background: var(--bg-primary);
-    border: 1px solid var(--gray-200);
-    border-radius: 8px;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-    z-index: 1000;
-    min-width: 160px;
-    overflow: hidden;
-    padding: 0.25rem 0;
-}
-
-.header-menu-item {
-    display: flex;
-    align-items: center;
-    gap: 0.625rem;
-    width: 100%;
-    padding: 0.625rem 0.875rem;
-    border: none;
-    background: transparent;
-    color: var(--text-primary);
-    cursor: pointer;
-    font-size: 0.95rem;
-    text-align: left;
-}
-
-.header-menu-item:hover,
-.header-menu-item:focus-visible {
-    background: var(--gray-100);
-}
-
 @media (max-width: 768px) {
     .bottom-nav {
         display: flex;
@@ -1515,12 +1511,6 @@ table tbody tr:last-child td {
         display: inline-flex;
         align-items: center;
         margin-left: auto;
-    }
-
-    /* Kebab menu (About/Contact) sits beside the theme palette */
-    .header-menu-wrap {
-        display: inline-flex;
-        align-items: center;
     }
 
     /* The in-card tabs row is replaced by the bottom nav at this width */
