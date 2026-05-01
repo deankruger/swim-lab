@@ -1442,6 +1442,7 @@ table tbody tr:last-child td {
 @media (max-width: 768px) {
     .bottom-nav {
         display: flex;
+        gap: 0.25rem;
         position: fixed;
         bottom: 0;
         left: 0;
@@ -1451,8 +1452,8 @@ table tbody tr:last-child td {
         border-top: 1px solid var(--gray-200);
         padding: 0.25rem 0;
         padding-bottom: calc(0.25rem + env(safe-area-inset-bottom));
-        padding-left: env(safe-area-inset-left);
-        padding-right: env(safe-area-inset-right);
+        padding-left: max(0.5rem, env(safe-area-inset-left));
+        padding-right: max(0.5rem, env(safe-area-inset-right));
         box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.06);
     }
 
@@ -1473,12 +1474,25 @@ table tbody tr:last-child td {
         transition: color 0.15s ease;
     }
 
-    .bottom-nav-item:active {
+    .bottom-nav-item:hover,
+    .bottom-nav-item:focus,
+    .bottom-nav-item:focus-visible {
         background: var(--gray-100);
+        color: var(--gray-700);
+    }
+    
+    .bottom-nav-item:active {
+        background: var(--gray-200);
     }
 
     .bottom-nav-item.active {
         color: var(--primary);
+    }
+
+    .bottom-nav-item.active:hover,
+    .bottom-nav-item.active:focus {
+        color: var(--primary);
+        background: var(--gray-100);
     }
 
     .bottom-nav-icon {
