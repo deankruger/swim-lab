@@ -79,6 +79,55 @@ header h1 {
     color: var(--text-primary);
 }
 
+.header-user {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-left: 0.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.auth-panel {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.auth-status {
+    color: var(--gray-600);
+    font-size: 0.95rem;
+}
+
+.auth-status-muted {
+    color: var(--gray-500);
+}
+
+.auth-button,
+.auth-action {
+    padding: 0.55rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--gray-300);
+    background: rgba(59, 130, 246, 0.08);
+    color: var(--primary);
+    font-weight: 600;
+    transition: background 0.15s ease, transform 0.15s ease, border-color 0.15s ease;
+}
+
+.auth-button:hover,
+.auth-action:hover {
+    background: rgba(59, 130, 246, 0.16);
+    border-color: rgba(37, 99, 235, 0.4);
+}
+
+.auth-button:active,
+.auth-action:active {
+    transform: translateY(1px);
+}
+
 /* Hamburger button */
 .nav-toggle {
     display: flex;

@@ -22,9 +22,11 @@ import { usePullToRefresh } from './hooks/usePullToRefresh';
 
 import defaultCountyTimes from '../../assets/json/county-times.json';
 import AuthButton from './components/AuthButton';
-import { AuthenticatedTemplate, UnauthenticatedTemplate } from '@azure/msal-react';
+import { useMsal } from '@azure/msal-react';
+import { loginRequest } from '../authConfig';
 
 const App: React.FC = () => {
+    const { instance, accounts } = useMsal();
     const [loading, setLoading] = useState(false);
     const [currentSwimmerData, setCurrentSwimmerData] = useState<SwimmerData | null>(null);
     const [comparisonResult, setComparisonResult] = useState<ComparisonResult | null>(null);
@@ -393,6 +395,11 @@ const App: React.FC = () => {
                         </div>
                     </a>
                     <h1>Swim Lab</h1>
+                    {accounts.length > 0 && (
+                        <div className="header-user">
+                            {accounts[0].name}
+                        </div>
+                    )}
                     <span className="header-theme">
                         <ThemeSelector />
                     </span>
@@ -439,13 +446,18 @@ const App: React.FC = () => {
                                 </button>
                             </strong>                            
                             <ThemeSelector />
-                            <AuthButton />
-                            <AuthenticatedTemplate>
-                                <div>Signed In</div>
-                            </AuthenticatedTemplate>
-                            <UnauthenticatedTemplate>
-                                <div>Please sign in to continue.</div>
-                            </UnauthenticatedTemplate>
+                            <div className="auth-panel">
+                                {accounts.length > 0 ? (
+                                    <div className="auth-status">
+                                        Signed in as <strong>{accounts[0].name}</strong>
+                                    </div>
+                                ) : (
+                                    <div className="auth-status auth-status-muted">
+                                        Not signed in
+                                    </div>
+                                )}
+                                <AuthButton className="auth-action" />
+                            </div>
                         </div>
                     </nav>
                     )}
@@ -535,6 +547,14 @@ const App: React.FC = () => {
                 }}
                 onJumpToAbout={() => setPage('about')}
                 onJumpToContact={() => setPage('contact')}
+                onAuthClick={() => {
+                    if (accounts.length > 0) {
+                        instance.logoutRedirect();
+                    } else {
+                        instance.loginRedirect(loginRequest);
+                    }
+                }}
+                isSignedIn={accounts.length > 0}
             />
         </>
     );

@@ -8,7 +8,8 @@ import {
     faMagnifyingGlass,
     faBookmark,
     faInfoCircle,
-    faEnvelope
+    faEnvelope,
+    faUser
 } from '@fortawesome/free-solid-svg-icons';
 
 export type SwimmerTab = 'times' | 'comparison' | 'rankings';
@@ -26,6 +27,8 @@ interface BottomNavProps {
     onJumpToSaved: () => void;
     onJumpToAbout: () => void;
     onJumpToContact: () => void;
+    onAuthClick: () => void;
+    isSignedIn: boolean;
 }
 
 interface ItemProps {
@@ -59,7 +62,9 @@ const BottomNav: React.FC<BottomNavProps> = ({
     onJumpToSearch,
     onJumpToSaved,
     onJumpToAbout,
-    onJumpToContact
+    onJumpToContact,
+    onAuthClick,
+    isSignedIn
 }) => (
     <nav className="bottom-nav" role="navigation" aria-label="Primary">
         {swimmerLoaded ? (
@@ -112,6 +117,11 @@ const BottomNav: React.FC<BottomNavProps> = ({
                     active={page === 'contact'}
                     ariaCurrent={page === 'contact'}
                     onClick={onJumpToContact}
+                />
+                <NavItem
+                    label={isSignedIn ? "Sign Out" : "Sign In"}
+                    icon={faUser}
+                    onClick={onAuthClick}
                 />
                 {comparisonActive && (
                     <NavItem label="Close" icon={faXmark} onClick={onCloseComparison} />
