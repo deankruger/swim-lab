@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ComparisonResult, CountyTimesStore, SwimmerData } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faClose, faFileExcel, faFloppyDisk, faRotate } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faClose, faFileExcel, faFloppyDisk, faBookmark, faRotate } from "@fortawesome/free-solid-svg-icons";
 import PersonalBests from "./PersonalBests";
 import CountyComparison from "./CountyComparison";
 import Rankings from "./Rankings";
@@ -17,6 +17,7 @@ interface SwimmerDetailsProps {
     onExport: () => void;
     onClear: () => void;
     onRefresh: () => void;
+    isSaved: boolean;
     onLoadCountyTimes: () => void;
     onClearOneCounty: (county: string) => void;
     onCountySelected: (county: string) => void;
@@ -38,6 +39,7 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
     onExport,
     onClear,
     onRefresh,
+    isSaved,
     onLoadCountyTimes,
     onClearOneCounty,
     onCountySelected,
@@ -62,8 +64,16 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
             </div>            
             {!isCollapsed && <>
             <div className="action-buttons">
+                <button
+                    onClick={onSave}
+                    className={`btn-save-prominent${isSaved ? ' is-saved' : ''}`}
+                    disabled={loading}
+                    title={isSaved ? 'Update saved swimmer' : 'Save swimmer'}
+                >
+                    <FontAwesomeIcon icon={isSaved ? faBookmark : faFloppyDisk} />
+                    <span>{isSaved ? 'Saved' : 'Save'}</span>
+                </button>
                 <button onClick={onRefresh} className="btn-refresh btn-ghost" disabled={loading} title="Refresh times from website" style={{ color: 'var(--info)' }}><FontAwesomeIcon icon={faRotate} /></button>
-                <button onClick={onSave} className="btn-save btn-ghost" disabled={loading} title="Save swimmer" style={{ color: 'var(--success)' }}><FontAwesomeIcon icon={faFloppyDisk} /></button>
                 <button onClick={onExport} className="btn-export btn-ghost" disabled={loading} title="Export to Excel" style={{ color: 'var(--warning)' }}><FontAwesomeIcon icon={faFileExcel} /></button>
                 <button onClick={onClear} className="btn-clear btn-ghost" disabled={loading} title="Clear swimmer" style={{ color: 'var(--danger)' }}><FontAwesomeIcon icon={faClose} /></button>
             </div>

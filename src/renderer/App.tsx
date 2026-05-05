@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef } from 'react';
+import React, {useState, useEffect, useMemo, useRef } from 'react';
 import './styles.css';
 
 import { mobileAPI } from '../api/MobileAPI';
@@ -38,10 +38,9 @@ const App: React.FC = () => {
     const [page, setPage] = useState<'home' | 'contact' | 'about'>('home');
     const [activeStandards, setActiveStandards] = useState<string[]>([]);
     const [swimmerActiveTab, setSwimmerActiveTab] = useState<'times' | 'comparison' | 'rankings'>('times');
+    const [mobileView, setMobileView] = useState<'search' | 'saved'>('search');
     const swimmerDetailsRef = useRef<HTMLDivElement>(null);
     const comparisonRef = useRef<HTMLDivElement>(null);
-    const searchRef = useRef<HTMLDivElement>(null);
-    const savedRef = useRef<HTMLDivElement>(null);
     const navRef = useRef<HTMLElement>(null);
 
     useEffect(() => {
@@ -60,6 +59,14 @@ const App: React.FC = () => {
         loadCountyTimesStore();
         loadActiveStandards();
     }, []);
+
+    useEffect(() => {
+        if (!currentSwimmerData) return;
+        const id = requestAnimationFrame(() => {
+            swimmerDetailsRef.current?.scrollIntoView({ block: 'start', behavior: 'auto' });
+        });
+        return () => cancelAnimationFrame(id);
+    }, [currentSwimmerData?.tiref]);
 
     const showToast = (message: string, type: 'success' | 'error' = 'success') => {
         setToast({ message, type });
@@ -185,18 +192,36 @@ const App: React.FC = () => {
             setLoading(false);
         }
     };
-    
+
     const handleSaveSwimmer = async () => {
         if (!currentSwimmerData) {
             showToast('No swimmer data to save', 'error');
             return;
         }
-        
+
         setLoading(true);
         try {
             await mobileAPI.saveSwimmer(currentSwimmerData);
             await loadSavedSwimmers();
             showToast('Swimmer saved successfully');
+        } catch (error) {
+            showToast(`Error saving swimmer: ${(error as Error).message}`, 'error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    const handleSaveFromSearch = async (tiref: string, name: string, birthYear: string, gender: string, club: string) => {
+        setLoading(true);
+        try {
+            const swimmerData = await mobileAPI.getSwimmerTimes(tiref);
+            swimmerData.name = name;
+            swimmerData.birthYear = birthYear;
+            swimmerData.gender = gender;
+            swimmerData.club = club;
+            await mobileAPI.saveSwimmer(swimmerData);
+            await loadSavedSwimmers();
+            showToast(`Saved ${name}`);
         } catch (error) {
             showToast(`Error saving swimmer: ${(error as Error).message}`, 'error');
         } finally {
@@ -362,6 +387,10 @@ const App: React.FC = () => {
         setComparisonSwimmers([]);
     };
 
+    const detailOpen = !!currentSwimmerData || comparisonSwimmers.length > 0;
+    const savedTirefs = useMemo(() => new Set(savedSwimmers.map(s => s.tiref)), [savedSwimmers]);
+    const isCurrentSwimmerSaved = !!currentSwimmerData && savedTirefs.has(currentSwimmerData.tiref);
+
     const PTR_THRESHOLD = 80;
     const { pullDistance, refreshing: ptrRefreshing } = usePullToRefresh({
         threshold: PTR_THRESHOLD,
@@ -467,9 +496,11 @@ const App: React.FC = () => {
                 <main>
                     {page === 'home' ? (
                         <>
-                            <div ref={searchRef}>
+                            <div className={`mobile-view mobile-view-search${mobileView === 'search' ? ' mobile-view-active' : ''}${detailOpen ? ' mobile-detail-active' : ''}`}>
                                 <SearchSection
                                     onSwimmerSelect={handleSearchResults}
+                                    onSaveSwimmer={handleSaveFromSearch}
+                                    savedTirefs={savedTirefs}
                                     loading={loading}
                                     setLoading={setLoading}
                                     showToast={showToast}
@@ -483,7 +514,7 @@ const App: React.FC = () => {
                             )}
 
                             {currentSwimmerData && (
-                                <div ref={swimmerDetailsRef}>
+                                <div ref={swimmerDetailsRef} className="swimmer-details-anchor">
                                     <SwimmerDetails
                                         swimmerData={currentSwimmerData}
                                         countyTimesStore={countyTimesStore}
@@ -492,6 +523,7 @@ const App: React.FC = () => {
                                         activeTab={swimmerActiveTab}
                                         onActiveTabChange={setSwimmerActiveTab}
                                         onSave={handleSaveSwimmer}
+                                        isSaved={isCurrentSwimmerSaved}
                                         onExport={handleExportToExcel}
                                         onClear={handleClearDetails}
                                         onRefresh={handleRefreshCurrentSwimmer}
@@ -507,7 +539,7 @@ const App: React.FC = () => {
                                 </div>
                             )}
 
-                            <div ref={savedRef}>
+                            <div className={`mobile-view mobile-view-saved${mobileView === 'saved' ? ' mobile-view-active' : ''}${detailOpen ? ' mobile-detail-active' : ''}`}>
                                 <SavedSwimmers
                                     swimmers={savedSwimmers}
                                     onLoad={handleLoadSavedSwimmer}
@@ -537,13 +569,14 @@ const App: React.FC = () => {
                 onActiveTabChange={setSwimmerActiveTab}
                 onCloseSwimmer={handleClearDetails}
                 onCloseComparison={handleCloseComparison}
+                mobileView={mobileView}
                 onJumpToSearch={() => {
                     setPage('home');
-                    setTimeout(() => searchRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+                    setMobileView('search');
                 }}
                 onJumpToSaved={() => {
                     setPage('home');
-                    setTimeout(() => savedRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
+                    setMobileView('saved');
                 }}
                 onJumpToAbout={() => setPage('about')}
                 onJumpToContact={() => setPage('contact')}
@@ -561,4 +594,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-

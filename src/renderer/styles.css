@@ -473,7 +473,37 @@ button:active {
 .action-buttons {
     display: flex;
     justify-content: flex-end;
-    gap: 0rem;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 5px 0;
+}
+
+.btn-save-prominent {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+    background: var(--success);
+    color: white;    
+    border: none;
+    padding: 0.5rem 0.9rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: calc(var(--h1) * 0.7);
+    cursor: pointer;
+}
+
+.btn-save-prominent:hover:not(:disabled) {
+    background: #047857;
+}
+
+.btn-save-prominent.is-saved {
+    background: transparent;
+    color: var(--success);
+}
+
+.btn-save-prominent:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 .comparison-action-bar {
@@ -553,6 +583,39 @@ button:active {
 .swimmer-result button {
     padding: 0.5rem 1rem;
     font-size: calc(var(--h1) * 0.7);
+}
+
+.swimmer-result-actions {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.swimmer-result-save {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    background: var(--success);
+    color: white;
+    border: none;
+}
+
+.swimmer-result-save:hover:not(:disabled) {
+    background: #047857;
+}
+
+.swimmer-result-save.is-saved {
+    background: transparent;
+    color: var(--success);
+    border: 1px solid var(--success);
+    cursor: default;
+    opacity: 0.85;
+}
+
+.swimmer-result-save:disabled:not(.is-saved) {
+    opacity: 0.6;
+    cursor: not-allowed;
 }
 
 /* Pagination */
@@ -1012,6 +1075,18 @@ table tbody tr:last-child td {
     padding: 0.2rem 0.5rem;
     font-size: calc(var(--h1) * 0.65);
     flex-shrink: 0;
+}
+
+.swimmer-result-compact .swimmer-result-save {
+    background: var(--success);
+    color: white;
+    padding: 0.25rem 0.5rem;
+}
+
+.swimmer-result-compact .swimmer-result-save.is-saved {
+    background: transparent;
+    color: var(--success);
+    border: 1px solid var(--success);
 }
 
 /* Saved Swimmers Grid */
@@ -1485,6 +1560,10 @@ table tbody tr:last-child td {
 }
 
 @media (max-width: 768px) {
+    .mobile-view:not(.mobile-view-active) { display: none; }
+    .mobile-view.mobile-detail-active { display: none; }
+    .swimmer-details-anchor { scroll-margin-top: calc(72px + env(safe-area-inset-top)); }
+
     .bottom-nav {
         display: flex;
         gap: 0.25rem;

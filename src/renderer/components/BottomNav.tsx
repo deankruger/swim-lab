@@ -14,12 +14,14 @@ import {
 
 export type SwimmerTab = 'times' | 'comparison' | 'rankings';
 export type AppPage = 'home' | 'about' | 'contact';
+export type MobileView = 'search' | 'saved';
 
 interface BottomNavProps {
     swimmerLoaded: boolean;
     comparisonActive: boolean;
     page: AppPage;
     activeTab: SwimmerTab;
+    mobileView: MobileView;
     onActiveTabChange: (tab: SwimmerTab) => void;
     onCloseSwimmer: () => void;
     onCloseComparison: () => void;
@@ -56,6 +58,7 @@ const BottomNav: React.FC<BottomNavProps> = ({
     comparisonActive,
     page,
     activeTab,
+    mobileView,
     onActiveTabChange,
     onCloseSwimmer,
     onCloseComparison,
@@ -97,11 +100,15 @@ const BottomNav: React.FC<BottomNavProps> = ({
                 <NavItem
                     label="Search"
                     icon={faMagnifyingGlass}
+                    active={page === 'home' && mobileView === 'search'}
+                    ariaCurrent={page === 'home' && mobileView === 'search'}
                     onClick={onJumpToSearch}
                 />
                 <NavItem
                     label="Saved"
                     icon={faBookmark}
+                    active={page === 'home' && mobileView === 'saved'}
+                    ariaCurrent={page === 'home' && mobileView === 'saved'}
                     onClick={onJumpToSaved}
                 />
                 <NavItem
