@@ -1,17 +1,19 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faChevronLeft, faChevronRight, faList, faGrip, faMagnifyingGlass } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faChevronLeft, faChevronRight, faList, faGrip, faMagnifyingGlass, faFloppyDisk, faBookmark } from '@fortawesome/free-solid-svg-icons'
 import { SwimmerSearchResult } from '../../types'   
 import { mobileAPI } from '../../api/MobileAPI'
 
 interface SearchSectionProps{
     onSwimmerSelect: (tiref: string, name: string, birthYear: string, gender: string, club: string) => void;
+    onSaveSwimmer: (tiref: string, name: string, birthYear: string, gender: string, club: string) => void;
+    savedTirefs: Set<string>;
     loading: boolean;
     setLoading: (loading: boolean) => void;
     showToast: (message: string, type?: 'success' | 'error') => void;
 }
 
-const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading, setLoading, showToast}) => {
+const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSwimmer, savedTirefs, loading, setLoading, showToast}) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isCompact, setIsCompact] = useState(false);
     const [searchInput, setSearchInput] = useState('');
@@ -132,7 +134,9 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading,
                         </div>
                         {filteredResults
                             .slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage)
-                            .map((swimmer) => isCompact ? (
+                            .map((swimmer) => {
+                                const isSaved = savedTirefs.has(swimmer.tiref);
+                                return isCompact ? (
                                   <div key={swimmer.tiref} className="swimmer-result-compact">
                                     <span className="swimmer-result-compact-name">{swimmer.name}</span>
                                     <span className="swimmer-result-compact-meta">{swimmer.club} • Born {swimmer.birthYear} • {swimmer.gender}</span>
@@ -143,6 +147,15 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading,
                                     >
                                       <FontAwesomeIcon icon={faMagnifyingGlass} />
                                     </button>
+                                    <button
+                                      className={`swimmer-result-save${isSaved ? ' is-saved' : ''}`}
+                                      onClick={() => onSaveSwimmer(swimmer.tiref, swimmer.name, swimmer.birthYear, swimmer.gender, swimmer.club)}
+                                      disabled={loading || isSaved}
+                                      title={isSaved ? 'Already saved' : 'Save swimmer'}
+                                      aria-label={isSaved ? 'Already saved' : 'Save swimmer'}
+                                    >
+                                      <FontAwesomeIcon icon={isSaved ? faBookmark : faFloppyDisk} />
+                                    </button>
                                   </div>
                                 ) : (
                                 <div key={swimmer.tiref} className="swimmer-result">
@@ -150,14 +163,26 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, loading,
                                         <h3>{swimmer.name}</h3>
                                         <p>{swimmer.club} • Born {swimmer.birthYear} • {swimmer.gender}</p>
                                     </div>
-                                    <button 
-                                        onClick={() => onSwimmerSelect(swimmer.tiref, swimmer.name, swimmer.birthYear, swimmer.gender, swimmer.club)}
-                                        disabled={loading}
-                                    >
-                                        View Times
-                                    </button>
+                                    <div className="swimmer-result-actions">
+                                        <button
+                                            onClick={() => onSwimmerSelect(swimmer.tiref, swimmer.name, swimmer.birthYear, swimmer.gender, swimmer.club)}
+                                            disabled={loading}
+                                        >
+                                            View Times
+                                        </button>
+                                        <button
+                                            className={`swimmer-result-save${isSaved ? ' is-saved' : ''}`}
+                                            onClick={() => onSaveSwimmer(swimmer.tiref, swimmer.name, swimmer.birthYear, swimmer.gender, swimmer.club)}
+                                            disabled={loading || isSaved}
+                                            title={isSaved ? 'Already saved' : 'Save swimmer'}
+                                        >
+                                            <FontAwesomeIcon icon={isSaved ? faBookmark : faFloppyDisk} />
+                                            <span>{isSaved ? 'Saved' : 'Save'}</span>
+                                        </button>
+                                    </div>
                                 </div>
-                            ))
+                                );
+                            })
                         }
                         {filteredResults.length > resultsPerPage && (
                             <div className="pagination">
