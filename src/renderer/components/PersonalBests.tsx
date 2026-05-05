@@ -69,7 +69,7 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
     return (
         <div className="tab-content active">
             <div className="filter-section">
-                <div>
+                <div style={{ display: 'none' }}>
                     <label htmlFor='courseFilter'>Course:</label>
                     <select id='courseFilter' value={courseFilter} onChange={(e) => setCourseFilter(e.target.value as 'all' | '25m' | '50m')}>
                         <option value='all'>All Courses</option>
@@ -80,7 +80,7 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
                 <div>
                     <label htmlFor='strokeFilter'>Stroke:</label>
                     <select id='strokeFilter' value={strokeFilter} onChange={(e) => setStrokeFilter(e.target.value)}>
-                        <option value='all'>All Stroke</option>
+                        <option value='all'>All Strokes</option>
                         {strokes.map(stroke => (
                             <option key={stroke} value={stroke}>{stroke}</option>
                         ))}
