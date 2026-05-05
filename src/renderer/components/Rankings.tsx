@@ -319,7 +319,7 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
   return (
     <div>
       <div className="filter-section">
-        <div>
+        <div style={{ display: 'none' }}>
           <label htmlFor="courseFilter">Course:</label>
           <select
             id="courseFilter"
