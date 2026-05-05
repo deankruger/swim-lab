@@ -1100,7 +1100,7 @@ table tbody tr:last-child td {
 .saved-swimmer-card {
     position: relative;
     background: var(--gray-100);
-    opacticy: 0.85;
+    opacity: 0.85;
     border: 2px solid var(--gray-200);
     border-radius: 6px;
     padding: 0.3rem 1rem 0.8rem 1rem;
