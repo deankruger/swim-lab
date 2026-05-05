@@ -490,6 +490,7 @@ button:active {
     font-weight: 600;
     font-size: calc(var(--h1) * 0.7);
     cursor: pointer;
+    margin-right: auto;
 }
 
 .btn-save-prominent:hover:not(:disabled) {
@@ -1098,10 +1099,11 @@ table tbody tr:last-child td {
 
 .saved-swimmer-card {
     position: relative;
-    background: var(--bg-primary);
+    background: var(--gray-100);
+    opacticy: 0.85;
     border: 2px solid var(--gray-200);
     border-radius: 6px;
-    padding: 1rem;
+    padding: 0.3rem 1rem 0.8rem 1rem;
     transition: all 0.15s ease;
 }
 
@@ -1123,7 +1125,7 @@ table tbody tr:last-child td {
 
 .saved-swimmer-card p {
     margin: 0 0 1rem 0;
-    font-size: calc(var(--h1) * 0.7);   
+    font-size: calc(var(--h1) * 0.65);   
     color: var(--gray-600);
 }
 
