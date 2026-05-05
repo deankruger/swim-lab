@@ -107,7 +107,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onBack }) => {
           Built for swimmers, coaches, and teams who are serious about performance optimization.
         </p>
         <button className="btn-ghost" onClick={onBack} style={{ color: 'var(--primary)' }}>
-          Ready to get started? Go home to search for a swimmer
+          Ready to get started? Go to Search <FontAwesomeIcon icon={faArrowLeft} style={{ transform: 'rotate(180deg)' }} />        
         </button>
       </div>
     </section>
