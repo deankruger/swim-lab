@@ -2,35 +2,42 @@ import DataStore from '../services/dataStore';
 import { StandardsComparator } from '../services/comparators/StandardsComparator';
 import { TimeConverter } from '../services/utils/TimeConverter';
 import { SwimmerData, CountyTimes, CountyTimesStore, ComparisonResult, SwimmerRankings, SwimmerSearchResult } from '../types';
+import { authedFetch } from './authedFetch';
 
 const dataStore = new DataStore();
 const standardsComparator = new StandardsComparator(new TimeConverter());
 
+function prefixedUrl(input: string): string {
+    return process.env.NODE_ENV === 'production'
+        ? `https://swim-lab.azurewebsites.net${input}`
+        : input;
+}
+
 async function apiFetch<T>(input: string, init?: RequestInit): Promise<T> {
-    console.log(`[apiFetch] At runtime : API_BASE=${API_BASE} NODE_ENV=${process.env.NODE_ENV} `);
-    
-    var url =
-        process.env.NODE_ENV === "production"
-            ? `${API_BASE}${input}`
-            : input; // ⭐ keep relative paths in dev
-
-    //hack
-    url =
-        process.env.NODE_ENV === "production"
-            ? `https://swim-lab.azurewebsites.net${input}`
-            : input; // ⭐ keep relative paths in dev    
-
-    const res = await fetch(url, init);
-
+    const res = await authedFetch(prefixedUrl(input), init);
     if (!res.ok) {
         const body = await res.text().catch(() => '');
         throw new Error(`API error ${res.status}: ${body}`);
     }
-
     return res.json() as Promise<T>;
 }
 
+interface UserDataResponse {
+    countyTimesStore: CountyTimesStore;
+    activeStandards: string[];
+}
 
+async function fetchUserData(): Promise<UserDataResponse> {
+    return apiFetch<UserDataResponse>('/api/user/data');
+}
+
+async function putUserData(body: Partial<UserDataResponse>): Promise<UserDataResponse> {
+    return apiFetch<UserDataResponse>('/api/user/data', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    });
+}
 
 export const mobileAPI = {
     searchSwimmer(name: string): Promise<SwimmerSearchResult[]> {
@@ -41,23 +48,54 @@ export const mobileAPI = {
         return apiFetch<SwimmerData>(`/api/swimmer/${encodeURIComponent(tiref)}`);
     },
 
-    saveSwimmer(swimmerData: SwimmerData): Promise<SwimmerData> {
-        return dataStore.saveSwimmer(swimmerData);
+    async saveSwimmer(swimmerData: SwimmerData): Promise<SwimmerData> {
+        try {
+            const saved = await apiFetch<SwimmerData>(
+                `/api/user/swimmers/${encodeURIComponent(swimmerData.tiref)}`,
+                {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(swimmerData),
+                }
+            );
+            await dataStore.saveSwimmer(saved);
+            return saved;
+        } catch (err) {
+            console.warn('saveSwimmer: backend unavailable, writing local only', err);
+            return dataStore.saveSwimmer(swimmerData);
+        }
     },
 
-    getSavedSwimmers(): Promise<SwimmerData[]> {
-        return dataStore.getAllSwimmers();
+    async getSavedSwimmers(): Promise<SwimmerData[]> {
+        try {
+            const swimmers = await apiFetch<SwimmerData[]>('/api/user/swimmers');
+            await dataStore.replaceAllSwimmers(swimmers);
+            return swimmers;
+        } catch (err) {
+            console.warn('getSavedSwimmers: falling back to local cache', err);
+            return dataStore.getAllSwimmers();
+        }
     },
 
-    deleteSwimmer(tiref: string): Promise<boolean> {
-        return dataStore.deleteSwimmer(tiref);
+    async deleteSwimmer(tiref: string): Promise<boolean> {
+        try {
+            const result = await apiFetch<{ deleted: boolean }>(
+                `/api/user/swimmers/${encodeURIComponent(tiref)}`,
+                { method: 'DELETE' }
+            );
+            await dataStore.deleteSwimmer(tiref);
+            return result.deleted;
+        } catch (err) {
+            console.warn('deleteSwimmer: backend unavailable, deleting local only', err);
+            return dataStore.deleteSwimmer(tiref);
+        }
     },
-    
+
     async exportToExcel(swimmerData: SwimmerData, comparisonResult?: ComparisonResult | null): Promise<string> {
-        const res = await fetch('/api/export/excel', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ ...swimmerData, comparisonResult }),
+        const res = await authedFetch('/api/export/excel', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ ...swimmerData, comparisonResult }),
         });
         if (!res.ok) throw new Error(`Export failed: ${await res.text()}`);
         const fileName = res.headers.get('Content-Disposition')?.match(/filename="([^"]+)"/)?.[1] ?? 'export.xlsx';
@@ -91,7 +129,7 @@ export const mobileAPI = {
                 const loaded: Array<{ countyName: string; times: CountyTimes }> = [];
                 for (const file of Array.from(input.files)) {
                     try {
-                        const res = await fetch('/api/import', {
+                        const res = await authedFetch('/api/import', {
                             method: 'POST',
                             headers: { 'x-filename': encodeURIComponent(file.name) },
                             body: file,
@@ -110,28 +148,55 @@ export const mobileAPI = {
         });
     },
 
-    saveCountyTimesStore(store: CountyTimesStore): Promise<void> {
-        return dataStore.saveCountyTimesStore(store);
+    async saveCountyTimesStore(store: CountyTimesStore): Promise<void> {
+        try {
+            await putUserData({ countyTimesStore: store });
+            await dataStore.saveCountyTimesStore(store);
+        } catch (err) {
+            console.warn('saveCountyTimesStore: backend unavailable, writing local only', err);
+            await dataStore.saveCountyTimesStore(store);
+        }
     },
-    
-    loadCountyTimesStore(): Promise<CountyTimesStore> {
-        return dataStore.loadCountyTimesStore();
+
+    async loadCountyTimesStore(): Promise<CountyTimesStore> {
+        try {
+            const data = await fetchUserData();
+            await dataStore.saveCountyTimesStore(data.countyTimesStore);
+            return data.countyTimesStore;
+        } catch (err) {
+            console.warn('loadCountyTimesStore: falling back to local cache', err);
+            return dataStore.loadCountyTimesStore();
+        }
     },
 
     getSwimmerRankings(swimmerData: SwimmerData, level?: 'C' | 'N', forecast?: boolean, countyCode?: string): Promise<SwimmerRankings> {
-        return apiFetch<SwimmerRankings>('/api/rankings/',{
+        return apiFetch<SwimmerRankings>('/api/rankings/', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ ...swimmerData, level, forecast, countyCode })
         });
     },
 
-    saveActiveStandards(active: string[]): Promise<void> {
-        return dataStore.saveActiveStandards(active);
+    async saveActiveStandards(active: string[]): Promise<void> {
+        try {
+            await putUserData({ activeStandards: active });
+            await dataStore.saveActiveStandards(active);
+        } catch (err) {
+            console.warn('saveActiveStandards: backend unavailable, writing local only', err);
+            await dataStore.saveActiveStandards(active);
+        }
     },
 
-    loadActiveStandards(): Promise<string[]> {
-        return dataStore.loadActiveStandards();
+    async loadActiveStandards(): Promise<string[]> {
+        try {
+            const data = await fetchUserData();
+            await dataStore.saveActiveStandards(data.activeStandards);
+            return data.activeStandards;
+        } catch (err) {
+            console.warn('loadActiveStandards: falling back to local cache', err);
+            return dataStore.loadActiveStandards();
+        }
     },
-
 };
+
+export const _internalDataStore = dataStore;
