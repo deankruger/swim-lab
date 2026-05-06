@@ -1929,3 +1929,55 @@ table tbody tr:last-child td {
         justify-content: flex-end;
     }
 }
+
+.login-gate {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 60vh;
+    padding: 2rem 1rem;
+}
+
+.login-gate-card {
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+    padding: 2.5rem 2rem;
+    background: var(--bg-primary);
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    border: 1px solid var(--gray-200);
+}
+
+.login-gate-icon {
+    color: var(--primary);
+    margin-bottom: 1.25rem;
+    display: flex;
+    justify-content: center;
+}
+
+.login-gate-heading {
+    margin: 0 0 0.75rem;
+    color: var(--text-primary);
+    font-size: 1.6rem;
+}
+
+.login-gate-description {
+    color: var(--text-secondary);
+    line-height: 1.55;
+    margin: 0 0 2rem;
+}
+
+.login-gate-button {
+    font-size: 1.05rem;
+    padding: 0.75rem 2.25rem;
+    margin-bottom: 1.25rem;
+    cursor: pointer;
+}
+
+.login-gate-footnote {
+    color: var(--gray-500);
+    font-size: 0.9rem;
+    margin: 0;
+    line-height: 1.5;
+}
