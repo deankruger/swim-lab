@@ -68,6 +68,14 @@ export class SwimmerRepository{
         }
     }
 
+    async replaceAll(swimmers: SwimmerData[]): Promise<void> {
+        await this.fileStore.write({ swimmers });
+    }
+
+    async clear(): Promise<void> {
+        await this.fileStore.clear();
+    }
+
     async deleteByTiref(tiref: string): Promise<boolean>{
          try{
             const data = await this.fileStore.read();
