@@ -23,6 +23,10 @@ export class FileStore<T> {
         return this.key;
     }
 
+    async clear(): Promise<void> {
+        localStorage.removeItem(this.key);
+    }
+
     static createInUserData<T>(key: string): FileStore<T>{
         return new FileStore<T>(key);
     }
