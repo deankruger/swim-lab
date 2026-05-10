@@ -2,16 +2,18 @@ import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPersonSwimming, faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { SwimTime } from "../../types";
-import { compareEvents, sortStrokeValues, sortDistances } from "../../services/utils/EventOrdering";
+import { compareEvents, sortStrokeValues, sortDistances, getShortStrokeName } from "../../services/utils/EventOrdering";
 
 interface PersonalBestsProps {
     times: SwimTime[];
+    selectedStrokes?: string[];
+    onSelectedStrokesChange?: (strokes: string[]) => void;
+    selectedDistances?: string[];
+    onSelectedDistancesChange?: (distances: string[]) => void;
 }
 
-const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
+const PersonalBests: React.FC<PersonalBestsProps> = ({ times, selectedStrokes = [], onSelectedStrokesChange, selectedDistances = [], onSelectedDistancesChange }) => {
     const [courseFilter, setCourseFilter] = useState<'all' | '25m' | '50m'>('all');
-    const [strokeFilter, setStrokeFilter] = useState<string>('all');
-    const [distanceFilter, setDistanceFilter] = useState<string>('all');
     const [collapsedCourses, setCollapsedCourses] = useState<Set<string>>(new Set());
 
     const toggleCourse = (course: string) => { 
@@ -42,8 +44,8 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
     const filteredTimes = times.filter(time => {
         const { stroke, distance } = extractStrokeAndDistance(time.event);
         const courseMatch = courseFilter === 'all' || time.course === courseFilter;
-        const strokeMatch = strokeFilter === 'all' || stroke === strokeFilter;
-        const distanceMatch = distanceFilter === 'all' || distance === distanceFilter;
+        const strokeMatch = selectedStrokes.length === 0 || selectedStrokes.includes(stroke);
+        const distanceMatch = selectedDistances.length === 0 || selectedDistances.includes(distance);
 
         return courseMatch && strokeMatch && distanceMatch;
     })
@@ -69,31 +71,47 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times }) => {
     return (
         <div className="tab-content active">
             <div className="filter-section">
-                <div style={{ display: 'none' }}>
-                    <label htmlFor='courseFilter'>Course:</label>
-                    <select id='courseFilter' value={courseFilter} onChange={(e) => setCourseFilter(e.target.value as 'all' | '25m' | '50m')}>
-                        <option value='all'>All Courses</option>
-                        <option value='25m'>Short Course Only</option>
-                        <option value='50m'>Long Course Only</option>
-                    </select>
-                </div>
                 <div>
-                    <label htmlFor='strokeFilter'>Stroke:</label>
-                    <select id='strokeFilter' value={strokeFilter} onChange={(e) => setStrokeFilter(e.target.value)}>
-                        <option value='all'>All Strokes</option>
+                    <label>Stroke:</label>
+                    <div className="filter-toggles">
                         {strokes.map(stroke => (
-                            <option key={stroke} value={stroke}>{stroke}</option>
+                            <button
+                                key={stroke}
+                                className={`filter-toggle ${selectedStrokes.includes(stroke) ? 'active' : ''}`}
+                                onClick={() => {
+                                    if (onSelectedStrokesChange) {
+                                        const newStrokes = selectedStrokes.includes(stroke)
+                                            ? selectedStrokes.filter(s => s !== stroke)
+                                            : [...selectedStrokes, stroke];
+                                        onSelectedStrokesChange(newStrokes);
+                                    }
+                                }}
+                            >
+                                {getShortStrokeName(stroke)}
+                            </button>
                         ))}
-                    </select>
+                    </div>
                 </div>
                 <div>
-                    <label htmlFor='distanceFilter'>Distance:</label>
-                    <select id='distanceFilter' value={distanceFilter} onChange={(e) => setDistanceFilter(e.target.value)}>
-                        <option value='all'>All Distances</option>
+                    <label>Distance:</label>
+                    <div className="filter-toggles">
                         {distances.map(distance => (
-                            <option key={distance} value={distance}>{distance}</option>
+                            <button
+                                key={distance}
+                                className={`filter-toggle ${selectedDistances.includes(distance) ? 'active' : ''}`}
+                                onClick={() => {
+                                    if (onSelectedDistancesChange) {
+                                        const newDistances = selectedDistances.includes(distance)
+                                            ? selectedDistances.filter(d => d !== distance)
+                                            : [...selectedDistances, distance];
+                                        onSelectedDistancesChange(newDistances);
+                                    }
+                                }}
+                            >
+                                {distance}
+                            </button>
                         ))}
-                    </select>
+                    </div>
                 </div>
             </div>
             {filteredTimes.length === 0 ? (

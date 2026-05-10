@@ -3,12 +3,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCheck, faTriangleExclamation, faFolderOpen, faXmark, faCheckSquare } from '@fortawesome/free-solid-svg-icons';
 import { SwimmerData, CountyTimes, CountyTimesStore, ComparisonResult } from '../../types';
 import { mobileAPI } from '../../api/MobileAPI';
+import { parseEventName, getShortStrokeName } from '../../services/utils/EventOrdering';
 
 interface CountyComparisonProps {
   swimmerData: SwimmerData;
   countyTimesStore: CountyTimesStore;
   activeStandards: string[];
   onActiveStandardsChange: (active: string[]) => void;
+  selectedStrokes?: string[];
+  onSelectedStrokesChange?: (strokes: string[]) => void;
+  selectedDistances?: string[];
+  onSelectedDistancesChange?: (distances: string[]) => void;
   onLoadCountyTimes: () => void;
   onClearOneCounty: (county: string) => void;
   onCountySelected: (county: string) => void;
@@ -90,8 +95,10 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
   swimmerData,
   countyTimesStore,
   activeStandards,
-  onActiveStandardsChange,
-  onLoadCountyTimes,
+  onActiveStandardsChange,  selectedStrokes = [],
+  onSelectedStrokesChange,
+  selectedDistances = [],
+  onSelectedDistancesChange,  onLoadCountyTimes,
   onClearOneCounty,
   onCountySelected,
   onComparisonChange,
@@ -324,58 +331,109 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
       </div>
 
       {comparison && (
-        <div className="table-container">
-          <div style={{ marginBottom: '10px', padding: '10px', backgroundColor: 'var(--card-bg)', borderRadius: '5px' }}>
-            <strong>Comparing Against: </strong>
-            {selectedCounty} Standards
-            {swimmerData.birthYear && (
-              <>
-                {' — '}Age {lookAhead ? calculateAge(swimmerData.birthYear) + 1 : calculateAge(swimmerData.birthYear)}
-                {lookAhead && (
-                  <span style={{ marginLeft: '0.5rem', color: 'var(--primary)', fontWeight: 'bold' }}>
-                    (Next Year)
-                  </span>
-                )}
-              </>
-            )}
+        <>
+          <div className="filter-section">
+            <div>
+              <label>Stroke:</label>
+              <div className="filter-toggles">
+                {Array.from(new Set(comparison.comparisons.map(comp => parseEventName(comp.event).stroke))).map(stroke => (
+                  <button
+                    key={stroke}
+                    className={`filter-toggle ${selectedStrokes.includes(stroke) ? 'active' : ''}`}
+                    onClick={() => {
+                      if (onSelectedStrokesChange) {
+                        const newStrokes = selectedStrokes.includes(stroke)
+                          ? selectedStrokes.filter(s => s !== stroke)
+                          : [...selectedStrokes, stroke];
+                        onSelectedStrokesChange(newStrokes);
+                      }
+                    }}
+                  >
+                    {getShortStrokeName(stroke)}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <div>
+              <label>Distance:</label>
+              <div className="filter-toggles">
+                {Array.from(new Set(comparison.comparisons.map(comp => parseEventName(comp.event).distance.toString()))).map(distance => (
+                  <button
+                    key={distance}
+                    className={`filter-toggle ${selectedDistances.includes(distance) ? 'active' : ''}`}
+                    onClick={() => {
+                      if (onSelectedDistancesChange) {
+                        const newDistances = selectedDistances.includes(distance)
+                          ? selectedDistances.filter(d => d !== distance)
+                          : [...selectedDistances, distance];
+                        onSelectedDistancesChange(newDistances);
+                      }
+                    }}
+                  >
+                    {distance}
+                  </button>
+                ))}
+              </div>
+            </div>
           </div>
-          <table>
-            <thead>
-              <tr>
-                <th>Event</th>
-                <th>Course</th>
-                <th>Swimmer Time</th>
-                <th>Qualifying</th>
-                <th>Consideration</th>
-                <th>Age Category</th>
-                <th>Difference</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              {comparison.comparisons.map((comp, index) => (
-                <tr key={index}>
-                  <td data-label="Event">{comp.event}</td>
-                  <td data-label="Course">{comp.course}</td>
-                  <td data-label="Swimmer Time"><strong>{comp.swimmerTime}</strong></td>
-                  <td data-label="Qualifying">{comp.standardTime}</td>
-                  <td data-label="Consideration">{comp.considerationTime || '—'}</td>
-                  <td data-label="Age Category">{comp.ageCategory || '—'}</td>
-                  <td data-label="Difference">{comp.difference}</td>
-                  <td data-label="Status">
-                    {comp.isFaster === null ? '—' : comp.isFaster ? (
-                      <span className="faster"><FontAwesomeIcon icon={faCheck} /> Qualifies</span>
-                    ) : comp.meetsConsideration ? (
-                      <span style={{ color: 'var(--warning-color, orange)' }}>~ Consideration</span>
-                    ) : (
-                      <span className="slower"><FontAwesomeIcon icon={faXmark} /> Slower</span>
-                    )}
-                  </td>
+          <div className="table-container">
+            <div style={{ marginBottom: '10px', padding: '10px', backgroundColor: 'var(--card-bg)', borderRadius: '5px' }}>
+              <strong>Comparing Against: </strong>
+              {selectedCounty} Standards
+              {swimmerData.birthYear && (
+                <>
+                  {' — '}Age {lookAhead ? calculateAge(swimmerData.birthYear) + 1 : calculateAge(swimmerData.birthYear)}
+                  {lookAhead && (
+                    <span style={{ marginLeft: '0.5rem', color: 'var(--primary)', fontWeight: 'bold' }}>
+                      (Next Year)
+                    </span>
+                  )}
+                </>
+              )}
+            </div>
+            <table>
+              <thead>
+                <tr>
+                  <th>Event</th>
+                  <th>Course</th>
+                  <th>Swimmer Time</th>
+                  <th>Qualifying</th>
+                  <th>Consideration</th>
+                  <th>Age Category</th>
+                  <th>Difference</th>
+                  <th>Status</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {comparison.comparisons.filter(comp => {
+                  const { stroke, distance } = parseEventName(comp.event);
+                  const strokeMatch = selectedStrokes.length === 0 || selectedStrokes.includes(stroke);
+                  const distanceMatch = selectedDistances.length === 0 || selectedDistances.includes(distance.toString());
+                  return strokeMatch && distanceMatch;
+                }).map((comp, index) => (
+                  <tr key={index}>
+                    <td data-label="Event">{comp.event}</td>
+                    <td data-label="Course">{comp.course}</td>
+                    <td data-label="Swimmer Time"><strong>{comp.swimmerTime}</strong></td>
+                    <td data-label="Qualifying">{comp.standardTime}</td>
+                    <td data-label="Consideration">{comp.considerationTime || '—'}</td>
+                    <td data-label="Age Category">{comp.ageCategory || '—'}</td>
+                    <td data-label="Difference">{comp.difference}</td>
+                    <td data-label="Status">
+                      {comp.isFaster === null ? '—' : comp.isFaster ? (
+                        <span className="faster"><FontAwesomeIcon icon={faCheck} /> Qualifies</span>
+                      ) : comp.meetsConsideration ? (
+                        <span style={{ color: 'var(--warning-color, orange)' }}>~ Consideration</span>
+                      ) : (
+                        <span className="slower"><FontAwesomeIcon icon={faXmark} /> Slower</span>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </div>
   );

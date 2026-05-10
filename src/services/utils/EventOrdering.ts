@@ -29,6 +29,18 @@ export const getStrokePriority = (stroke: string): number => {
   return index !== -1 ? index : STROKE_ORDER.length;
 };
 
+export const getShortStrokeName = (stroke: string): string => {
+  const normalized = normalizeStroke(stroke).toLowerCase();
+  switch (normalized) {
+    case 'freestyle': return 'Free';
+    case 'butterfly': return 'Fly';
+    case 'backstroke': return 'Back';
+    case 'breaststroke': return 'Breast';
+    case 'individual medley': return 'IM';
+    default: return stroke;
+  }
+};
+
 export const compareEvents = (aEvent: string, bEvent: string): number => {
   const a = parseEventName(aEvent);
   const b = parseEventName(bEvent);

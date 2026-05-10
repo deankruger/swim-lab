@@ -737,6 +737,34 @@ button:active {
     min-width: 200px;
 }
 
+.filter-toggles {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-toggle {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--gray-300);
+    border-radius: 6px;
+    background: var(--bg-primary);
+    color: var(--gray-700);
+    font-size: 0.875rem;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.filter-toggle:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.filter-toggle.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+}
+
 /* Controls */
 .comparison-controls {
     display: flex;

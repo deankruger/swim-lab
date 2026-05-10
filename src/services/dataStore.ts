@@ -60,6 +60,34 @@ class DataStore {
             return [];
         }
     }
+
+    async saveSelectedStrokes(strokes: string[]): Promise<void> {
+        const fileStore = FileStore.createInUserData<string[]>('selected-strokes.json');
+        await fileStore.write(strokes);
+    }
+
+    async loadSelectedStrokes(): Promise<string[]> {
+        try {
+            const fileStore = FileStore.createInUserData<string[]>('selected-strokes.json');
+            return await fileStore.read();
+        } catch {
+            return [];
+        }
+    }
+
+    async saveSelectedDistances(distances: string[]): Promise<void> {
+        const fileStore = FileStore.createInUserData<string[]>('selected-distances.json');
+        await fileStore.write(distances);
+    }
+
+    async loadSelectedDistances(): Promise<string[]> {
+        try {
+            const fileStore = FileStore.createInUserData<string[]>('selected-distances.json');
+            return await fileStore.read();
+        } catch {
+            return [];
+        }
+    }
 }
 
 export default DataStore;
