@@ -11,15 +11,15 @@ import { Configuration, LogLevel } from "@azure/msal-browser";
 //    swim-lab app registration created inside the External ID Tenant.
 //
 
-const EXTERNAL_ID_TENANT_SUBDOMAIN = "replace with tenant subdomain";
-const EXTERNAL_ID_TENANT_ID = "00000000-0000-0000-0000-000000000000";
-const EXTERNAL_ID_CLIENT_ID = "00000000-0000-0000-0000-000000000000";
+const EXTERNAL_ID_TENANT_SUBDOMAIN = "swimlabapp";
+const EXTERNAL_ID_TENANT_ID = "43f793bb-9187-4430-af67-33ec4866b466";
+const EXTERNAL_ID_CLIENT_ID = "3c302088-f290-4168-8ea9-5376cf1d2930";
 
 const ciamAuthorityHost = `${EXTERNAL_ID_TENANT_SUBDOMAIN}.ciamlogin.com`;
 
 export const msalConfig: Configuration = {
     auth: {
-        clientId: "2c93d326-0c47-4357-93fa-11063a6cb39a",
+        clientId: EXTERNAL_ID_CLIENT_ID,
         authority: `https://${ciamAuthorityHost}/${EXTERNAL_ID_TENANT_ID}`,
         knownAuthorities: [ciamAuthorityHost],
         redirectUri: "/",
