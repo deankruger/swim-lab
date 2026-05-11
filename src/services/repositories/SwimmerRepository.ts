@@ -40,32 +40,24 @@ export class SwimmerRepository{
     }
 
     async findAll() : Promise<SwimmerData[]>{
-        try{
-            const data = await this.fileStore.read();
-            const swimmers = data.swimmers || [];
-            for (const swimmer of swimmers){
-                const legacy = swimmer as SwimmerData & { group?: string}
-                if (legacy.group && !swimmer.tags)
-                {
-                    swimmer.tags = [legacy.group];
-                    delete legacy.group;
-                }
+        await this.fileStore.ensureFile({ swimmers: [] });
+        const data = await this.fileStore.read();
+        const swimmers = data.swimmers || [];
+        for (const swimmer of swimmers){
+            const legacy = swimmer as SwimmerData & { group?: string}
+            if (legacy.group && !swimmer.tags)
+            {
+                swimmer.tags = [legacy.group];
+                delete legacy.group;
             }
-            return swimmers;
-        }catch(error){
-            console.error('Datastore: error getting swimmers:', error)
-            throw error;
         }
+        return swimmers;        
     }
 
     async findByTiref(tiref: string): Promise<SwimmerData | null>{
-        try {
-            const data = await this.fileStore.read();
-            return data.swimmers.find(s => s.tiref === tiref) || null;
-        } catch(error) {
-           console.error('Datastore: error getting swimmers:', error)
-            throw error; 
-        }
+        await this.fileStore.ensureFile({ swimmers: [] });
+        const data = await this.fileStore.read();
+        return data.swimmers.find(s => s.tiref === tiref) || null;        
     }
 
     async replaceAll(swimmers: SwimmerData[]): Promise<void> {
@@ -77,20 +69,16 @@ export class SwimmerRepository{
     }
 
     async deleteByTiref(tiref: string): Promise<boolean>{
-         try{
-            const data = await this.fileStore.read();
-            const initialLength = data.swimmers.length;
-            data.swimmers = data.swimmers.filter(s => s.tiref !== tiref)
-
-            if (data.swimmers.length < initialLength){
-                await this.fileStore.write(data);
-                return true;
-            }
-
-            return false;
-        }catch(error){
-            console.error('Datastore: error getting swimmers:', error)
-            throw error;
+        await this.fileStore.ensureFile({ swimmers: [] });
+        const data = await this.fileStore.read();
+        const initialLength = data.swimmers.length;
+        data.swimmers = data.swimmers.filter(s => s.tiref !== tiref)
+        
+        if (data.swimmers.length < initialLength) {
+            await this.fileStore.write(data);
+            return true;
         }
+        
+        return false;
     }
 }
