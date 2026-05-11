@@ -87,6 +87,8 @@ class DataStore {
         } catch {
             return [];
         }
+    }
+    
     async replaceAllSwimmers(swimmers: SwimmerData[]): Promise<void> {
         await this.swimmerRepository.replaceAll(swimmers);
     }
