@@ -12,7 +12,7 @@ if (!container) {
 
 async function bootstrap() {
     await initializeMsal();
-    const root = createRoot(container);
+    const root = createRoot(container!);
     root.render(
         <MsalProvider instance={msalInstance}>
             <React.StrictMode>
