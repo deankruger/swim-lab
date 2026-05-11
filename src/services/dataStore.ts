@@ -87,6 +87,14 @@ class DataStore {
         } catch {
             return [];
         }
+    async replaceAllSwimmers(swimmers: SwimmerData[]): Promise<void> {
+        await this.swimmerRepository.replaceAll(swimmers);
+    }
+
+    async clear(): Promise<void> {
+        await this.swimmerRepository.clear();
+        await FileStore.createInUserData('county-times.json').clear();
+        await FileStore.createInUserData('active-standards.json').clear();
     }
 }
 

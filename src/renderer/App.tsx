@@ -1,8 +1,9 @@
 import React, {useState, useEffect, useMemo, useRef } from 'react';
 import './styles.css';
 
-import { mobileAPI } from '../api/MobileAPI';
+import { mobileAPI, _internalDataStore } from '../api/MobileAPI';
 import { ComparisonResult, CountyTimesStore, SwimmerData } from '../types';
+import { syncOnLogin, clearLocalData } from '../services/initialSync';
 
 import ThemeSelector from './components/ThemeSelector';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -22,6 +23,7 @@ import { usePullToRefresh } from './hooks/usePullToRefresh';
 
 import defaultCountyTimes from '../../assets/json/county-times.json';
 import AuthButton from './components/AuthButton';
+import LoginGate from './components/LoginGate';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../authConfig';
 
@@ -63,6 +65,23 @@ const App: React.FC = () => {
         loadSelectedStrokes();
         loadSelectedDistances();
     }, []);
+
+    useEffect(() => {
+        const account = accounts[0];
+        if (account) {
+            syncOnLogin(account.localAccountId, _internalDataStore)
+                .then(() => {
+                    loadSavedSwimmers();
+                    loadCountyTimesStore();
+                    loadActiveStandards();
+                })
+                .catch((err) => console.warn('initial sync failed:', err));
+        } else {
+            clearLocalData(_internalDataStore).catch((err) =>
+                console.warn('clear local data failed:', err)
+            );
+        }
+    }, [accounts[0]?.localAccountId]);
 
     useEffect(() => {
         if (!currentSwimmerData) return;
@@ -539,6 +558,9 @@ const App: React.FC = () => {
             <div className="container">
                 <main>
                     {page === 'home' ? (
+                        accounts.length === 0 ? (
+                            <LoginGate />
+                        ) : (
                         <>
                             <div className={`mobile-view mobile-view-search${mobileView === 'search' ? ' mobile-view-active' : ''}${detailOpen ? ' mobile-detail-active' : ''}`}>
                                 <SearchSection
@@ -598,6 +620,7 @@ const App: React.FC = () => {
                                 />
                             </div>
                         </>
+                        )
                     ) : page === 'about' ? (
                         <AboutPage onBack={() => setPage('home')} />
                     ) : (
