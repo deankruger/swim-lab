@@ -3,9 +3,12 @@ import { msalConfig } from "./authConfig";
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
-const cached = msalInstance.getAllAccounts();
-if (cached.length > 0) {
-    msalInstance.setActiveAccount(cached[0]);
+export async function initializeMsal() : Promise<void> {
+    await msalInstance.initialize();
+    const cached = msalInstance.getAllAccounts();
+    if (cached.length > 0) {
+        msalInstance.setActiveAccount(cached[0]);
+    }
 }
 
 msalInstance.addEventCallback((event) => {
