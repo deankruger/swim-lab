@@ -3,21 +3,26 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 
 import { MsalProvider } from '@azure/msal-react';
-import { msalInstance } from '../msalInstance';
+import { msalInstance, initializeMsal } from '../msalInstance';
 
 const container = document.getElementById('root');
 if (!container) {
     throw new Error('Root element not found');    
 }
 
-const root = createRoot(container);
-root.render(
-    <MsalProvider instance={msalInstance}>
-        <React.StrictMode>
-            <App />
-        </React.StrictMode>
-    </MsalProvider>
-);
+async finction bootstrap() {
+    await initializeMsal();
+    const root = createRoot(container);
+    root.render(
+        <MsalProvider instance={msalInstance}>
+            <React.StrictMode>
+                <App />
+            </React.StrictMode>
+        </MsalProvider>
+    );
+}
+
+bootstrap();
 
 if ('serviceWorker' in navigator) {
     window.addEventListener('load', () => {
