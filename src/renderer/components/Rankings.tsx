@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPersonSwimming, faSpinner, faRotate, faChevronDown } from '@fortawesome/free-solid-svg-icons';
 import { SwimmerData, EventRanking, RankingEntry } from '../../types';
 import { mobileAPI } from '../../api/MobileAPI';
-import { compareEvents } from '../../services/utils/EventOrdering';
+import { compareEvents, parseEventName, getShortStrokeName } from '../../services/utils/EventOrdering';
 
 interface RankingsProps {
   swimmerData: SwimmerData;
@@ -11,6 +11,10 @@ interface RankingsProps {
   setLoading: (loading: boolean) => void;
   showToast: (message: string, type?: 'success' | 'error') => void;
   onRankingsSaved?: () => void;
+  selectedStrokes?: string[];
+  onSelectedStrokesChange?: (strokes: string[]) => void;
+  selectedDistances?: string[];
+  onSelectedDistancesChange?: (distances: string[]) => void;
 }
 
 interface CachedRanking {
@@ -98,7 +102,7 @@ const detectCountyCode = (region: string): string => {
   return COUNTIES.find(c => regionLower.includes(c.name.toLowerCase()))?.code ?? 'KNTQ';
 };
 
-const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, showToast, onRankingsSaved }) => {
+const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, showToast, onRankingsSaved, selectedStrokes = [], onSelectedStrokesChange, selectedDistances = [], onSelectedDistancesChange }) => {
   // Separate state for regular and forecast rankings
   const [regularRankings, setRegularRankings] = useState<Map<string, CachedRanking>>(() => {
     if (swimmerData.rankings) {
@@ -169,10 +173,17 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
 
   const sortedEvents = [...events].sort((a, b) => compareEvents(a.event, b.event));
 
-  // Filter events by course
+  // Get unique strokes and distances
+  const uniqueStrokes = Array.from(new Set(events.map(evt => parseEventName(evt.event).stroke)));
+  const uniqueDistances = Array.from(new Set(events.map(evt => parseEventName(evt.event).distance.toString())));
+
+  // Filter events by course, stroke, distance
   const filteredEvents = sortedEvents.filter(evt => {
-    if (courseFilter === 'all') return true;
-    return evt.course === courseFilter;
+    const courseMatch = courseFilter === 'all' || evt.course === courseFilter;
+    const { stroke, distance } = parseEventName(evt.event);
+    const strokeMatch = selectedStrokes.length === 0 || selectedStrokes.includes(stroke);
+    const distanceMatch = selectedDistances.length === 0 || selectedDistances.includes(distance.toString());
+    return courseMatch && strokeMatch && distanceMatch;
   });
 
   // Group by course
@@ -331,6 +342,50 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
             <option value="25m">Short Course Only</option>
             <option value="50m">Long Course Only</option>
           </select>
+        </div>
+        <div>
+          <label>Stroke:</label>
+          <div className="filter-toggles">
+            {uniqueStrokes.map(stroke => (
+              <button
+                key={stroke}
+                className={`filter-toggle ${selectedStrokes.includes(stroke) ? 'active' : ''}`}
+                onClick={() => {
+                  if (onSelectedStrokesChange) {
+                    const newStrokes = selectedStrokes.includes(stroke)
+                      ? selectedStrokes.filter(s => s !== stroke)
+                      : [...selectedStrokes, stroke];
+                    onSelectedStrokesChange(newStrokes);
+                  }
+                }}
+                disabled={loading}
+              >
+                {getShortStrokeName(stroke)}
+              </button>
+            ))}
+          </div>
+        </div>
+        <div>
+          <label>Distance:</label>
+          <div className="filter-toggles">
+            {uniqueDistances.map(distance => (
+              <button
+                key={distance}
+                className={`filter-toggle ${selectedDistances.includes(distance) ? 'active' : ''}`}
+                onClick={() => {
+                  if (onSelectedDistancesChange) {
+                    const newDistances = selectedDistances.includes(distance)
+                      ? selectedDistances.filter(d => d !== distance)
+                      : [...selectedDistances, distance];
+                    onSelectedDistancesChange(newDistances);
+                  }
+                }}
+                disabled={loading}
+              >
+                {distance}
+              </button>
+            ))}
+          </div>
         </div>
         <div>
           <label htmlFor="countySelect">County:</label>

@@ -11,6 +11,10 @@ interface SwimmerDetailsProps {
     countyTimesStore: CountyTimesStore;
     activeStandards: string[];
     onActiveStandardsChange: (active: string[]) => void;
+    selectedStrokes: string[];
+    onSelectedStrokesChange: (strokes: string[]) => void;
+    selectedDistances: string[];
+    onSelectedDistancesChange: (distances: string[]) => void;
     activeTab: 'times' | 'comparison' | 'rankings';
     onActiveTabChange: (tab: 'times' | 'comparison' | 'rankings') => void;
     onSave: () => void;
@@ -33,6 +37,10 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
     countyTimesStore,
     activeStandards,
     onActiveStandardsChange,
+    selectedStrokes,
+    onSelectedStrokesChange,
+    selectedDistances,
+    onSelectedDistancesChange,
     activeTab,
     onActiveTabChange,
     onSave,
@@ -89,13 +97,17 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
                 <button className={`tab-btn ${activeTab === 'comparison' ? 'active' : ''}`} onClick={() => onActiveTabChange('comparison')}>Standards</button>
                 <button className={`tab-btn ${activeTab === 'rankings' ? 'active' : ''}`} onClick={() => onActiveTabChange('rankings')}>Rankings</button>
             </div>
-            {activeTab === 'times' && <PersonalBests times={swimmerData.times} />}
+            {activeTab === 'times' && <PersonalBests times={swimmerData.times} selectedStrokes={selectedStrokes} onSelectedStrokesChange={onSelectedStrokesChange} selectedDistances={selectedDistances} onSelectedDistancesChange={onSelectedDistancesChange} />}
             {activeTab === 'comparison' && (
                 <CountyComparison 
                     swimmerData={swimmerData} 
                     countyTimesStore={countyTimesStore}
                     activeStandards={activeStandards}
                     onActiveStandardsChange={onActiveStandardsChange}
+                    selectedStrokes={selectedStrokes}
+                    onSelectedStrokesChange={onSelectedStrokesChange}
+                    selectedDistances={selectedDistances}
+                    onSelectedDistancesChange={onSelectedDistancesChange}
                     onLoadCountyTimes={onLoadCountyTimes}
                     onClearOneCounty={onClearOneCounty}
                     onCountySelected={onCountySelected}
@@ -112,6 +124,10 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
                     setLoading={setLoading}
                     showToast={showToast}
                     onRankingsSaved={onRankingsSaved}
+                    selectedStrokes={selectedStrokes}
+                    onSelectedStrokesChange={onSelectedStrokesChange}
+                    selectedDistances={selectedDistances}
+                    onSelectedDistancesChange={onSelectedDistancesChange}
                 />
             )}            
         </>}            

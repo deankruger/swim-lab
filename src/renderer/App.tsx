@@ -39,6 +39,8 @@ const App: React.FC = () => {
     const [navOpen, setNavOpen] = useState(false);
     const [page, setPage] = useState<'home' | 'contact' | 'about'>('home');
     const [activeStandards, setActiveStandards] = useState<string[]>([]);
+    const [selectedStrokes, setSelectedStrokes] = useState<string[]>([]);
+    const [selectedDistances, setSelectedDistances] = useState<string[]>([]);
     const [swimmerActiveTab, setSwimmerActiveTab] = useState<'times' | 'comparison' | 'rankings'>('times');
     const [mobileView, setMobileView] = useState<'search' | 'saved'>('search');
     const swimmerDetailsRef = useRef<HTMLDivElement>(null);
@@ -60,6 +62,8 @@ const App: React.FC = () => {
         loadSavedSwimmers();
         loadCountyTimesStore();
         loadActiveStandards();
+        loadSelectedStrokes();
+        loadSelectedDistances();
     }, []);
 
     useEffect(() => {
@@ -142,6 +146,26 @@ const App: React.FC = () => {
         }
     };
 
+    const loadSelectedStrokes = async () => {
+        try {
+            const strokes = await mobileAPI.loadSelectedStrokes();
+            setSelectedStrokes(strokes);
+        } catch (error) {
+            console.warn('Selected strokes load failed:', error);
+            setSelectedStrokes([]); // Start with no filters
+        }
+    };
+
+    const loadSelectedDistances = async () => {
+        try {
+            const distances = await mobileAPI.loadSelectedDistances();
+            setSelectedDistances(distances);
+        } catch (error) {
+            console.warn('Selected distances load failed:', error);
+            setSelectedDistances([]); // Start with no filters
+        }
+    };
+
     const handleActiveStandardsChange = async (active: string[]) => {
         setActiveStandards(active);
         try {
@@ -149,6 +173,26 @@ const App: React.FC = () => {
         } catch (error) {
             console.error('Failed to save active standards:', error);
             showToast('Failed to save standards selection', 'error');
+        }
+    };
+
+    const handleSelectedStrokesChange = async (strokes: string[]) => {
+        setSelectedStrokes(strokes);
+        try {
+            await mobileAPI.saveSelectedStrokes(strokes);
+        } catch (error) {
+            console.error('Failed to save selected strokes:', error);
+            showToast('Failed to save stroke filters', 'error');
+        }
+    };
+
+    const handleSelectedDistancesChange = async (distances: string[]) => {
+        setSelectedDistances(distances);
+        try {
+            await mobileAPI.saveSelectedDistances(distances);
+        } catch (error) {
+            console.error('Failed to save selected distances:', error);
+            showToast('Failed to save distance filters', 'error');
         }
     };
 
@@ -531,7 +575,7 @@ const App: React.FC = () => {
 
                             {comparisonSwimmers.length > 0 && (
                                 <div ref={comparisonRef}>
-                                    <SwimmerComparison swimmers={comparisonSwimmers} onClose={handleCloseComparison} />
+                                    <SwimmerComparison swimmers={comparisonSwimmers} onClose={handleCloseComparison} selectedStrokes={selectedStrokes} onSelectedStrokesChange={handleSelectedStrokesChange} selectedDistances={selectedDistances} onSelectedDistancesChange={handleSelectedDistancesChange} />
                                 </div>
                             )}
 
@@ -542,6 +586,10 @@ const App: React.FC = () => {
                                         countyTimesStore={countyTimesStore}
                                         activeStandards={activeStandards}
                                         onActiveStandardsChange={handleActiveStandardsChange}
+                                        selectedStrokes={selectedStrokes}
+                                        onSelectedStrokesChange={handleSelectedStrokesChange}
+                                        selectedDistances={selectedDistances}
+                                        onSelectedDistancesChange={handleSelectedDistancesChange}
                                         activeTab={swimmerActiveTab}
                                         onActiveTabChange={setSwimmerActiveTab}
                                         onSave={handleSaveSwimmer}

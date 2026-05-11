@@ -197,6 +197,23 @@ export const mobileAPI = {
             return dataStore.loadActiveStandards();
         }
     },
+
+    saveSelectedStrokes(strokes: string[]): Promise<void> {
+        return dataStore.saveSelectedStrokes(strokes);
+    },
+
+    loadSelectedStrokes(): Promise<string[]> {
+        return dataStore.loadSelectedStrokes();
+    },
+
+    saveSelectedDistances(distances: string[]): Promise<void> {
+        return dataStore.saveSelectedDistances(distances);
+    },
+
+    loadSelectedDistances(): Promise<string[]> {
+        return dataStore.loadSelectedDistances();
+    },
+
 };
 
 export const _internalDataStore = dataStore;
