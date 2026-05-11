@@ -10,7 +10,7 @@ if (!container) {
     throw new Error('Root element not found');    
 }
 
-async finction bootstrap() {
+async function bootstrap() {
     await initializeMsal();
     const root = createRoot(container);
     root.render(
