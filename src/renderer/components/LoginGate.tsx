@@ -2,7 +2,11 @@ import React from 'react';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../../authConfig';
 
-const LoginGate: React.FC = () => {
+interface LoginGateProps {
+    onContinueAsGuest: () => void;
+}
+
+const LoginGate: React.FC<LoginGateProps> = ({ onContinueAsGuest }) => {
     const { instance } = useMsal();
 
     return (
@@ -27,9 +31,16 @@ const LoginGate: React.FC = () => {
                 >
                     Sign In
                 </button>
+                <button
+                    type="button"
+                    className="login-gate-guest-button"
+                    onClick={onContinueAsGuest}
+                >
+                    Continue as guest
+                </button>
                 <p className="login-gate-footnote">
                     New here? The Sign In page also lets you create an account with email,
-                    Microsoft, or Google.
+                    Microsoft, or Google. Guest data stays on this device only.
                 </p>
             </div>
         </div>
