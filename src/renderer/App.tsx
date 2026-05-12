@@ -23,12 +23,23 @@ import { usePullToRefresh } from './hooks/usePullToRefresh';
 
 import defaultCountyTimes from '../../assets/json/county-times.json';
 import AuthButton from './components/AuthButton';
+import GuestBanner from './components/GuestBanner'
 import LoginGate from './components/LoginGate';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../authConfig';
 
+const OWNER_KEY = 'swim-lab:owner-oid';
+const GUEST_KEY = 'swim-lab:guest-mode';
+
 const App: React.FC = () => {
     const { instance, accounts } = useMsal();
+    const [guestMode, setGuestMode] = useState<boolean>(
+        () => typeof window !== 'undefined' && localStorage.getItem(GUEST_KEY) === 'true'
+    );
+    const enterGuestMode = () => {
+        localStorage.setItem(GUEST_KEY, 'true');
+        setGuestMode(true);
+    };
     const [loading, setLoading] = useState(false);
     const [currentSwimmerData, setCurrentSwimmerData] = useState<SwimmerData | null>(null);
     const [comparisonResult, setComparisonResult] = useState<ComparisonResult | null>(null);
@@ -76,10 +87,12 @@ const App: React.FC = () => {
                     loadActiveStandards();
                 })
                 .catch((err) => console.warn('initial sync failed:', err));
-        } else {
+        } else if (localStorage.getItem(OWNER_KEY)) {
             clearLocalData(_internalDataStore).catch((err) =>
                 console.warn('clear local data failed:', err)
             );
+            localStorage.removeItem(GUEST_KEY);
+            setGuestMode(false);
         }
     }, [accounts[0]?.localAccountId]);
 
@@ -558,10 +571,11 @@ const App: React.FC = () => {
             <div className="container">
                 <main>
                     {page === 'home' ? (
-                        accounts.length === 0 ? (
-                            <LoginGate />
+                        accounts.length === 0 && !guestMode ? (
+                            <LoginGate onContinueAsGuest={enterGuestMode} />
                         ) : (
                         <>
+                            {accounts.length === 0 && <GuestBanner />}
                             <div className={`mobile-view mobile-view-search${mobileView === 'search' ? ' mobile-view-active' : ''}${detailOpen ? ' mobile-detail-active' : ''}`}>
                                 <SearchSection
                                     onSwimmerSelect={handleSearchResults}
