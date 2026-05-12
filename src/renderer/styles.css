@@ -1999,8 +1999,34 @@ table tbody tr:last-child td {
 .login-gate-button {
     font-size: 1.05rem;
     padding: 0.75rem 2.25rem;
-    margin-bottom: 1.25rem;
+    margin-bottom: 0.75rem;
     cursor: pointer;
+}
+
+.login-gate-guest-button {
+    display: inline-block;
+    padding: 0.55rem 1.25rem;
+    margin-bottom: 1.25rem;
+    margin-left: 0.8rem;
+    margin-right: 0.8rem;
+    background: transparent;
+    border: 1px solid var(--gray-300);
+    border-radius: 999px;
+    color: var(--gray-600, #4b5563);
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease, border-color 0.15s ease, color 0.15s ease;
+}
+
+.login-gate-guest-button:hover {
+    background: rgba(0, 0, 0, 0.04);
+    border-color: var(--gray-400, #9ca3af);
+    color: var(--gray-700, #374151);
+}
+
+.login-gate-guest-button:active {
+    transform: translateY(1px);
 }
 
 .login-gate-footnote {
@@ -2008,4 +2034,68 @@ table tbody tr:last-child td {
     font-size: 0.9rem;
     margin: 0;
     line-height: 1.5;
+}
+
+/* Guest mode banner */
+.guest-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1rem;
+    background: rgba(59, 130, 246, 0.08);
+    border: 1px solid rgba(37, 99, 235, 0.25);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--gray-700, #374151);
+    flex-wrap: wrap;
+}
+
+.guest-banner-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    line-height: 1.4;
+}
+
+.guest-banner-text strong {
+    color: var(--primary);
+}
+
+.guest-banner-signin {
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1px solid var(--primary);
+    background: var(--primary);
+    color: #fff;
+    font-weight: 600;
+    cursor: pointer;
+    flex-shrink: 0;
+    transition: background 0.15s ease, transform 0.15s ease;
+}
+
+.guest-banner-signin:hover {
+    background: var(--primary-dark, #2563eb);
+}
+
+.guest-banner-signin:active {
+    transform: translateY(1px);
+}
+
+.guest-banner-dismiss {
+    width: 28px;
+    height: 28px;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--gray-500, #6b7280);
+    font-size: 1.4rem;
+    line-height: 1;
+    cursor: pointer;
+    border-radius: 50%;
+    flex-shrink: 0;
+    transition: background 0.15s ease;
+}
+
+.guest-banner-dismiss:hover {
+    background: rgba(0, 0, 0, 0.06);
 }
