@@ -151,7 +151,6 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
 
                     {showSearch && (
                         <div className="group-filter">
-                            <label htmlFor="swimmerSearch">Search:</label>
                             <input
                                 id="swimmerSearch"
                                 type="search"
