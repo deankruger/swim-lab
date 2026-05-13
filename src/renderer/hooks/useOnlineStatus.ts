@@ -1,19 +1,12 @@
 import { useEffect, useState } from "react";
+import { isOnline, subscribe } from "../../api/connectivity";
 
 export function useOnlineStatus(): boolean {
-    const [online, setOnline] = useState<boolean>(
-        () => typeof navigator === "undefined" ? true : navigator.onLine
-    );
+    const [online, setOnline] = useState<boolean>(() => isOnline());
 
     useEffect(() => {
-        const handleOnline = () => setOnline(true);
-        const handleOffline = () => setOnline(false);
-        window.addEventListener("online", handleOnline);
-        window.addEventListener("offline", handleOffline);
-        return () => {
-            window.removeEventListener("online", handleOnline);
-            window.removeEventListener("offline", handleOffline);
-        };
+        setOnline(isOnline());
+        return subscribe(setOnline);
     }, []);
 
     return online;

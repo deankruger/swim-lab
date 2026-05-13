@@ -27,6 +27,7 @@ import GuestBanner from './components/GuestBanner'
 import LoginGate from './components/LoginGate';
 import OfflineBanner from './components/OfflineBanner';
 import { useOnlineStatus } from './hooks/useOnlineStatus';
+import { isOnline as isObservedOnline } from '../api/connectivity';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../authConfig';
 
@@ -95,7 +96,7 @@ const App: React.FC = () => {
             // Don't wipe the offline cache when we can't tell whether the user
             // is genuinely signed out or MSAL just couldn't reach the IdP. Only
             // clear when we're confident: online and accounts truly empty.
-            if (typeof navigator === 'undefined' || navigator.onLine) {
+            if (isObservedOnline()) {
                 clearLocalData(_internalDataStore).catch((err) =>
                     console.warn('clear local data failed:', err)
                 );
