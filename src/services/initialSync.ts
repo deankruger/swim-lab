@@ -18,6 +18,19 @@ async function fetchJson<T>(url: string, init?: RequestInit): Promise<T> {
 export async function syncOnLogin(currentOid: string, dataStore: DataStore): Promise<void> {
     const previousOwner = localStorage.getItem(OWNER_KEY);
 
+    // Fetch server state first. If we can't reach the server (offline, transient
+    // failure), bail out before touching local data — that way an offline launch
+    // still has the previous session's cache to fall back on.
+    let serverSwimmers: SwimmerData[];
+    let serverData: UserDataResponse;
+    try {
+        serverSwimmers = await fetchJson<SwimmerData[]>("/api/user/swimmers");
+        serverData = await fetchJson<UserDataResponse>("/api/user/data");
+    } catch (err) {
+        console.warn("[syncOnLogin] server unreachable, keeping local cache", err);
+        return;
+    }
+
     if (previousOwner && previousOwner !== currentOid) {
         await dataStore.clear();
     }
@@ -25,9 +38,6 @@ export async function syncOnLogin(currentOid: string, dataStore: DataStore): Pro
     const localSwimmers = await dataStore.getAllSwimmers().catch(() => [] as SwimmerData[]);
     const localStore = await dataStore.loadCountyTimesStore().catch(() => ({} as CountyTimesStore));
     const localStandards = await dataStore.loadActiveStandards().catch(() => [] as string[]);
-
-    const serverSwimmers = await fetchJson<SwimmerData[]>("/api/user/swimmers");
-    const serverData = await fetchJson<UserDataResponse>("/api/user/data");
 
     if (serverSwimmers.length === 0 && localSwimmers.length > 0) {
         for (const s of localSwimmers) {
