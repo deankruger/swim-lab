@@ -589,6 +589,7 @@ const App: React.FC = () => {
             
             <div className="container">
                 <main>
+                    {!online && <OfflineBanner />}
                     {page === 'home' ? (
                         accounts.length === 0 && !guestMode ? (
                             <LoginGate onContinueAsGuest={enterGuestMode} />
