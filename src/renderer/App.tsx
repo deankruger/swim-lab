@@ -25,6 +25,8 @@ import defaultCountyTimes from '../../assets/json/county-times.json';
 import AuthButton from './components/AuthButton';
 import GuestBanner from './components/GuestBanner'
 import LoginGate from './components/LoginGate';
+import OfflineBanner from './components/OfflineBanner';
+import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../authConfig';
 
@@ -57,6 +59,8 @@ const App: React.FC = () => {
     const swimmerDetailsRef = useRef<HTMLDivElement>(null);
     const comparisonRef = useRef<HTMLDivElement>(null);
     const navRef = useRef<HTMLElement>(null);
+    const online = useOnlineStatus();
+    const wasOnline = useRef(online);
 
     useEffect(() => {
         if (!navOpen) return;
@@ -88,11 +92,16 @@ const App: React.FC = () => {
                 })
                 .catch((err) => console.warn('initial sync failed:', err));
         } else if (localStorage.getItem(OWNER_KEY)) {
-            clearLocalData(_internalDataStore).catch((err) =>
-                console.warn('clear local data failed:', err)
-            );
-            localStorage.removeItem(GUEST_KEY);
-            setGuestMode(false);
+            // Don't wipe the offline cache when we can't tell whether the user
+            // is genuinely signed out or MSAL just couldn't reach the IdP. Only
+            // clear when we're confident: online and accounts truly empty.
+            if (typeof navigator === 'undefined' || navigator.onLine) {
+                clearLocalData(_internalDataStore).catch((err) =>
+                    console.warn('clear local data failed:', err)
+                );
+                localStorage.removeItem(GUEST_KEY);
+                setGuestMode(false);
+            }
         }
     }, [accounts[0]?.localAccountId]);
 
@@ -103,6 +112,15 @@ const App: React.FC = () => {
         });
         return () => cancelAnimationFrame(id);
     }, [currentSwimmerData?.tiref]);
+
+    useEffect(() => {
+        if (!wasOnline.current && online) {
+            loadSavedSwimmers();
+            loadCountyTimesStore();
+            loadActiveStandards();
+        }
+        wasOnline.current = online;
+    }, [online]);
 
     const showToast = (message: string, type: 'success' | 'error' = 'success') => {
         setToast({ message, type });
