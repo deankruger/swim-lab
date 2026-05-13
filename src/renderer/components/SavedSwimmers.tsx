@@ -20,16 +20,26 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
     const [selectedTag, setSelectedTag] = useState<string>('all');
     const [addingTagFor, setAddingTagFor] = useState<string | null>(null);
     const [newTagValue, setNewTagValue] = useState<string>('');
+    const [searchQuery, setSearchQuery] = useState<string>('');
 
     // Get all unique tags across all swimmers
     const allTags = Array.from(new Set(swimmers.flatMap(s => s.tags || []))).sort();
 
     // Filter the swimmers by selected tag
-    const filteredSwimmers = selectedTag === 'all'
-        ? swimmers 
+    const tagFilteredSwimmers = selectedTag === 'all'
+        ? swimmers
         : selectedTag === 'Untagged'
         ? swimmers.filter(s => !s.tags || s.tags.length === 0)
         : swimmers.filter(s => s.tags?.includes(selectedTag));
+
+    const showSearch = swimmers.length > 5;
+    const trimmedQuery = searchQuery.trim().toLowerCase();
+    const filteredSwimmers = showSearch && trimmedQuery
+        ? tagFilteredSwimmers.filter(s =>
+            (s.name || '').toLowerCase().includes(trimmedQuery) ||
+            (s.club || '').toLowerCase().includes(trimmedQuery)
+          )
+        : tagFilteredSwimmers;
 
     // Group swimmers by club
     const swimmersByClub = filteredSwimmers.reduce((acc, swimmer) => {
@@ -139,10 +149,30 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                         </select>
                     </div>
 
+                    {showSearch && (
+                        <div className="group-filter">
+                            <label htmlFor="swimmerSearch">Search:</label>
+                            <input
+                                id="swimmerSearch"
+                                type="search"
+                                value={searchQuery}
+                                onChange={(e) => setSearchQuery(e.target.value)}
+                                placeholder="Filter by name or club..."
+                                className="group-input"
+                            />
+                        </div>
+                    )}
+
                     <div id="savedSwimmers">
                         {filteredSwimmers.length === 0 ? (
                             <div className="empty-state">
-                                <p>{selectedTag === 'all' ? 'No saved swimmers yet' : `No swimmers tagged "${selectedTag}"`}</p>
+                                <p>{
+                                    trimmedQuery
+                                        ? `No swimmers match "${searchQuery.trim()}"`
+                                        : selectedTag === 'all'
+                                            ? 'No saved swimmers yet'
+                                            : `No swimmers tagged "${selectedTag}"`
+                                }</p>
                             </div>
                         ) : (
                             sortedClubs.map((club, clubIndex) => {
