@@ -3,19 +3,14 @@
 // in some Chromium setups (e.g. captive portals, VPN drops), so we layer an
 // `observed` flag on top that authedFetch updates from real fetch outcomes.
 
-type Listener = (online: boolean) => void;
+type Listener = () => void;
 
 const listeners = new Set<Listener>();
 let osOnline: boolean = typeof navigator === "undefined" ? true : navigator.onLine;
 let observed: boolean = true;
 
-function current(): boolean {
-    return osOnline && observed;
-}
-
 function notify(): void {
-    const value = current();
-    for (const l of listeners) l(value);
+    for (const l of listeners) l();
 }
 
 if (typeof window !== "undefined") {
@@ -31,7 +26,7 @@ if (typeof window !== "undefined") {
 }
 
 export function isOnline(): boolean {
-    return current();
+    return osOnline && observed;
 }
 
 export function reportNetworkSuccess(): void {
