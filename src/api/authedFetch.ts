@@ -35,13 +35,6 @@ async function withTimeout<T>(promise: Promise<T>, ms: number): Promise<T> {
     }
 }
 
-export class OfflineError extends Error {
-    constructor() {
-        super("Offline - this action requires a connection");
-        this.name = "OfflineError";
-    }
-}
-
 export async function authedFetch(input: RequestInfo, init?: RequestInit): Promise<Response> {
     if (!isOnline()) {
         throw new OfflineError();
