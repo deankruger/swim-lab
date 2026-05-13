@@ -3,7 +3,7 @@ import './styles.css';
 
 import { mobileAPI, _internalDataStore } from '../api/MobileAPI';
 import { ComparisonResult, CountyTimesStore, SwimmerData } from '../types';
-import { syncOnLogin, clearLocalData } from '../services/initialSync';
+import { syncOnLogin } from '../services/initialSync';
 
 import ThemeSelector from './components/ThemeSelector';
 import LoadingSpinner from './components/LoadingSpinner';
@@ -27,7 +27,6 @@ import GuestBanner from './components/GuestBanner'
 import LoginGate from './components/LoginGate';
 import OfflineBanner from './components/OfflineBanner';
 import { useOnlineStatus } from './hooks/useOnlineStatus';
-import { isOnline as isObservedOnline } from '../api/connectivity';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../authConfig';
 
@@ -93,16 +92,14 @@ const App: React.FC = () => {
                 })
                 .catch((err) => console.warn('initial sync failed:', err));
         } else if (localStorage.getItem(OWNER_KEY)) {
-            // Don't wipe the offline cache when we can't tell whether the user
-            // is genuinely signed out or MSAL just couldn't reach the IdP. Only
-            // clear when we're confident: online and accounts truly empty.
-            if (isObservedOnline()) {
-                clearLocalData(_internalDataStore).catch((err) =>
-                    console.warn('clear local data failed:', err)
-                );
-                localStorage.removeItem(GUEST_KEY);
-                setGuestMode(false);
-            }
+            // Empty accounts here is ambiguous: it could mean the user signed
+            // out, or that MSAL hit a transient hiccup (token expired, network
+            // dropped, iOS suspended the PWA). Wiping the offline cache on any
+            // of those is destructive — cross-account pollution is already
+            // handled by syncOnLogin's owner check, so the safe move is to
+            // leave swimmers.json alone and only reset the guest-mode flag.
+            localStorage.removeItem(GUEST_KEY);
+            setGuestMode(false);
         }
     }, [accounts[0]?.localAccountId]);
 
