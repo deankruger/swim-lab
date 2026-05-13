@@ -2099,3 +2099,21 @@ table tbody tr:last-child td {
 .guest-banner-dismiss:hover {
     background: rgba(0, 0, 0, 0.06);
 }
+
+.offline-banner {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1rem;
+    margin-bottom: 1rem;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(217, 119, 6, 0.35);
+    border-radius: 8px;
+    font-size: 0.9rem;
+    color: var(--gray-700, #374151);
+}
+
+.offline-banner-text {
+    flex: 1 1 auto;
+    line-height: 1.4;
+}
