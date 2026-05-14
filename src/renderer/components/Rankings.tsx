@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPersonSwimming, faSpinner, faRotate, faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { faPersonSwimming, faSpinner, faRotate, faChevronDown, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { SwimmerData, EventRanking, RankingEntry } from '../../types';
 import { mobileAPI } from '../../api/MobileAPI';
 import { compareEvents, parseEventName, getShortStrokeName } from '../../services/utils/EventOrdering';
@@ -387,13 +387,15 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
             ))}
           </div>
         </div>
-        <div>
-          <label htmlFor="countySelect">County:</label>
+        <div className="rankings-county-filter">
+          <FontAwesomeIcon icon={faLocationDot} className="rankings-county-icon" />
           <select
             id="countySelect"
             value={countyCode}
             onChange={(e) => setCountyCode(e.target.value)}
             disabled={loading}
+            className="rankings-county-select"
+            aria-label="County"
           >
             {COUNTIES.map(c => (
               <option key={c.code} value={c.code}>{c.name}</option>

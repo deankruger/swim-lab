@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faChevronLeft, faChevronRight, faList, faGrip, faMagnifyingGlass, faFloppyDisk, faBookmark } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faChevronLeft, faChevronRight, faList, faGrip, faMagnifyingGlass, faFloppyDisk, faBookmark, faUser, faBuilding } from '@fortawesome/free-solid-svg-icons'
 import { SwimmerSearchResult } from '../../types'   
 import { mobileAPI } from '../../api/MobileAPI'
 
@@ -54,7 +54,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSw
 
     const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter'){
-            handleSearch();
+            handleSearchWrapped();
         }
     };
 
@@ -75,6 +75,14 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSw
         setCurentPage(1);
     };
 
+    // Track if a search has been performed
+    const [hasSearched, setHasSearched] = useState(false);
+
+    const handleSearchWrapped = async () => {
+        setHasSearched(true);
+        await handleSearch();
+    };
+
     return (
         <section className="search-section card">
             <div className="section-header">                
@@ -93,39 +101,56 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSw
                 <input 
                     type='text'
                     value={searchInput}
-                    onChange={(e) => setSearchInput(e.target.value)}
+                    onChange={(e) => { setSearchInput(e.target.value); if (hasSearched) setHasSearched(false); }}
                     onKeyPress={handleKeyPress}
                     placeholder="Enter swimmers lastname (e.g. Jones)"
                     disabled={loading}
                 />
-                <button onClick={handleSearch} disabled={loading}>Search</button>
+                <button onClick={handleSearchWrapped} disabled={loading}>Search</button>
             </div>
 
             <div id='searchResults'>
+                {!hasSearched && searchResults.length === 0 && (
+                    <div className="search-pre-help">
+                        <h3>Ready to search</h3>
+                        <p>Type a swimmer's surname above, then tap <strong>Search</strong>.</p>
+                        <ul>
+                            <li>Try surname examples like <strong>Jones</strong>, <strong>Smith</strong>, or <strong>Taylor</strong>.</li>
+                            <li>After results load, use the Name and Club filters to narrow quickly.</li>
+                            <li>Use the save icon to bookmark swimmers for quick access later.</li>
+                        </ul>
+                    </div>
+                )}
                 {searchResults.length > 0 && (
                     <div className="search-results-content">
                         <div className="filter-section">
-                            <div>
-                                <label htmlFor="firstNameFilter">Filter by Name:</label>
-                                <input
-                                    id="firstNameFilter"
-                                    type="text"
-                                    value={firstNameFilter}
-                                    onChange={(e) => handleFirstNameFilterChange(e.target.value)}
-                                    placeholder="Type to filter..."
-                                    disabled={loading}
-                                />
+                            <div className="search-filter-row">
+                                <div className="search-filter-input-wrap">
+                                    <FontAwesomeIcon icon={faUser} className="search-filter-icon" />
+                                    <input
+                                        id="firstNameFilter"
+                                        type="text"
+                                        value={firstNameFilter}
+                                        onChange={(e) => handleFirstNameFilterChange(e.target.value)}
+                                        placeholder="Filter by name..."
+                                        disabled={loading}
+                                        className="search-filter-input"
+                                    />
+                                </div>
                             </div>
-                            <div>
-                                <label htmlFor="clubFilter">Filter by Club:</label>
-                                <input
-                                    id="clubFilter"
-                                    type="text"
-                                    value={clubFilter}
-                                    onChange={(e) => handleClubFilterChange(e.target.value)}
-                                    placeholder="Type to filter..."
-                                    disabled={loading}
-                                />
+                            <div className="search-filter-row">
+                                <div className="search-filter-input-wrap">
+                                    <FontAwesomeIcon icon={faBuilding} className="search-filter-icon" />
+                                    <input
+                                        id="clubFilter"
+                                        type="text"
+                                        value={clubFilter}
+                                        onChange={(e) => handleClubFilterChange(e.target.value)}
+                                        placeholder="Filter by club..."
+                                        disabled={loading}
+                                        className="search-filter-input"
+                                    />
+                                </div>
                             </div>
                         </div>
                         <div className="pagination-info">
@@ -212,7 +237,8 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSw
                         )}
                     </div>
                 )}
-                {searchResults.length === 0 && searchInput && (
+                {/* Only show 'No swimmers found' if a search has been performed and there are no results */}
+                {hasSearched && searchResults.length === 0 && (
                     <div className="empty-state">
                         <p>No swimmers found</p>
                     </div>

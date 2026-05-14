@@ -737,6 +737,56 @@ button:active {
     min-width: 200px;
 }
 
+.search-filter-row {
+    width: 100%;
+}
+
+.search-filter-input-wrap {
+    position: relative;
+    min-width: 200px;
+}
+
+.search-filter-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.875rem;
+    transform: translateY(-50%);
+    width: 1rem;
+    font-size: 0.9rem;
+    color: var(--gray-500);
+    pointer-events: none;
+}
+
+.search-filter-input {
+    width: 100%;
+    min-width: 100%;
+    padding-left: 2.5rem !important;
+    padding-inline-start: 2.5rem !important;
+}
+
+.rankings-county-filter {
+    position: relative;
+    min-width: 200px;
+}
+
+.rankings-county-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.875rem;
+    transform: translateY(-50%);
+    width: 1rem;
+    font-size: 0.9rem;
+    color: var(--gray-500);
+    pointer-events: none;
+}
+
+.rankings-county-select {
+    width: 100%;
+    min-width: 100%;
+    padding-left: 2.5rem !important;
+    padding-inline-start: 2.5rem !important;
+}
+
 .filter-toggles {
     display: flex;
     gap: 0.5rem;
@@ -1063,6 +1113,79 @@ table tbody tr:last-child td {
     overflow: hidden;
 }
 
+.search-pre-help {
+    position: relative;
+    padding: 1rem 1rem 1rem 1.1rem;
+    border: 1px solid color-mix(in srgb, var(--primary) 20%, var(--gray-200));
+    border-radius: 12px;
+    background:
+        linear-gradient(145deg, color-mix(in srgb, var(--primary) 7%, var(--bg-primary)) 0%, var(--bg-primary) 70%),
+        var(--bg-primary);
+    color: var(--gray-700);
+    box-shadow: 0 6px 20px rgba(16, 24, 40, 0.06);
+    display: grid;
+    gap: 0.6rem;
+    overflow: hidden;
+}
+
+.search-pre-help::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--primary), color-mix(in srgb, var(--primary) 55%, white));
+}
+
+.search-pre-help h3 {
+    margin: 0;
+    font-size: calc(var(--h1) * 0.82);
+    line-height: 1.2;
+    letter-spacing: 0.01em;
+    color: var(--gray-900);
+}
+
+.search-pre-help p {
+    margin: 0;
+    font-size: calc(var(--h1) * 0.72);
+    color: var(--gray-600);
+}
+
+.search-pre-help ul {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+    display: grid;
+    gap: 0.45rem;
+}
+
+.search-pre-help li {
+    position: relative;
+    font-size: calc(var(--h1) * 0.7);
+    line-height: 1.4;
+    color: var(--gray-700);
+    background: color-mix(in srgb, var(--bg-primary) 92%, var(--primary) 8%);
+    border: 1px solid color-mix(in srgb, var(--primary) 12%, var(--gray-200));
+    border-radius: 8px;
+    padding: 0.5rem 0.6rem 0.5rem 1.45rem;
+}
+
+.search-pre-help li::before {
+    content: '';
+    position: absolute;
+    left: 0.62rem;
+    top: 0.9rem;
+    width: 0.42rem;
+    height: 0.42rem;
+    border-radius: 999px;
+    background: var(--primary);
+}
+
+.search-pre-help strong {
+    color: var(--gray-900);
+}
+
 /* Search Results Compact */
 .swimmer-result-compact {
     display: flex;
@@ -1194,6 +1317,52 @@ table tbody tr:last-child td {
     max-width: 300px;
 }
 
+.saved-swimmer-tag-filter {
+    position: relative;
+    flex: 1;
+    max-width: none;
+}
+
+.saved-swimmer-tag-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.875rem;
+    transform: translateY(-50%);
+    width: 1rem;
+    font-size: 0.9rem;
+    color: var(--gray-500);
+    pointer-events: none;
+}
+
+.saved-swimmer-tag-select {
+    width: 100%;
+    padding-left: 2.85rem !important;
+    padding-inline-start: 2.85rem !important;
+}
+
+.group-filter .saved-swimmer-tag-select {
+    max-width: none;
+}
+
+.saved-swimmer-filter-row .saved-swimmer-search-filter {
+    flex: 1;
+    width: 100%;
+}
+
+.saved-swimmer-filter-row {
+    padding: 0;
+    background: transparent;
+    align-items: stretch;
+    gap: 0.5rem;
+}
+
+.saved-swimmer-filter-row .saved-swimmer-tag-filter,
+.saved-swimmer-filter-row .saved-swimmer-search-filter {
+    flex: 1 1 0;
+    min-width: 0;
+    max-width: none;
+}
+
 .swimmer-tags {
     display: flex;
     flex-wrap: wrap;
@@ -1276,6 +1445,55 @@ table tbody tr:last-child td {
 .group-input:focus {
     outline: none;
     box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.saved-swimmer-search-filter {
+    display: block;
+    position: relative;
+    width: 100%;
+}
+
+.saved-swimmer-search-icon {
+    position: absolute;
+    top: 50%;
+    left: 0.875rem;
+    transform: translateY(-50%);
+    width: 1rem;
+    font-size: 0.9rem;
+    color: var(--gray-500);
+    pointer-events: none;
+}
+
+.saved-swimmer-search-input {
+    width: 100%;
+    min-width: 100%;
+    padding-left: 2.85rem !important;
+    padding-right: 2rem !important;
+    padding-inline-start: 2.85rem !important;
+    padding-inline-end: 2rem !important;
+}
+
+.saved-swimmer-search-clear {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: none;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--gray-500);
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.saved-swimmer-search-clear:hover {
+    color: var(--gray-700);
+    background: var(--gray-100);
 }
 
 /* Swimmer Comparison */
@@ -1787,6 +2005,20 @@ table tbody tr:last-child td {
     .search-controls button {
         width: 100%;
     }
+
+    .saved-swimmer-filter-row {
+        flex-wrap: wrap;
+    }
+
+    .saved-swimmer-filter-row select {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .saved-swimmer-filter-row .saved-swimmer-search-filter {
+        flex: 1 0 100%;
+        width: 100%;
+    }
 }
 /* Small Phone layout - scale the entire type system down by setting --h1 */
 @media (max-width: 480px) {
@@ -1875,6 +2107,26 @@ table tbody tr:last-child td {
 
     .empty-state {
         padding: 2rem 1rem;
+    }
+
+    .search-pre-help {
+        padding: 0.85rem 0.85rem 0.85rem 0.95rem;
+        border-radius: 10px;
+        gap: 0.5rem;
+    }
+
+    .search-pre-help li {
+        padding: 0.45rem 0.55rem 0.45rem 1.35rem;
+    }
+}
+
+@media (min-width: 900px) {
+    .search-pre-help {
+        padding: 1.15rem 1.15rem 1.15rem 1.25rem;
+    }
+
+    .search-pre-help ul {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
     }
 }
 

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChain, faChartBar, faCheck, faPlus, faRotate, faTag, faTimes, faTrash, faChevronDown, faList, faGrip, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
+import { faChain, faChartBar, faCheck, faPlus, faRotate, faTag, faTimes, faTrash, faChevronDown, faList, faGrip, faMagnifyingGlass, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { SwimmerData } from "../../types";
 
 interface SavedSwimmersProps {
@@ -132,35 +132,51 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
             </div>
 
             {!isCollapsed && <>
-                    <div className="group-filter">
-                        <label htmlFor="tagFilter">Filter by Tag:</label>
-                        <select
-                            id="tagFilter"
-                            value={selectedTag}
-                            onChange={(e) => setSelectedTag(e.target.value)}
-                        >
-                            <option value="all">All ({swimmers.length})</option>
-                            <option value="Untagged">Untagged ({swimmers.filter(s => !s.tags || s.tags.length === 0).length})</option>
-                            {allTags.map(tag => (
-                                <option key={tag} value={tag}>
-                                    {tag} ({swimmers.filter(s => s.tags?.includes(tag)).length})
-                                </option>
-                            ))}
-                        </select>
-                    </div>
-
-                    {showSearch && (
-                        <div className="group-filter">
+                    <div className="group-filter saved-swimmer-filter-row">
+                        <div className="saved-swimmer-tag-filter">
+                            <FontAwesomeIcon icon={faTag} className="saved-swimmer-tag-icon" />
+                            <select
+                                id="tagFilter"
+                                value={selectedTag}
+                                onChange={(e) => setSelectedTag(e.target.value)}
+                                className="saved-swimmer-tag-select"
+                            >
+                                <option value="all">All ({swimmers.length})</option>
+                                <option value="Untagged">Untagged ({swimmers.filter(s => !s.tags || s.tags.length === 0).length})</option>
+                                {allTags.map(tag => (
+                                    <option key={tag} value={tag}>
+                                        {tag} ({swimmers.filter(s => s.tags?.includes(tag)).length})
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                        {showSearch && (                        
+                        <div className="saved-swimmer-search-filter">
+                            <FontAwesomeIcon icon={faFilter} className="saved-swimmer-search-icon" />
                             <input
-                                id="swimmerSearch"
-                                type="search"
-                                value={searchQuery}
-                                onChange={(e) => setSearchQuery(e.target.value)}
-                                placeholder="Filter by name or club..."
-                                className="group-input"
-                            />
+                                    id="swimmerSearch"
+                                    type="text"
+                                    value={searchQuery}
+                                    onChange={(e) => setSearchQuery(e.target.value)}
+                                    placeholder="Filter by name or club..."
+                                    className="group-input saved-swimmer-search-input"
+                                />
+                                {searchQuery.trim().length > 0 && (
+                                    <button
+                                        type="button"
+                                        className="saved-swimmer-search-clear"
+                                        onClick={() => setSearchQuery('')}
+                                        title="Clear filter"
+                                        aria-label="Clear saved swimmer filter"
+                                    >
+                                        <FontAwesomeIcon icon={faTimes} />
+                                    </button>
+                                )}
                         </div>
                     )}
+                    </div>
+
+                    
 
                     <div id="savedSwimmers">
                         {filteredSwimmers.length === 0 ? (
