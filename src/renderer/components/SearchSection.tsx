@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faChevronLeft, faChevronRight, faList, faGrip, faMagnifyingGlass, faFloppyDisk, faBookmark, faUser, faBuilding } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faChevronLeft, faChevronRight, faList, faGrip, faMagnifyingGlass, faFloppyDisk, faBookmark, faUser, faBuilding, faSearch } from '@fortawesome/free-solid-svg-icons'
 import { SwimmerSearchResult } from '../../types'   
 import { mobileAPI } from '../../api/MobileAPI'
 
@@ -112,7 +112,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSw
             <div id='searchResults'>
                 {!hasSearched && searchResults.length === 0 && (
                     <div className="search-pre-help">
-                        <h3>Ready to search</h3>
+                        <h3><FontAwesomeIcon icon={faSearch} />&nbsp;Ready to search</h3>
                         <p>Type a swimmer's surname above, then tap <strong>Search</strong>.</p>
                         <ul>
                             <li>Try surname examples like <strong>Jones</strong>, <strong>Smith</strong>, or <strong>Taylor</strong>.</li>
