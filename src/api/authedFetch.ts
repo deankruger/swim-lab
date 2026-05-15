@@ -69,10 +69,21 @@ export async function authedFetch(input: RequestInfo, init?: RequestInit): Promi
             throw new OfflineError();
         }
         if (err instanceof InteractionRequiredAuthError) {
-            await msalInstance.acquireTokenRedirect({ ...apiRequest, account });
-            return new Promise<Response>(() => undefined);
+            // The External ID session cookie outlives the refresh token, so try a
+            // hidden-iframe re-auth before doing a jarring full-page redirect.
+            try {
+                const ssoResult = await withTimeout(
+                    msalInstance.ssoSilent({ ...apiRequest, account }),
+                    TOKEN_TIMEOUT_MS,
+                );
+                accessToken = ssoResult.accessToken;
+            } catch {
+                await msalInstance.acquireTokenRedirect({ ...apiRequest, account });
+                return new Promise<Response>(() => undefined);
+            }
+        } else {
+            throw err;
         }
-        throw err;
     }
 
     const headers = new Headers(init?.headers);
