@@ -194,11 +194,10 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                 const clubCollapsed = collapsedClubs.has(club);
 
                                 return (
-                                <div key={club} style={{ marginBottom: '0' }}>
-                                    <div 
+                                <div key={club} className={`club-group${clubIndex > 0 ? ' club-group-spaced' : ''}`}>
+                                    <div
                                         className="club-header"
-                                        onClick={() => toggleClub(club)}
-                                        style={{ marginTop: clubIndex > 0 ? '0.5rem' : '0'}}>
+                                        onClick={() => toggleClub(club)}>
                                         <h3 className="club-header-title">
                                             {club} <span className="club-count">({swimmersByClub[club].length} {swimmersByClub[club].length === 1 ? 'swimmer' : 'swimmers'})</span>
                                         </h3>

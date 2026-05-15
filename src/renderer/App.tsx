@@ -30,6 +30,9 @@ import { useOnlineStatus } from './hooks/useOnlineStatus';
 import { useMsal } from '@azure/msal-react';
 import { loginRequest } from '../authConfig';
 
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons'
+
 const OWNER_KEY = 'swim-lab:owner-oid';
 const GUEST_KEY = 'swim-lab:guest-mode';
 
@@ -518,7 +521,7 @@ const App: React.FC = () => {
                     <h1>Swim Lab</h1>
                     {accounts.length > 0 && (
                         <div className="header-user">
-                            {accounts[0].name}
+                            <FontAwesomeIcon icon={faUser} /> {accounts[0].name}
                         </div>
                     )}
                     <span className="header-theme">

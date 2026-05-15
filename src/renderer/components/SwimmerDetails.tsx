@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { ComparisonResult, CountyTimesStore, SwimmerData } from "../../types";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChevronDown, faClose, faFileExcel, faFloppyDisk, faBookmark, faRotate } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown, faClose, faFileExcel, faFloppyDisk, faBookmark, faRotate, faUser, faBirthdayCake, faList, faVenusMars, faLocation, faMapPin, faCalendar, faPerson, faLocationPin, faHashtag, faTags } from "@fortawesome/free-solid-svg-icons";
 import PersonalBests from "./PersonalBests";
 import CountyComparison from "./CountyComparison";
 import Rankings from "./Rankings";
@@ -66,6 +66,9 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
         <section className="details-section card">
             <div className="section-header">
                 <h2>{swimmerData.name}</h2>
+                <small> 
+                    <div>{swimmerData.gender} • {ageAtEndOfYear} at 31 Dec, {currentYear}</div>
+                </small>
                 <button className="btn-ghost section-toggle" onClick={() => setIsCollapsed(c => !c)} aria-label="Toggle section">
                     <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!isCollapsed ? ' expanded' : ''}`} />
                 </button>                
@@ -83,14 +86,14 @@ const SwimmerDetails: React.FC<SwimmerDetailsProps> = ({
                 </button>
                 <button onClick={onRefresh} className="btn-refresh btn-ghost" disabled={loading} title="Refresh times from website" style={{ color: 'var(--info)' }}><FontAwesomeIcon icon={faRotate} /></button>
                 <button onClick={onExport} className="btn-export btn-ghost" disabled={loading} title="Export to Excel" style={{ color: 'var(--warning)' }}><FontAwesomeIcon icon={faFileExcel} /></button>
-                <button onClick={onClear} className="btn-clear btn-ghost" disabled={loading} title="Clear swimmer" style={{ color: 'var(--danger)' }}><FontAwesomeIcon icon={faClose} /></button>
+                <button onClick={onClear} className="btn-clear btn-ghost" disabled={loading} title="Close swimmer" style={{ color: 'var(--danger)' }}><FontAwesomeIcon icon={faClose} /></button>
             </div>
             <div className="swimmer-info">
-                <p><strong>Name:</strong> {swimmerData.name}</p>
-                <p><strong>Gender:</strong> {swimmerData.gender || 'Unknown'} (Age at Dec 31, {currentYear}: {ageAtEndOfYear})</p>
-                <p><strong>Born:</strong> {swimmerData.birthYear || 'Unknown'}</p>
-                <p><strong>Tiref:</strong> {swimmerData.tiref} </p>
-                <p><strong>Total Events:</strong> {swimmerData.times.length}</p>
+                <p><strong><FontAwesomeIcon icon={faUser} /> ASA Number:</strong> {swimmerData.tiref} </p>
+                <p><strong><FontAwesomeIcon icon={faLocationPin} /> Club:</strong> {swimmerData.club || 'Unknown'}</p>
+                {(swimmerData.tags && swimmerData.tags.length > 0) && (
+                    <p><strong><FontAwesomeIcon icon={faTags} /> Tags:</strong> {swimmerData.tags.join(', ')}</p>
+                )}                
             </div>
             <div className="tabs">
                 <button className={`tab-btn ${activeTab === 'times' ? 'active' : ''}`} onClick={() => onActiveTabChange('times')}>Personal Bests</button>

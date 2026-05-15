@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronDown, faChevronLeft, faChevronRight, faList, faGrip, faMagnifyingGlass, faFloppyDisk, faBookmark, faUser, faBuilding, faSearch } from '@fortawesome/free-solid-svg-icons'
+import { faChevronDown, faChevronLeft, faChevronRight, faList, faGrip, faMagnifyingGlass, faFloppyDisk, faBookmark, faSearch, faTimes, faFilter } from '@fortawesome/free-solid-svg-icons'
 import { SwimmerSearchResult } from '../../types'   
 import { mobileAPI } from '../../api/MobileAPI'
 
@@ -19,8 +19,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSw
     const [searchInput, setSearchInput] = useState('');
     const [searchResults, setSearchResults] = useState<SwimmerSearchResult[]>([]);
     const [currentPage, setCurentPage] = useState(1);
-    const [firstNameFilter, setFirstNameFilter] = useState('');
-    const [clubFilter, setClubFilter] = useState('');
+    const [quickFilter, setQuickFilter] = useState('');
     const resultsPerPage = 7;
 
     const handleSearch = async () =>  {
@@ -38,8 +37,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSw
             const results = await mobileAPI.searchSwimmer(surname);
             setSearchResults(results);
             setCurentPage(1);
-            setFirstNameFilter('');
-            setClubFilter('');
+            setQuickFilter('');
 
             if (results.length === 0){
                 showToast('No swimmers found', 'error');                
@@ -59,19 +57,13 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSw
     };
 
     const filteredResults = searchResults.filter(swimmer => {
-        const firstNameMatch = !firstNameFilter || swimmer.name.toLowerCase().includes(firstNameFilter.toLowerCase());
-        const clubMatch = !clubFilter || swimmer.club.toLowerCase().includes(clubFilter.toLowerCase());
-
-        return firstNameMatch && clubMatch;
+        if (!quickFilter) return true;
+        const q = quickFilter.toLowerCase();
+        return swimmer.name.toLowerCase().includes(q) || swimmer.club.toLowerCase().includes(q);
     });
 
-    const handleFirstNameFilterChange = (value: string) => {        
-        setFirstNameFilter(value);
-        setCurentPage(1);
-    };
-
-    const handleClubFilterChange = (value: string) => {
-        setClubFilter(value);
+    const handleQuickFilterChange = (value: string) => {
+        setQuickFilter(value);
         setCurentPage(1);
     };
 
@@ -98,14 +90,27 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSw
             </div>
             {!isCollapsed && <>            
             <div className="search-controls">
-                <input 
-                    type='text'
-                    value={searchInput}
-                    onChange={(e) => { setSearchInput(e.target.value); if (hasSearched) setHasSearched(false); }}
-                    onKeyPress={handleKeyPress}
-                    placeholder="Enter swimmers lastname (e.g. Jones)"
-                    disabled={loading}
-                />
+                <div className="search-input-wrap">
+                    <input
+                        type='text'
+                        value={searchInput}
+                        onChange={(e) => { setSearchInput(e.target.value); if (hasSearched) setHasSearched(false); }}
+                        onKeyPress={handleKeyPress}
+                        placeholder="Enter swimmers lastname (e.g. Jones)"
+                        disabled={loading}
+                    />
+                    {searchInput.length > 0 && (
+                        <button
+                            type="button"
+                            className="search-filter-clear"
+                            onClick={() => { setSearchInput(''); setHasSearched(false); setSearchResults([]); }}
+                            title="Clear search"
+                            aria-label="Clear search"
+                        >
+                            <FontAwesomeIcon icon={faTimes} />
+                        </button>
+                    )}
+                </div>
                 <button onClick={handleSearchWrapped} disabled={loading}>Search</button>
             </div>
 
@@ -116,7 +121,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSw
                         <p>Type a swimmer's surname above, then tap <strong>Search</strong>.</p>
                         <ul>
                             <li>Try surname examples like <strong>Jones</strong>, <strong>Smith</strong>, or <strong>Taylor</strong>.</li>
-                            <li>After results load, use the Name and Club filters to narrow quickly.</li>
+                            <li>After results load, use the filter to narrow by name or club.</li>
                             <li>Use the save icon to bookmark swimmers for quick access later.</li>
                         </ul>
                     </div>
@@ -126,37 +131,35 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSw
                         <div className="filter-section">
                             <div className="search-filter-row">
                                 <div className="search-filter-input-wrap">
-                                    <FontAwesomeIcon icon={faUser} className="search-filter-icon" />
+                                    <FontAwesomeIcon icon={faFilter} className="search-filter-icon" />
                                     <input
-                                        id="firstNameFilter"
+                                        id="quickFilter"
                                         type="text"
-                                        value={firstNameFilter}
-                                        onChange={(e) => handleFirstNameFilterChange(e.target.value)}
-                                        placeholder="Filter by name..."
+                                        value={quickFilter}
+                                        onChange={(e) => handleQuickFilterChange(e.target.value)}
+                                        placeholder="Filter by name or club..."
                                         disabled={loading}
                                         className="search-filter-input"
                                     />
-                                </div>
-                            </div>
-                            <div className="search-filter-row">
-                                <div className="search-filter-input-wrap">
-                                    <FontAwesomeIcon icon={faBuilding} className="search-filter-icon" />
-                                    <input
-                                        id="clubFilter"
-                                        type="text"
-                                        value={clubFilter}
-                                        onChange={(e) => handleClubFilterChange(e.target.value)}
-                                        placeholder="Filter by club..."
-                                        disabled={loading}
-                                        className="search-filter-input"
-                                    />
+                                    {quickFilter.length > 0 && (
+                                        <button
+                                            type="button"
+                                            className="search-filter-clear"
+                                            onClick={() => handleQuickFilterChange('')}
+                                            title="Clear filter"
+                                            aria-label="Clear filter"
+                                        >
+                                            <FontAwesomeIcon icon={faTimes} />
+                                        </button>
+                                    )}
                                 </div>
                             </div>
                         </div>
                         <div className="pagination-info">
                                 Showing {((currentPage  -1) * resultsPerPage) + 1} to {Math.min(currentPage * resultsPerPage, filteredResults.length)} of {filteredResults.length} results
-                                {(firstNameFilter || clubFilter) && `(filtered from ${searchResults.length} total)`}
+                                {quickFilter && `(filtered from ${searchResults.length} total)`}
                         </div>
+                        <div className={isCompact ? undefined : 'search-results-grid'}>
                         {filteredResults
                             .slice((currentPage - 1) * resultsPerPage, currentPage * resultsPerPage)
                             .map((swimmer) => {
@@ -209,6 +212,7 @@ const SearchSection: React.FC<SearchSectionProps> = ({ onSwimmerSelect, onSaveSw
                                 );
                             })
                         }
+                        </div>
                         {filteredResults.length > resultsPerPage && (
                             <div className="pagination">
                                 <button
