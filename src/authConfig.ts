@@ -35,7 +35,7 @@ export const msalConfig: Configuration = {
 };
 
 export const loginRequest = {
-    scopes: ["openid", "profile", "offline_access"],
+    scopes: ["openid", "profile", "offline_access", `api://${EXTERNAL_ID_CLIENT_ID}/access_as_user`],
 };
 export const apiRequest = {
     scopes: [`api://${EXTERNAL_ID_CLIENT_ID}/access_as_user`],
