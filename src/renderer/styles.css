@@ -80,8 +80,8 @@ header h1 {
 }
 
 .header-user {
-    font-size: 0.9rem;
-    font-weight: 500;
+    font-size: 0.7rem;
+    font-weight: 480;
     color: var(--text-secondary);
     margin-left: 0.5rem;
     white-space: nowrap;
