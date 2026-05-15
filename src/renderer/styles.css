@@ -80,8 +80,8 @@ header h1 {
 }
 
 .header-user {
-    font-size: 0.7rem;
-    font-weight: 480;
+    font-size: 0.9rem;
+    font-weight: 500;
     color: var(--text-secondary);
     margin-left: 0.5rem;
     white-space: nowrap;
@@ -289,6 +289,16 @@ h2 {
     display: flex;
     gap: 0.75rem;
     margin-bottom: 1.5rem;
+}
+
+.search-input-wrap {
+    position: relative;
+    flex: 1;
+}
+
+.search-input-wrap input {
+    width: 100%;
+    padding-inline-end: 2rem !important;
 }
 
 input[type="text"] {
@@ -553,20 +563,32 @@ button:active {
 }
 
 .swimmer-result {
+    position: relative;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 1rem;
-    padding: 1rem;
-    background: var(--bg-primary);
-    border-radius: 6px;
-    border: 1px solid var(--gray-200);
+    flex-direction: column;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem 0.8rem 1.25rem;
+    background: linear-gradient(145deg, color-mix(in srgb, var(--primary) 7%, var(--bg-primary)) 0%, var(--bg-primary) 70%);
+    border-radius: 12px;
+    border: 1px solid color-mix(in srgb, var(--primary) 20%, var(--gray-200));
+    box-shadow: 0 6px 20px rgba(16, 24, 40, 0.06);
+    overflow: hidden;
     transition: all 0.15s ease;
+}
+
+.swimmer-result::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--primary), color-mix(in srgb, var(--primary) 55%, white));
 }
 
 .swimmer-result:hover {
     border-color: var(--primary);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 24px rgba(16, 24, 40, 0.1);
 }
 
 .swimmer-result-info h3 {
@@ -589,8 +611,10 @@ button:active {
 .swimmer-result-actions {
     display: flex;
     gap: 0.5rem;
-    align-items: center;
-    flex-shrink: 0;
+}
+
+.swimmer-result-actions button {
+    flex: 1;
 }
 
 .swimmer-result-save {
@@ -762,6 +786,7 @@ button:active {
     min-width: 100%;
     padding-left: 2.5rem !important;
     padding-inline-start: 2.5rem !important;
+    padding-inline-end: 2rem !important;
 }
 
 .rankings-county-filter {
@@ -967,16 +992,26 @@ table tbody tr:last-child td {
     padding: 0.5rem 0.75rem;
 }
 
+/* Club group container */
+.club-group {
+    border: 1px solid var(--gray-200);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.club-group-spaced {
+    margin-top: 0.75rem;
+}
+
 /* Club group header */
 .club-header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     padding: 0.5rem 0.75rem;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0;
     background: var(--gray-100);
     border-left: 3px solid var(--primary);
-    border-radius: 4px;
     cursor: pointer;
     user-select: none;
     gap: 0.5rem;
@@ -1009,6 +1044,7 @@ table tbody tr:last-child td {
     display: flex;
     flex-direction: column;
     gap: 0;
+    padding: 0.25rem 0;
 }
 
 .saved-swimmer-row {
@@ -1111,6 +1147,12 @@ table tbody tr:last-child td {
 .search-results-content {
     min-width: 0;
     overflow: hidden;
+}
+
+.search-results-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
 }
 
 .search-pre-help {
@@ -1246,26 +1288,38 @@ table tbody tr:last-child td {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 1rem;
+    padding: 0.75rem;
 }
 
 .saved-swimmer-card {
     position: relative;
-    background: var(--gray-100);
-    opacity: 0.85;
-    border: 2px solid var(--gray-200);
-    border-radius: 6px;
-    padding: 0.3rem 1rem 0.8rem 1rem;
+    background: linear-gradient(145deg, color-mix(in srgb, var(--primary) 7%, var(--bg-primary)) 0%, var(--bg-primary) 70%);
+    border: 1px solid color-mix(in srgb, var(--primary) 20%, var(--gray-200));
+    border-radius: 12px;
+    padding: 0.3rem 1rem 0.8rem 1.25rem;
+    box-shadow: 0 6px 20px rgba(16, 24, 40, 0.06);
+    overflow: hidden;
     transition: all 0.15s ease;
+}
+
+.saved-swimmer-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 4px;
+    background: linear-gradient(to bottom, var(--primary), color-mix(in srgb, var(--primary) 55%, white));
 }
 
 .saved-swimmer-card:hover {
     border-color: var(--primary);
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 24px rgba(16, 24, 40, 0.1);
 }
 
 .saved-swimmer-card.selected {
     border-color: var(--primary);
-    background: rgba(37, 99, 235, 0.05);
+    background: linear-gradient(145deg, color-mix(in srgb, var(--primary) 15%, var(--bg-primary)) 0%, color-mix(in srgb, var(--primary) 5%, var(--bg-primary)) 70%);
 }
 
 .saved-swimmer-card h3 {
@@ -1473,7 +1527,8 @@ table tbody tr:last-child td {
     padding-inline-end: 2rem !important;
 }
 
-.saved-swimmer-search-clear {
+.saved-swimmer-search-clear,
+.search-filter-clear {
     position: absolute;
     top: 50%;
     right: 0.5rem;
@@ -1491,7 +1546,8 @@ table tbody tr:last-child td {
     transition: color 0.15s ease, background-color 0.15s ease;
 }
 
-.saved-swimmer-search-clear:hover {
+.saved-swimmer-search-clear:hover,
+.search-filter-clear:hover {
     color: var(--gray-700);
     background: var(--gray-100);
 }
@@ -1982,13 +2038,6 @@ table tbody tr:last-child td {
         gap: 0.25rem;
     }
 
-    .swimmer-result,
-    .saved-swimmer {
-        flex-direction: column;
-        align-items: stretch;
-    }
-
-    .swimmer-result button,
     .saved-swimmer-actions {
         width: 100%;
     }
@@ -2001,8 +2050,12 @@ table tbody tr:last-child td {
         flex-direction: column;
     }
 
-    .search-controls input,
-    .search-controls button {
+    .search-controls .search-input-wrap,
+    .search-controls > button {
+        width: 100%;
+    }
+
+    .search-input-wrap input {
         width: 100%;
     }
 
