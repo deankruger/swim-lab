@@ -11,16 +11,19 @@ const PushSetup: React.FC = () => {
   return (
     <div className="push-setup">
       <button
-        className="btn-clear btn-ghost push-button"
+        className="btn-ghost push-button"
         onClick={() => { if (!enabled) enablePush(); }}
         disabled={enabled}
         aria-pressed={enabled}
         aria-label={enabled ? 'Notifications enabled' : 'Enable notifications'}
         title={enabled ? 'Notifications enabled' : 'Enable notifications'}
-        style={{ color: enabled ? 'var(--success)' : 'var(--gray-500)' }}
+        style={{ color: enabled ? 'var(--success)' : 'var(--gray-500)', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
       >
         <FontAwesomeIcon icon={enabled ? faBell : faBellSlash} />
       </button>
+      <span className="push-status" style={{ fontSize: '0.9rem', color: enabled ? 'var(--success)' : 'var(--gray-600)' }}>
+        {enabled ? 'Enabled' : 'Disabled'}
+      </span>
     </div>
   );
 };
