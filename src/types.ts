@@ -27,6 +27,7 @@ export interface SwimmerData{
     gender?: string;
     times: SwimTime[];    
     tags?: string[]; // Optional tags for categorization
+    notificationsEnabled?: boolean; // Optional flag for swimmer-specific push notifications
     preferredCounty?: string; // Optional preferred county for filtering purposes
     selectedCountyCode?: string; // Optional selected county code for filtering purposes
     rankings?: Record<string, {

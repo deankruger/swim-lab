@@ -394,6 +394,25 @@ const App: React.FC = () => {
         }
     };
 
+    const handleUpdateSwimmerNotifications = async (tiref: string, enabled: boolean) => {
+        setLoading(true);
+        try {
+            const swimmer = savedSwimmers.find(s => s.tiref === tiref);
+            if (!swimmer) {
+                throw new Error('Swimmer not found');
+            }
+
+            const updatedSwimmer = { ...swimmer, notificationsEnabled: enabled };
+            const saved = await mobileAPI.saveSwimmer(updatedSwimmer);
+            setSavedSwimmers((prev) => prev.map((s) => (s.tiref === tiref ? saved : s)));
+            showToast(enabled ? 'Notifications enabled' : 'Notifications disabled');
+        } catch (error) {
+            showToast(`Error updating notifications: ${(error as Error).message}`, 'error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleRefreshCurrentSwimmer = async () => {
         if (!currentSwimmerData) return;
 
@@ -654,6 +673,7 @@ const App: React.FC = () => {
                                     onRefreshAll={handleRefreshAllSwimmers}
                                     onCompare={handleCompareSwimmers}
                                     onUpdateTags={handleUpdateSwimmerTags}
+                                    onToggleNotifications={handleUpdateSwimmerNotifications}
                                 />
                             </div>
                         </>
