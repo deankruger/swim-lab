@@ -63,12 +63,25 @@ const PushSetup: React.FC = () => {
   if (!supported) return null;
 
   return (
-    <div style={{ position: 'fixed', right: 12, bottom: 80, zIndex: 9999 }}>
-      {!enabled ? (
-        <button className="btn" onClick={enablePush}>Enable Notifications</button>
-      ) : (
-        <button className="btn btn-ghost" disabled>Notifications Enabled</button>
-      )}
+    <div className="push-setup">
+      <label className={`push-toggle ${enabled ? 'push-toggle-active' : ''}`}>
+        <input
+          type="checkbox"
+          checked={enabled}
+          disabled={enabled}
+          onChange={() => {
+            if (!enabled) enablePush();
+          }}
+          aria-checked={enabled}
+          aria-label={enabled ? 'Notifications enabled' : 'Enable notifications'}
+        />
+        <span className="push-toggle-track">
+          <span className="push-toggle-thumb" />
+        </span>
+        <span className="push-toggle-text">
+          {enabled ? 'Notifications enabled' : 'Enable notifications'}
+        </span>
+      </label>
     </div>
   );
 };

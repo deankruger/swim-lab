@@ -527,6 +527,7 @@ const App: React.FC = () => {
                     )}
                     <span className="header-theme">
                         <ThemeSelector />
+                        <PushSetup />
                     </span>
                     <button
                             className="nav-toggle"
@@ -571,6 +572,7 @@ const App: React.FC = () => {
                                 </button>
                             </strong>                            
                             <ThemeSelector />
+                            <PushSetup />
                             <div className="auth-panel">
                                 {accounts.length > 0 ? (
                                     <div className="auth-status">
@@ -666,7 +668,6 @@ const App: React.FC = () => {
                 {loading && <LoadingSpinner />}
                 {toast && <Toast message={toast.message} type={toast.type} />}
                 <InstallPrompt />
-                <PushSetup />
             </div>
             <BottomNav
                 swimmerLoaded={!!currentSwimmerData}
