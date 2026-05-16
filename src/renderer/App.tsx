@@ -10,6 +10,7 @@ import LoadingSpinner from './components/LoadingSpinner';
 import Toast from './components/Toast';
 import InstallPrompt from './components/InstallPrompt';
 import PushSetup from './components/PushSetup';
+import NotificationBanner from './components/NotificationBanner';
 import BottomNav from './components/BottomNav';
 import PullToRefreshIndicator from './components/PullToRefreshIndicator';
 
@@ -618,6 +619,7 @@ const App: React.FC = () => {
                         ) : (
                         <>
                             {accounts.length === 0 && <GuestBanner />}
+                            <NotificationBanner />
                             <div className={`mobile-view mobile-view-search${mobileView === 'search' ? ' mobile-view-active' : ''}${detailOpen ? ' mobile-detail-active' : ''}`}>
                                 <SearchSection
                                     onSwimmerSelect={handleSearchResults}
