@@ -10,6 +10,7 @@ import LoadingSpinner from './components/LoadingSpinner';
 import Toast from './components/Toast';
 import InstallPrompt from './components/InstallPrompt';
 import PushSetup from './components/PushSetup';
+import NotificationBanner from './components/NotificationBanner';
 import BottomNav from './components/BottomNav';
 import PullToRefreshIndicator from './components/PullToRefreshIndicator';
 
@@ -394,6 +395,25 @@ const App: React.FC = () => {
         }
     };
 
+    const handleUpdateSwimmerNotifications = async (tiref: string, enabled: boolean) => {
+        setLoading(true);
+        try {
+            const swimmer = savedSwimmers.find(s => s.tiref === tiref);
+            if (!swimmer) {
+                throw new Error('Swimmer not found');
+            }
+
+            const updatedSwimmer = { ...swimmer, notificationsEnabled: enabled };
+            const saved = await mobileAPI.saveSwimmer(updatedSwimmer);
+            setSavedSwimmers((prev) => prev.map((s) => (s.tiref === tiref ? saved : s)));
+            showToast(enabled ? 'Notifications enabled' : 'Notifications disabled');
+        } catch (error) {
+            showToast(`Error updating notifications: ${(error as Error).message}`, 'error');
+        } finally {
+            setLoading(false);
+        }
+    };
+
     const handleRefreshCurrentSwimmer = async () => {
         if (!currentSwimmerData) return;
 
@@ -599,6 +619,7 @@ const App: React.FC = () => {
                         ) : (
                         <>
                             {accounts.length === 0 && <GuestBanner />}
+                            <NotificationBanner />
                             <div className={`mobile-view mobile-view-search${mobileView === 'search' ? ' mobile-view-active' : ''}${detailOpen ? ' mobile-detail-active' : ''}`}>
                                 <SearchSection
                                     onSwimmerSelect={handleSearchResults}
@@ -654,6 +675,7 @@ const App: React.FC = () => {
                                     onRefreshAll={handleRefreshAllSwimmers}
                                     onCompare={handleCompareSwimmers}
                                     onUpdateTags={handleUpdateSwimmerTags}
+                                    onToggleNotifications={handleUpdateSwimmerNotifications}
                                 />
                             </div>
                         </>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faChain, faChartBar, faCheck, faPlus, faRotate, faTag, faTimes, faTrash, faChevronDown, faList, faGrip, faMagnifyingGlass, faFilter } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faBellSlash, faChain, faChartBar, faCheck, faPlus, faRotate, faTag, faTimes, faTrash, faChevronDown, faList, faGrip, faMagnifyingGlass, faFilter } from "@fortawesome/free-solid-svg-icons";
 import { SwimmerData } from "../../types";
 
 interface SavedSwimmersProps {
@@ -10,9 +10,10 @@ interface SavedSwimmersProps {
     onRefreshAll: () => void;    
     onCompare: (swimmers: SwimmerData[]) => void;
     onUpdateTags: (tiref: string, tags: string[]) => void;
+    onToggleNotifications: (tiref: string, enabled: boolean) => Promise<void>;
 }
 
-const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelete, onRefreshAll, onCompare, onUpdateTags }) => {
+const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelete, onRefreshAll, onCompare, onUpdateTags, onToggleNotifications }) => {
     const [isCollapsed, setIsCollapsed] = useState(false);
     const [isCompact, setIsCompact] = useState(false);
     const [collapsedClubs, setCollapsedClubs] = useState<Set<string>>(new Set());
@@ -68,8 +69,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
         if (newSelection.has(tiref)) {
             newSelection.delete(tiref);
         } else {
-            if (newSelection.size >= 5) return;
-            newSelection.add(tiref);            
+            newSelection.add(tiref);
         }
         setSelectedSwimmers(newSelection);
     };
@@ -77,6 +77,12 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
     const handleCompare = () => {
         const swimmersToCompare = swimmers.filter(s => selectedSwimmers.has(s.tiref));
         onCompare(swimmersToCompare);
+    };
+
+    const handleToggleNotificationsForSelected = async (enabled: boolean) => {
+        const swimmersToUpdate = swimmers.filter((s) => selectedSwimmers.has(s.tiref));
+        await Promise.all(swimmersToUpdate.map((swimmer) => onToggleNotifications(swimmer.tiref, enabled)));
+        setSelectedSwimmers(new Set());
     };
 
     const handleAddTag = (tiref: string) => {
@@ -208,6 +214,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                         {swimmersByClub[club].map((swimmer) => {
                                             const isSelected = selectedSwimmers.has(swimmer.tiref);
                                             const tags = swimmer.tags || [];
+                                            const notificationsEnabled = swimmer.notificationsEnabled ?? false;
                                             return (
                                                 <div
                                                     key={swimmer.tiref}
@@ -256,11 +263,14 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                             </datalist>
                                                         </div>
                                                     ) : (
-                                                        <span className="saved-swimmer-row-meta">{swimmer.times.length} events</span>
+                                                        <span className="saved-swimmer-row-meta">
+                                                            {notificationsEnabled && 'Alerts on'}
+                                                        </span>
                                                     )}
                                                     <div className="saved-swimmer-row-actions" onClick={(e) => e.stopPropagation()}>
                                                         <button onClick={() => onLoad(swimmer)} title="View"><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
-                                                        {addingTagFor !== swimmer.tiref && (
+                                                        {/* Disable tags in compact view for now to save space, can reconsider if there's demand for it */}
+                                                        {/* {addingTagFor !== swimmer.tiref && (
                                                             <button
                                                                 onClick={() => { setAddingTagFor(swimmer.tiref); setNewTagValue(''); }}
                                                                 className="group-button"
@@ -268,7 +278,15 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                             >
                                                                 <FontAwesomeIcon icon={faTag} /> <FontAwesomeIcon icon={faPlus} />
                                                             </button>
-                                                        )}
+                                                        )} */}
+                                                        <button
+                                                            onClick={() => onToggleNotifications(swimmer.tiref, !notificationsEnabled)}
+                                                            className="btn-clear btn-ghost"
+                                                            title={notificationsEnabled ? 'Disable notifications' : 'Enable notifications'}
+                                                            style={{ color: notificationsEnabled ? 'var(--success)' : 'var(--gray-500)' }}
+                                                        >
+                                                            <FontAwesomeIcon icon={notificationsEnabled ? faBell : faBellSlash} />
+                                                        </button>
                                                         <button onClick={() => onDelete(swimmer.tiref)} className="btn-clear btn-ghost" title="Delete saved swimmer" style={{ color: 'var(--danger)' }}>
                                                             <FontAwesomeIcon icon={faTrash} />
                                                         </button>
@@ -282,6 +300,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                         {swimmersByClub[club].map((swimmer) => {
                                             const isSelected = selectedSwimmers.has(swimmer.tiref);
                                             const tags = swimmer.tags || [];
+                                            const notificationsEnabled = swimmer.notificationsEnabled ?? false;
                                             return (
                                                 <div
                                                     key={swimmer.tiref}
@@ -293,12 +312,23 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                     <div>
                                                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
                                                             <h3 style={{ margin: 0 }}>{swimmer.name || `Tiref ${swimmer.tiref}`}</h3>
-                                                            <button onClick={() => onDelete(swimmer.tiref)} className="btn-clear btn-ghost" title="Delete saved swimmer" style={{ color: 'var(--danger)' }}>
-                                                                <FontAwesomeIcon icon={faTrash} />
-                                                            </button>
+                                                            <div>
+                                                                <button
+                                                                    onClick={() => onToggleNotifications(swimmer.tiref, !notificationsEnabled)}
+                                                                    className="btn-clear btn-ghost"
+                                                                    title={notificationsEnabled ? 'Disable notifications' : 'Enable notifications'}
+                                                                    style={{ color: notificationsEnabled ? 'var(--success)' : 'var(--gray-500)' }}
+                                                                >
+                                                                    <FontAwesomeIcon icon={notificationsEnabled ? faBell : faBellSlash} />
+                                                                </button>
+                                                                <button onClick={() => onDelete(swimmer.tiref)} className="btn-clear btn-ghost" title="Delete saved swimmer" style={{ color: 'var(--danger)' }}>
+                                                                    <FontAwesomeIcon icon={faTrash} />
+                                                                </button>
+                                                            </div>
+                                                            
                                                         </div>
                                                         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '0.25rem' }}>
-                                                            <p>{swimmer.times.length} events</p>
+                                                            <p>{swimmer.times.length} events{notificationsEnabled ? ' • Alerts on' : ''}</p>
                                                             {/* Tags display */}
                                                             {tags.length > 0 && (
                                                                 <div className="swimmer-tags" onClick={(e) => e.stopPropagation()}>
@@ -320,7 +350,6 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                     </div>
                                                     <div className="saved-swimmer-actions" onClick={(e) => e.stopPropagation()}>
                                                         <button onClick={() => onLoad(swimmer)}>View</button>
-
                                                         {addingTagFor === swimmer.tiref ? (
                                                             <div className="group-edit-container">
                                                                 <input
@@ -377,12 +406,25 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                     >
                         <FontAwesomeIcon icon={faChartBar} /> Compare
                     </button>
+                    {/* Uncomment if you want to enable bulk notifications management for selected swimmers */}
+                    {/* <button
+                        className="btn btn-ghost"
+                        onClick={() => handleToggleNotificationsForSelected(true)}
+                    >
+                        <FontAwesomeIcon icon={faBell} /> Enable notifications
+                    </button>
+                    <button
+                        className="btn btn-clear"
+                        onClick={() => handleToggleNotificationsForSelected(false)}
+                    >
+                        <FontAwesomeIcon icon={faBellSlash} /> Disable notifications
+                    </button> */}
                     <button className="btn btn-clear" onClick={() => setSelectedSwimmers(new Set())}>
                         Clear
                     </button>
                 </div>
             </div>
-        )}        
+        )}
         </>
     );
 };
