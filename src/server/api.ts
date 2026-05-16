@@ -9,10 +9,67 @@ import { TimeConverter } from '../services/utils/TimeConverter';
 import { ExcelImporter } from '../services/excel/ExcelImporter';
 import { ExcelExporter } from '../services/excel/ExcelExporter';
 import { PdfImporter } from '../services/pdf/PdfImporter';
+import * as webpush from 'web-push';
 
 import { SwimmerData, ComparisonResult } from '../types';
 
 const router = express.Router();
+
+// Ensure JSON body parsing for push endpoints
+router.use(express.json());
+
+// Simple in-memory subscription store (replace with DB in production)
+const pushSubscriptions: Array<any> = [];
+
+// VAPID keys: prefer environment variables, otherwise generate on startup
+let VAPID_PUBLIC = process.env.VAPID_PUBLIC_KEY || '';
+let VAPID_PRIVATE = process.env.VAPID_PRIVATE_KEY || '';
+if (!VAPID_PUBLIC || !VAPID_PRIVATE) {
+    try {
+        const keys = webpush.generateVAPIDKeys();
+        VAPID_PUBLIC = keys.publicKey;
+        VAPID_PRIVATE = keys.privateKey;
+        console.warn('[push] Generated ephemeral VAPID keys. Set VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY in env for persistence.');
+    } catch (e) {
+        console.error('[push] Failed to generate VAPID keys', e);
+    }
+}
+webpush.setVapidDetails(process.env.PUSH_SUBJECT || 'mailto:swim.lab.info@gmail.com', VAPID_PUBLIC, VAPID_PRIVATE);
+
+router.get('/push/vapid-public-key', (req, res) => {
+    res.json({ publicKey: VAPID_PUBLIC });
+});
+
+router.post('/push/subscribe', (req, res) => {
+    const sub = req.body;
+    if (!sub || !sub.endpoint) {
+        res.status(400).json({ error: 'Invalid subscription' });
+        return;
+    }
+    const exists = pushSubscriptions.find((s) => s.endpoint === sub.endpoint);
+    if (!exists) pushSubscriptions.push(sub);
+    res.json({ success: true });
+});
+
+router.post('/push/send-test', async (req, res) => {
+    const payload = JSON.stringify(req.body || { title: 'Swim Lab', body: 'Test notification', url: '/' });
+    const results: Array<{ endpoint: string; status: number; error?: string }> = [];
+    for (const sub of pushSubscriptions.slice()) {
+        try {
+            await webpush.sendNotification(sub, payload);
+            results.push({ endpoint: sub.endpoint, status: 201 });
+        } catch (err: any) {
+            const status = err && err.statusCode ? err.statusCode : 500;
+            results.push({ endpoint: sub.endpoint, status, error: err?.message });
+            // Remove subscription if gone
+            if (status === 410 || status === 404) {
+                const idx = pushSubscriptions.findIndex(s => s.endpoint === sub.endpoint);
+                if (idx >= 0) pushSubscriptions.splice(idx, 1);
+            }
+        }
+    }
+    res.json({ results });
+});
 
 const httpClient = new HttpClient(true);
 const timeConverter = new TimeConverter();

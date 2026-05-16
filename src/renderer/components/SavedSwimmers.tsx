@@ -151,20 +151,20 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                             </select>
                         </div>
                         {showSearch && (                        
-                        <div className="search-filter-input-wrap">
-                            <FontAwesomeIcon icon={faFilter} className="search-filter-icon" />
+                        <div className="saved-swimmer-search-filter">
+                            <FontAwesomeIcon icon={faFilter} className="saved-swimmer-search-icon" />
                             <input
                                     id="swimmerSearch"
                                     type="text"
                                     value={searchQuery}
                                     onChange={(e) => setSearchQuery(e.target.value)}
                                     placeholder="Filter by name or club..."
-                                    className="search-filter-input"
+                                    className="group-input saved-swimmer-search-input"
                                 />
                                 {searchQuery.trim().length > 0 && (
                                     <button
                                         type="button"
-                                        className="search-filter-clear"
+                                        className="saved-swimmer-search-clear"
                                         onClick={() => setSearchQuery('')}
                                         title="Clear filter"
                                         aria-label="Clear saved swimmer filter"

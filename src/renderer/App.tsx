@@ -9,6 +9,7 @@ import ThemeSelector from './components/ThemeSelector';
 import LoadingSpinner from './components/LoadingSpinner';
 import Toast from './components/Toast';
 import InstallPrompt from './components/InstallPrompt';
+import PushSetup from './components/PushSetup';
 import BottomNav from './components/BottomNav';
 import PullToRefreshIndicator from './components/PullToRefreshIndicator';
 
@@ -526,6 +527,7 @@ const App: React.FC = () => {
                     )}
                     <span className="header-theme">
                         <ThemeSelector />
+                        <PushSetup />
                     </span>
                     <button
                             className="nav-toggle"
@@ -570,6 +572,7 @@ const App: React.FC = () => {
                                 </button>
                             </strong>                            
                             <ThemeSelector />
+                            <PushSetup />
                             <div className="auth-panel">
                                 {accounts.length > 0 ? (
                                     <div className="auth-status">
