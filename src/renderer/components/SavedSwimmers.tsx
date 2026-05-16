@@ -264,13 +264,13 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                         </div>
                                                     ) : (
                                                         <span className="saved-swimmer-row-meta">
-                                                            {swimmer.times.length} events
-                                                            {notificationsEnabled && ' • Alerts on'}
+                                                            {notificationsEnabled && 'Alerts on'}
                                                         </span>
                                                     )}
                                                     <div className="saved-swimmer-row-actions" onClick={(e) => e.stopPropagation()}>
                                                         <button onClick={() => onLoad(swimmer)} title="View"><FontAwesomeIcon icon={faMagnifyingGlass} /></button>
-                                                        {addingTagFor !== swimmer.tiref && (
+                                                        {/* Disable tags in compact view for now to save space, can reconsider if there's demand for it */}
+                                                        {/* {addingTagFor !== swimmer.tiref && (
                                                             <button
                                                                 onClick={() => { setAddingTagFor(swimmer.tiref); setNewTagValue(''); }}
                                                                 className="group-button"
@@ -278,12 +278,12 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                             >
                                                                 <FontAwesomeIcon icon={faTag} /> <FontAwesomeIcon icon={faPlus} />
                                                             </button>
-                                                        )}
+                                                        )} */}
                                                         <button
                                                             onClick={() => onToggleNotifications(swimmer.tiref, !notificationsEnabled)}
                                                             className="btn-clear btn-ghost"
                                                             title={notificationsEnabled ? 'Disable notifications' : 'Enable notifications'}
-                                                            style={{ color: notificationsEnabled ? 'var(--success)' : undefined }}
+                                                            style={{ color: notificationsEnabled ? 'var(--success)' : 'var(--gray-500)' }}
                                                         >
                                                             <FontAwesomeIcon icon={notificationsEnabled ? faBell : faBellSlash} />
                                                         </button>
@@ -317,7 +317,7 @@ const SavedSwimmers: React.FC<SavedSwimmersProps> = ({ swimmers, onLoad, onDelet
                                                                     onClick={() => onToggleNotifications(swimmer.tiref, !notificationsEnabled)}
                                                                     className="btn-clear btn-ghost"
                                                                     title={notificationsEnabled ? 'Disable notifications' : 'Enable notifications'}
-                                                                    style={{ color: notificationsEnabled ? 'var(--success)' : undefined }}
+                                                                    style={{ color: notificationsEnabled ? 'var(--success)' : 'var(--gray-500)' }}
                                                                 >
                                                                     <FontAwesomeIcon icon={notificationsEnabled ? faBell : faBellSlash} />
                                                                 </button>
