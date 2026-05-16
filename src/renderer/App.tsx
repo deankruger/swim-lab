@@ -9,6 +9,7 @@ import ThemeSelector from './components/ThemeSelector';
 import LoadingSpinner from './components/LoadingSpinner';
 import Toast from './components/Toast';
 import InstallPrompt from './components/InstallPrompt';
+import PushSetup from './components/PushSetup';
 import BottomNav from './components/BottomNav';
 import PullToRefreshIndicator from './components/PullToRefreshIndicator';
 
@@ -665,6 +666,7 @@ const App: React.FC = () => {
                 {loading && <LoadingSpinner />}
                 {toast && <Toast message={toast.message} type={toast.type} />}
                 <InstallPrompt />
+                <PushSetup />
             </div>
             <BottomNav
                 swimmerLoaded={!!currentSwimmerData}
