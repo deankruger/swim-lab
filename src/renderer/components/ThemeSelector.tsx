@@ -52,8 +52,10 @@ const ThemeSelector : React.FC<ThemeSelectorProps> = () => {
         setOpen(false);
     };
 
+    const selectedThemeLabel = THEMES.find(t => t.id === currentTheme)?.label ?? currentTheme;
+
     return (
-        <div style={{ position: 'relative', display: 'inline-block' }}>
+        <div className="theme-selector-wrapper">
             <button 
                 onClick={() => setOpen(prev => !prev)}
                 title="Change theme"
@@ -62,50 +64,21 @@ const ThemeSelector : React.FC<ThemeSelectorProps> = () => {
                     color: 'var(--primary)'
                 }}
             >
-               <FontAwesomeIcon icon={faPaintBrush} />
+               <FontAwesomeIcon icon={faPaintBrush} />               
             </button>
+            <span className="theme-selector-current">{selectedThemeLabel}</span>
             {open && (
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: '110%',
-                        right:0,
-                        background: 'var(--card-bg, #a5a0a0a4)',
-                        border: '1px solid var(--border-color, #ccc)',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 16px rgba(0,0,0,0.18)',
-                        zIndex: 1000,
-                        minWidth: '160px',
-                        overflow: 'hidden'
-                    }}
-                >
+                <div className="theme-selector-menu">
                     {THEMES.map(theme => (
                         <button
                             key={theme.id}
                             onClick={() => handleThemeSelect(theme.id)}
-                            style={{
-                                display: 'flex',
-                                alignItems: 'center',
-                                gap: '10px',
-                                width: '100%',
-                                padding: '10px 14px',
-                                border: 'none',
-                                background: currentTheme === theme.id ? 'var(--primary-light, #e8f0fe)' : 'transparent',
-                                cursor: 'pointer',
-                                fontSize: '0.9rem',
-                                textAlign: 'left',
-                                fontWeight: currentTheme === theme.id ? 'bold' : 'normal'
-                            }}
+                            className="theme-selector-option"
+                            data-selected={currentTheme === theme.id}
                         >
                             <span
-                                style={{
-                                    width: '14px',
-                                    height: '14px',
-                                    borderRadius: '50%',
-                                    background: theme.color,
-                                    display: 'inline-block',
-                                    flexShrink: 0
-                                }}
+                                className="theme-color-dot"
+                                style={{ background: theme.color }}
                             />
                             {theme.label}
                         </button>

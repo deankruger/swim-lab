@@ -5,11 +5,9 @@ import { mobileAPI, _internalDataStore } from '../api/MobileAPI';
 import { ComparisonResult, CountyTimesStore, SwimmerData } from '../types';
 import { syncOnLogin } from '../services/initialSync';
 
-import ThemeSelector from './components/ThemeSelector';
 import LoadingSpinner from './components/LoadingSpinner';
 import Toast from './components/Toast';
 import InstallPrompt from './components/InstallPrompt';
-import PushSetup from './components/PushSetup';
 import NotificationBanner from './components/NotificationBanner';
 import BottomNav from './components/BottomNav';
 import PullToRefreshIndicator from './components/PullToRefreshIndicator';
@@ -24,7 +22,7 @@ import AboutPage from './components/AboutPage';
 import { usePullToRefresh } from './hooks/usePullToRefresh';
 
 import defaultCountyTimes from '../../assets/json/county-times.json';
-import AuthButton from './components/AuthButton';
+import ProfileSettings from './components/ProfileSettings';
 import GuestBanner from './components/GuestBanner'
 import LoginGate from './components/LoginGate';
 import OfflineBanner from './components/OfflineBanner';
@@ -540,14 +538,13 @@ const App: React.FC = () => {
                         </div>
                     </a>
                     <h1>Swim Lab</h1>
-                    {accounts.length > 0 && (
-                        <div className="header-user">
-                            <FontAwesomeIcon icon={faUser} /> {accounts[0].name}
-                        </div>
-                    )}
                     <span className="header-theme">
-                        <ThemeSelector />
-                        <PushSetup />
+                        {accounts.length > 0 && (
+                            <div className="header-user">
+                                {accounts[0].name}
+                            </div>
+                        )}                    
+                        <ProfileSettings />
                     </span>
                     <button
                             className="nav-toggle"
@@ -590,21 +587,7 @@ const App: React.FC = () => {
                                 >
                                     Contact
                                 </button>
-                            </strong>                            
-                            <ThemeSelector />
-                            <PushSetup />
-                            <div className="auth-panel">
-                                {accounts.length > 0 ? (
-                                    <div className="auth-status">
-                                        Signed in as <strong>{accounts[0].name}</strong>
-                                    </div>
-                                ) : (
-                                    <div className="auth-status auth-status-muted">
-                                        Not signed in
-                                    </div>
-                                )}
-                                <AuthButton className="auth-action" />
-                            </div>
+                            </strong>
                         </div>
                     </nav>
                     )}
