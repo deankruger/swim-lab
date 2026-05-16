@@ -10,6 +10,7 @@ import { ExcelImporter } from '../services/excel/ExcelImporter';
 import { ExcelExporter } from '../services/excel/ExcelExporter';
 import { PdfImporter } from '../services/pdf/PdfImporter';
 import * as webpush from 'web-push';
+import { userOidMiddleware } from './middleware/userOid';
 
 import { SwimmerData, ComparisonResult } from '../types';
 
@@ -18,8 +19,13 @@ const router = express.Router();
 // Ensure JSON body parsing for push endpoints
 router.use(express.json());
 
+interface StoredPushSubscription {
+    userOid: string;
+    subscription: any;
+}
+
 // Simple in-memory subscription store (replace with DB in production)
-const pushSubscriptions: Array<any> = [];
+const pushSubscriptions: StoredPushSubscription[] = [];
 
 // VAPID keys: prefer environment variables, otherwise generate on startup
 let VAPID_PUBLIC = process.env.VAPID_PUBLIC_KEY || '';
@@ -40,30 +46,43 @@ router.get('/push/vapid-public-key', (req, res) => {
     res.json({ publicKey: VAPID_PUBLIC });
 });
 
-router.post('/push/subscribe', (req, res) => {
+router.post('/push/subscribe', userOidMiddleware, (req, res) => {
     const sub = req.body;
     if (!sub || !sub.endpoint) {
         res.status(400).json({ error: 'Invalid subscription' });
         return;
     }
-    const exists = pushSubscriptions.find((s) => s.endpoint === sub.endpoint);
-    if (!exists) pushSubscriptions.push(sub);
+    const exists = pushSubscriptions.find((entry) => entry.userOid === req.userOid && entry.subscription.endpoint === sub.endpoint);
+    if (!exists) pushSubscriptions.push({ userOid: req.userOid!, subscription: sub });
     res.json({ success: true });
 });
 
-router.post('/push/send-test', async (req, res) => {
-    const payload = JSON.stringify(req.body || { title: 'Swim Lab', body: 'Test notification', url: '/' });
+router.post('/push/send-test', userOidMiddleware, async (req, res) => {
+    const body = (req.body || {}) as Record<string, unknown>;
+    const targetUserOid = typeof body.targetUserOid === 'string' && body.targetUserOid.trim() ? body.targetUserOid.trim() : undefined;
+    const { targetUserOid: _, payload, ...payloadProps } = body;
+    const payloadData = payload && typeof payload === 'object' && payload !== null
+        ? payload
+        : Object.keys(payloadProps).length > 0
+            ? payloadProps
+            : { title: 'Swim Lab', body: 'Test notification', url: '/' };
+
+    const payloadString = JSON.stringify(payloadData);
     const results: Array<{ endpoint: string; status: number; error?: string }> = [];
-    for (const sub of pushSubscriptions.slice()) {
+    const subscriptions = targetUserOid
+        ? pushSubscriptions.filter((entry) => entry.userOid === targetUserOid)
+        : pushSubscriptions;
+
+    for (const entry of subscriptions.slice()) {
         try {
-            await webpush.sendNotification(sub, payload);
-            results.push({ endpoint: sub.endpoint, status: 201 });
+            await webpush.sendNotification(entry.subscription, payloadString);
+            results.push({ endpoint: entry.subscription.endpoint, status: 201 });
         } catch (err: any) {
             const status = err && err.statusCode ? err.statusCode : 500;
-            results.push({ endpoint: sub.endpoint, status, error: err?.message });
+            results.push({ endpoint: entry.subscription.endpoint, status, error: err?.message });
             // Remove subscription if gone
             if (status === 410 || status === 404) {
-                const idx = pushSubscriptions.findIndex(s => s.endpoint === sub.endpoint);
+                const idx = pushSubscriptions.findIndex((s) => s.subscription.endpoint === entry.subscription.endpoint);
                 if (idx >= 0) pushSubscriptions.splice(idx, 1);
             }
         }

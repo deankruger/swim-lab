@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { authedFetch } from '../../api/authedFetch';
 
 function urlBase64ToUint8Array(base64String: string) {
   const cleaned = base64String.replace(/[^A-Za-z0-9\-_]/g, '');
@@ -47,11 +48,14 @@ const PushSetup: React.FC = () => {
         applicationServerKey: urlBase64ToUint8Array(publicKey)
       });
 
-      await fetch('/api/push/subscribe', {
+      const subscribeResp = await authedFetch('/api/push/subscribe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(sub)
       });
+      if (!subscribeResp.ok) {
+        throw new Error('Failed to register subscription');
+      }
 
       setEnabled(true);
       alert('Subscribed to notifications');
