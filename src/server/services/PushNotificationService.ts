@@ -1,8 +1,10 @@
 import * as webpush from 'web-push';
+import { getPushSubscriptionsContainer, isCosmosConfigured } from '../cosmosClient';
 
 type PushPayload = object;
 
 interface StoredPushSubscription {
+    id: string;
     userOid: string;
     subscription: any;
 }
@@ -11,7 +13,6 @@ const vapidPublicKey = process.env.VAPID_PUBLIC_KEY || '';
 const vapidPrivateKey = process.env.VAPID_PRIVATE_KEY || '';
 
 export class PushNotificationService {
-    private pushSubscriptions: StoredPushSubscription[] = [];
     private readonly vapidPublic: string;
     private readonly vapidPrivate: string;
 
@@ -26,29 +27,54 @@ export class PushNotificationService {
         return this.vapidPublic;
     }
 
-    public subscribe(userOid: string, subscription: any): void {
-        const exists = this.pushSubscriptions.find((entry) => entry.userOid === userOid && entry.subscription.endpoint === subscription.endpoint);
-        if (!exists) {
-            this.pushSubscriptions.push({ userOid, subscription });
+    public async subscribe(userOid: string, subscription: any): Promise<void> {
+        if (!isCosmosConfigured()) {
+            console.warn('[push] Cosmos DB not configured; subscription persistence is disabled.');
+            return;
         }
+
+        const doc: StoredPushSubscription = {
+            id: subscription.endpoint,
+            userOid,
+            subscription,
+        };
+
+        await getPushSubscriptionsContainer().items.upsert<StoredPushSubscription>(doc);
     }
 
     public async sendTestNotification(targetUserOid: string | undefined, payload: PushPayload): Promise<Array<{ endpoint: string; status: number; error?: string }>> {
-        const subscriptions = targetUserOid
-            ? this.pushSubscriptions.filter((entry) => entry.userOid === targetUserOid)
-            : this.pushSubscriptions;
-
+        const subscriptions = await this.getSubscriptions(targetUserOid);
         return this.sendPayloadToSubscriptions(subscriptions, payload);
     }
 
     public async sendNotificationToUser(userOid: string, payload: PushPayload): Promise<void> {
-        const subscriptions = this.pushSubscriptions.filter((entry) => entry.userOid === userOid);
+        const subscriptions = await this.getSubscriptions(userOid);
         if (subscriptions.length === 0) {
             console.warn(`[push] no subscriptions found for user ${userOid}`);
             return;
         }
 
         await this.sendPayloadToSubscriptions(subscriptions, payload);
+    }
+
+    private async getSubscriptions(userOid?: string): Promise<StoredPushSubscription[]> {
+        if (!isCosmosConfigured()) {
+            console.warn('[push] Cosmos DB not configured; push subscription lookup will return empty results.');
+            return [];
+        }
+
+        const query = userOid
+            ? {
+                query: 'SELECT * FROM c WHERE c.userOid = @userOid',
+                parameters: [{ name: '@userOid', value: userOid }],
+            }
+            : {
+                query: 'SELECT * FROM c',
+                parameters: [],
+            };
+
+        const { resources } = await getPushSubscriptionsContainer().items.query<StoredPushSubscription>(query).fetchAll();
+        return resources;
     }
 
     private async sendPayloadToSubscriptions(subscriptions: StoredPushSubscription[], payload: PushPayload): Promise<Array<{ endpoint: string; status: number; error?: string }>> {
@@ -62,7 +88,7 @@ export class PushNotificationService {
                 const status = err && err.statusCode ? err.statusCode : 500;
                 results.push({ endpoint: entry.subscription.endpoint, status, error: err?.message });
                 if (status === 410 || status === 404) {
-                    this.removeSubscription(entry.subscription.endpoint);
+                    await this.removeSubscription(entry.id, entry.userOid, entry.subscription.endpoint);
                 }
             }
         }
@@ -70,11 +96,17 @@ export class PushNotificationService {
         return results;
     }
 
-    private removeSubscription(endpoint: string): void {
-        const idx = this.pushSubscriptions.findIndex((s) => s.subscription.endpoint === endpoint);
-        if (idx >= 0) {
-            this.pushSubscriptions.splice(idx, 1);
+    private async removeSubscription(id: string, userOid: string, endpoint: string): Promise<void> {
+        if (isCosmosConfigured()) {
+            try {
+                await getPushSubscriptionsContainer().item(id, userOid).delete();
+            } catch (err) {
+                console.warn(`[push] failed to delete invalid subscription ${endpoint} from Cosmos`, err);
+            }
+            return;
         }
+
+        console.warn(`[push] removeSubscription fallback for ${endpoint}`);
     }
 
     private resolveVapidKeys(): { publicKey: string; privateKey: string } {

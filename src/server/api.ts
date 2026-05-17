@@ -23,14 +23,19 @@ router.get('/push/vapid-public-key', (req, res) => {
     res.json({ publicKey: pushNotificationService.getVapidPublicKey() });
 });
 
-router.post('/push/subscribe', userOidMiddleware, (req, res) => {
+router.post('/push/subscribe', userOidMiddleware, async (req, res) => {
     const sub = req.body;
     if (!sub || !sub.endpoint) {
         res.status(400).json({ error: 'Invalid subscription' });
         return;
     }
-    pushNotificationService.subscribe(req.userOid!, sub);
-    res.json({ success: true });
+    try {
+        await pushNotificationService.subscribe(req.userOid!, sub);
+        res.json({ success: true });
+    } catch (err) {
+        console.error('[api] /push/subscribe failed:', err);
+        res.status(500).json({ error: 'Failed to register subscription' });
+    }
 });
 
 router.post('/push/send-test', userOidMiddleware, async (req, res) => {

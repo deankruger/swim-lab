@@ -30,3 +30,8 @@ export function getUserDataContainer(): Container {
     if (!database) throw new Error("Cosmos DB is not configured");
     return database.container("userData");
 }
+
+export function getPushSubscriptionsContainer(): Container {
+    if (!database) throw new Error("Cosmos DB is not configured");
+    return database.container("pushSubscriptions");
+}
