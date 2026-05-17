@@ -132,8 +132,7 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times, selectedStrokes = 
                             <table>
                                 <thead>
                                     <tr>
-                                        <th style={{ width: '210px' }}>Event</th>
-                                        <th>Course</th>
+                                        <th style={{ width: '230px' }}>Event</th>
                                         <th>Time</th>
                                         <th>{course === '50m' ? 'Conv. to SC' : 'Conv. to LC'}</th>
                                         <th>Date</th>
@@ -144,11 +143,11 @@ const PersonalBests: React.FC<PersonalBestsProps> = ({ times, selectedStrokes = 
                                     {groupedByCourse[course].map((time, index) => (
                                         <tr key={`${course}-${index}`}>                                            
                                             <td data-label="Event">
+                                                <span className="swimmer-tag-badge">{course}</span>&nbsp;
                                                 {time.sourceUrl
                                                     ? <a href={time.sourceUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)' }}>{time.event}</a>
                                                     : time.event}
                                             </td>
-                                            <td data-label="Course">{time.course}</td>
                                             <td data-label="Time">{time.time}</td>
                                             <td data-label={course === '50m' ? 'Conv. SC' : 'Conv. LC'}>
                                                 {course === '50m' ? time.convertedToSC || '-' : time.convertedToLC || '-'}
