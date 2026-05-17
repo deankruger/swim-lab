@@ -65,7 +65,16 @@ export class SwimmerNotificationService {
                 docsByTiref.set(doc.tiref, list);
             }
 
-            const userUpdates = new Map<string, Array<{ tiref: string; name: string }>>();
+            interface SwimmerUpdateDetail {
+                tiref: string;
+                name: string;
+                event: string;
+                course: string;
+                time: string;
+                improvement?: string;
+            }
+
+            const userUpdates = new Map<string, SwimmerUpdateDetail[]>();
 
             await Promise.all(Array.from(docsByTiref.entries()).map(async ([tiref, docs]) => {
                 try {
@@ -77,9 +86,56 @@ export class SwimmerNotificationService {
                         return;
                     }
 
-                    const now = new Date().toISOString();
-                    const baseName = current.name || docs[0].name || `Tiref ${tiref}`;
+                    const existingBestByEvent = new Map<string, string>();
+                    docs.forEach((doc) => {
+                        doc.times.forEach((time) => {
+                            const eventKey = `${time.event}:::${time.course}`;
+                            const existing = existingBestByEvent.get(eventKey);
+                            if (!existing || this.timeConverter.compareSwimTimes(time.time, existing) < 0) {
+                                existingBestByEvent.set(eventKey, time.time);
+                            }
+                        });
+                    });
 
+                    const pbDetails = addedTimes.map((time) => {
+                        const eventKey = `${time.event}:::${time.course}`;
+                        const previousBest = existingBestByEvent.get(eventKey);
+                        let improvement: string | undefined;
+
+                        if (previousBest) {
+                            const previousSeconds = this.timeConverter.parseTimeToSeconds(previousBest);
+                            const newSeconds = this.timeConverter.parseTimeToSeconds(time.time);
+                            const delta = previousSeconds - newSeconds;
+                            if (delta > 0) {
+                                improvement = this.timeConverter.formatSecondsToTime(delta);
+                            }
+                        }
+
+                        return {
+                            tiref,
+                            name: current.name || docs[0].name || `Tiref ${tiref}`,
+                            event: time.event,
+                            course: time.course,
+                            time: time.time,
+                            improvement,
+                        };
+                    });
+
+                    const selectedDetail = pbDetails
+                        .sort((a, b) => {
+                            if (a.improvement && b.improvement) {
+                                return this.timeConverter.parseTimeToSeconds(b.improvement) - this.timeConverter.parseTimeToSeconds(a.improvement);
+                            }
+                            if (a.improvement) return -1;
+                            if (b.improvement) return 1;
+                            return 0;
+                        })[0];
+
+                    if (!selectedDetail) {
+                        return;
+                    }
+
+                    const now = new Date().toISOString();
                     await Promise.all(docs.map(async (doc) => {
                         const updatedDoc: SwimmerDoc = {
                             ...doc,
@@ -94,7 +150,7 @@ export class SwimmerNotificationService {
 
                     docs.forEach((doc) => {
                         const list = userUpdates.get(doc.userOid) ?? [];
-                        list.push({ tiref, name: baseName });
+                        list.push(selectedDetail);
                         userUpdates.set(doc.userOid, list);
                     });
                 } catch (err) {
@@ -103,12 +159,11 @@ export class SwimmerNotificationService {
             }));
 
             await Promise.all(Array.from(userUpdates.entries()).map(async ([userOid, swimmers]) => {
-                const title = swimmers.length === 1 ? 'Swim Lab update' : 'Swim Lab updates';
-                const swimmerNames = swimmers.map((s) => s.name).join(', ');
-                const body = swimmers.length === 1
-                    ? `New personal best times published for ${swimmerNames}!`
-                    : `New personal best times published for ${swimmers.length} saved swimmers: ${swimmerNames}!`;
-                await pushNotificationService.sendNotificationToUser(userOid, { title, body, url: '/' });
+                await Promise.all(swimmers.map(async (swimmer) => {
+                    const title = 'Swim Lab update';
+                    const body = `New personal best for ${swimmer.name}: ${swimmer.event} ${swimmer.time}${swimmer.improvement ? ` (-${swimmer.improvement})` : ''}.`;
+                    await pushNotificationService.sendNotificationToUser(userOid, { title, body, url: '/' });
+                }));
             }));
         } catch (err) {
             console.error('[notify] swimmer notification check failed:', err);
