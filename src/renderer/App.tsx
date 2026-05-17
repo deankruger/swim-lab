@@ -32,6 +32,7 @@ import { loginRequest } from '../authConfig';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons'
+import BuyMeACoffeeButton from './components/BuyMeACoffeeButton';
 
 const OWNER_KEY = 'swim-lab:owner-oid';
 const GUEST_KEY = 'swim-lab:guest-mode';
@@ -545,6 +546,7 @@ const App: React.FC = () => {
                             </div>
                         )}                    
                         <ProfileSettings />
+                        <BuyMeACoffeeButton />
                     </span>
                     <button
                             className="nav-toggle"
