@@ -7,11 +7,17 @@ const PORT = process.env.PORT || 8080;
 app.use(express.json());
 
 // API routes (scraping services - must be before static file serving)
-const apiRouter = require('./dist-server/server/api').default;
+const apiModule = require('./dist-server/server/api');
+const apiRouter = apiModule.default;
 app.use('/api', apiRouter);
 
 const userRouter = require('./dist-server/server/userRouter').default;
 app.use('/api/user', userRouter);
+
+const notificationModule = require('./dist-server/server/services/SwimmerNotificationService');
+if (typeof notificationModule.startSwimmerNotificationChecker === 'function') {
+  notificationModule.startSwimmerNotificationChecker();
+}
 
 // Serve built static files
 app.use(express.static(path.join(__dirname, 'dist')));
