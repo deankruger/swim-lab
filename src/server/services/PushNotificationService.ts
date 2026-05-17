@@ -1,4 +1,5 @@
 import * as webpush from 'web-push';
+import { createHash } from 'crypto';
 import { getPushSubscriptionsContainer, isCosmosConfigured } from '../cosmosClient';
 
 type PushPayload = object;
@@ -33,8 +34,9 @@ export class PushNotificationService {
             return;
         }
 
+        const subscriptionId = createHash('sha256').update(subscription.endpoint).digest('hex');
         const doc: StoredPushSubscription = {
-            id: subscription.endpoint,
+            id: subscriptionId,
             userOid,
             subscription,
         };
