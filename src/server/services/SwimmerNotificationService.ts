@@ -106,8 +106,8 @@ export class SwimmerNotificationService {
                 const title = swimmers.length === 1 ? 'Swim Lab update' : 'Swim Lab updates';
                 const swimmerNames = swimmers.map((s) => s.name).join(', ');
                 const body = swimmers.length === 1
-                    ? `New times published for ${swimmerNames}.`
-                    : `New times published for ${swimmers.length} saved swimmers: ${swimmerNames}.`;
+                    ? `New personal best times published for ${swimmerNames}!`
+                    : `New personal best times published for ${swimmers.length} saved swimmers: ${swimmerNames}!`;
                 await pushNotificationService.sendNotificationToUser(userOid, { title, body, url: '/' });
             }));
         } catch (err) {
