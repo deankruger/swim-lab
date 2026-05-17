@@ -57,7 +57,11 @@ export default function usePush() {
         body: JSON.stringify(sub)
       });
       if (!subscribeResp.ok) {
-        throw new Error('Failed to register subscription');
+        const errorBody = await subscribeResp.json().catch(() => null);
+        const serverMessage = errorBody && typeof errorBody.error === 'string'
+          ? errorBody.error
+          : subscribeResp.statusText || 'Failed to register subscription';
+        throw new Error(serverMessage);
       }
 
       setEnabled(true);
