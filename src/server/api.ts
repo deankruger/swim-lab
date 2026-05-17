@@ -9,7 +9,7 @@ import { TimeConverter } from '../services/utils/TimeConverter';
 import { ExcelImporter } from '../services/excel/ExcelImporter';
 import { ExcelExporter } from '../services/excel/ExcelExporter';
 import { PdfImporter } from '../services/pdf/PdfImporter';
-import * as webpush from 'web-push';
+import pushNotificationService from './services/PushNotificationService';
 import { userOidMiddleware } from './middleware/userOid';
 
 import { SwimmerData, ComparisonResult } from '../types';
@@ -19,31 +19,8 @@ const router = express.Router();
 // Ensure JSON body parsing for push endpoints
 router.use(express.json());
 
-interface StoredPushSubscription {
-    userOid: string;
-    subscription: any;
-}
-
-// Simple in-memory subscription store (replace with DB in production)
-const pushSubscriptions: StoredPushSubscription[] = [];
-
-// VAPID keys: prefer environment variables, otherwise generate on startup
-let VAPID_PUBLIC = process.env.VAPID_PUBLIC_KEY || '';
-let VAPID_PRIVATE = process.env.VAPID_PRIVATE_KEY || '';
-if (!VAPID_PUBLIC || !VAPID_PRIVATE) {
-    try {
-        const keys = webpush.generateVAPIDKeys();
-        VAPID_PUBLIC = keys.publicKey;
-        VAPID_PRIVATE = keys.privateKey;
-        console.warn('[push] Generated ephemeral VAPID keys. Set VAPID_PUBLIC_KEY and VAPID_PRIVATE_KEY in env for persistence.');
-    } catch (e) {
-        console.error('[push] Failed to generate VAPID keys', e);
-    }
-}
-webpush.setVapidDetails(process.env.PUSH_SUBJECT || 'mailto:swim.lab.info@gmail.com', VAPID_PUBLIC, VAPID_PRIVATE);
-
 router.get('/push/vapid-public-key', (req, res) => {
-    res.json({ publicKey: VAPID_PUBLIC });
+    res.json({ publicKey: pushNotificationService.getVapidPublicKey() });
 });
 
 router.post('/push/subscribe', userOidMiddleware, (req, res) => {
@@ -52,8 +29,7 @@ router.post('/push/subscribe', userOidMiddleware, (req, res) => {
         res.status(400).json({ error: 'Invalid subscription' });
         return;
     }
-    const exists = pushSubscriptions.find((entry) => entry.userOid === req.userOid && entry.subscription.endpoint === sub.endpoint);
-    if (!exists) pushSubscriptions.push({ userOid: req.userOid!, subscription: sub });
+    pushNotificationService.subscribe(req.userOid!, sub);
     res.json({ success: true });
 });
 
@@ -67,33 +43,14 @@ router.post('/push/send-test', userOidMiddleware, async (req, res) => {
             ? payloadProps
             : { title: 'Swim Lab', body: 'Test notification', url: '/' };
 
-    const payloadString = JSON.stringify(payloadData);
-    const results: Array<{ endpoint: string; status: number; error?: string }> = [];
-    const subscriptions = targetUserOid
-        ? pushSubscriptions.filter((entry) => entry.userOid === targetUserOid)
-        : pushSubscriptions;
-
-    for (const entry of subscriptions.slice()) {
-        try {
-            await webpush.sendNotification(entry.subscription, payloadString);
-            results.push({ endpoint: entry.subscription.endpoint, status: 201 });
-        } catch (err: any) {
-            const status = err && err.statusCode ? err.statusCode : 500;
-            results.push({ endpoint: entry.subscription.endpoint, status, error: err?.message });
-            // Remove subscription if gone
-            if (status === 410 || status === 404) {
-                const idx = pushSubscriptions.findIndex((s) => s.subscription.endpoint === entry.subscription.endpoint);
-                if (idx >= 0) pushSubscriptions.splice(idx, 1);
-            }
-        }
-    }
+    const results = await pushNotificationService.sendTestNotification(targetUserOid, payloadData);
     res.json({ results });
 });
 
 const httpClient = new HttpClient(true);
 const timeConverter = new TimeConverter();
 const scraper = new SwimmerScraper(
-    httpClient, 
+    httpClient,
     new SwimmerSearchParser(),
     new SwimmerTimesParser(timeConverter)
 );
