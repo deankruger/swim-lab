@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPersonSwimming, faSpinner, faRotate, faChevronDown, faLocationDot } from '@fortawesome/free-solid-svg-icons';
 import { SwimmerData, EventRanking, RankingEntry } from '../../types';
 import { mobileAPI } from '../../api/MobileAPI';
-import { compareEvents, parseEventName, getShortStrokeName } from '../../services/utils/EventOrdering';
+import { compareEvents, parseEventName, getShortStrokeName, sortStrokeValues } from '../../services/utils/EventOrdering';
 
 interface RankingsProps {
   swimmerData: SwimmerData;
@@ -132,6 +132,7 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
   const [countyCode, setCountyCode] = useState<string>(
     swimmerData.selectedCountyCode ?? detectCountyCode(swimmerData.region)
   );
+  const [groupBy, setGroupBy] = useState<'course' | 'stroke'>('course');
 
   const selectedCountyName = COUNTIES.find(c => c.code === countyCode)?.name ?? countyCode;
 
@@ -204,6 +205,18 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
     if (b === '50m') return 1;
     return a.localeCompare(b);
   });
+
+  const groupedByStroke = filteredEvents.reduce((acc, evt) => {
+    const { stroke } = parseEventName(evt.event);
+    if (!acc[stroke]) acc[stroke] = [];
+    acc[stroke].push(evt);
+    return acc;
+  }, {} as Record<string, typeof events>);
+
+  const sortedStrokeGroups = sortStrokeValues(Object.keys(groupedByStroke));
+
+  const activeGroups = groupBy === 'course' ? groupedByCourse : groupedByStroke;
+  const activeGroupKeys = groupBy === 'course' ? sortedCourses : sortedStrokeGroups;
 
   const fetchRanking = async (eventKey: string, level: 'C' | 'N') => {
     if (!swimmerData.birthYear || !swimmerData.gender) {
@@ -343,8 +356,8 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
             <option value="50m">Long Course Only</option>
           </select>
         </div>
-        <div>
-          <label>Stroke:</label>
+        <div className="filter-chip-group">
+          <span className="filter-chip-label">Stroke</span>
           <div className="filter-toggles">
             {uniqueStrokes.map(stroke => (
               <button
@@ -365,8 +378,8 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
             ))}
           </div>
         </div>
-        <div>
-          <label>Distance:</label>
+        <div className="filter-chip-group">
+          <span className="filter-chip-label">Dist</span>
           <div className="filter-toggles">
             {uniqueDistances.map(distance => (
               <button
@@ -387,6 +400,12 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
             ))}
           </div>
         </div>
+        <div className="filter-chip-group">
+          <div className="segmented-toggle">
+            <button className={groupBy === 'course' ? 'active' : ''} onClick={() => setGroupBy('course')} disabled={loading}>By Course</button>
+            <button className={groupBy === 'stroke' ? 'active' : ''} onClick={() => setGroupBy('stroke')} disabled={loading}>By Stroke</button>
+          </div>
+        </div>
         <div className="rankings-county-filter">
           <FontAwesomeIcon icon={faLocationDot} className="rankings-county-icon" />
           <select
@@ -401,19 +420,13 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
               <option key={c.code} value={c.code}>{c.name}</option>
             ))}
           </select>
-        </div>
+        </div>        
         {canShowForecast && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <input
-              type="checkbox"
-              id="forecastMode"
-              checked={forecastMode}
-              onChange={(e) => setForecastMode(e.target.checked)}
-              disabled={loading}
-            />
-            <label htmlFor="forecastMode" style={{ cursor: 'pointer', userSelect: 'none' }}>
-              Forecast Next Year's 10-11 Championship
-            </label>
+          <div style={{ alignSelf: 'center' }}>
+            <div className="segmented-toggle">
+              <button className={!forecastMode ? 'active' : ''} onClick={() => setForecastMode(false)} disabled={loading}>10-11</button>
+              <button className={forecastMode ? 'active' : ''} onClick={() => setForecastMode(true)} disabled={loading}>Forecast 10-11</button>
+            </div>
           </div>
         )}
       </div>
@@ -423,17 +436,15 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
           <p>No events match the current filters</p>
         </div>
       ) : (
-        sortedCourses.map((course, courseIndex) => (
-          <div key={course} style={{ marginTop: courseIndex > 0 ? '0.5rem' : '0' }}>
-            {/* Course section header */}
-            <div className="club-header" onClick={() => toggleCourse(course)}>
+        activeGroupKeys.map((groupKey, courseIndex) => (
+          <div key={groupKey} className={`club-group${courseIndex > 0 ? ' club-group-spaced' : ''}`}>
+            <div className="club-header" onClick={() => toggleCourse(groupKey)}>
               <h3 className="club-header-title">
-                <FontAwesomeIcon icon={faPersonSwimming} /> {course === '50m' ? 'Long Course (50m)' : 'Short Course (25m)'}
+                <FontAwesomeIcon icon={faPersonSwimming} /> {groupBy === 'course' ? (groupKey === '50m' ? 'Long Course (50m)' : 'Short Course (25m)') : groupKey}
               </h3>
-              <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!collapsedCourses.has(course) ? ' expanded' : ''}`} />
+              <FontAwesomeIcon icon={faChevronDown} className={`chevron-icon${!collapsedCourses.has(groupKey) ? ' expanded' : ''}`} />
             </div>
-            {/* Events list for this course */}
-            {!collapsedCourses.has(course) && <div className="table-container">
+            {!collapsedCourses.has(groupKey) && <div className="table-container">
               <table>
                 <thead>
                   <tr>
@@ -444,19 +455,26 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
                   </tr>
                 </thead>
                 <tbody>
-                  {groupedByCourse[course].map((evt) => {
+                  {activeGroups[groupKey].map((evt) => {
                     const cached = rankings.get(evt.key);
 
                     return (
                       <tr key={evt.key}>
-                        <td data-label="Event">
-                          {evt.sourceUrl
-                            ? <a href={evt.sourceUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)' }}>{evt.event}</a>
-                            : evt.event}
+                        <td data-label="Event" className="card-event-td">
+                          <div className="card-event-header">
+                            <div>
+                              {evt.sourceUrl
+                                ? <a href={evt.sourceUrl} target="_blank" rel="noreferrer" style={{ color: 'var(--primary)' }}>{evt.event}</a>
+                                : evt.event}
+                            </div>
+                            &nbsp;<span className="swimmer-tag-badge">{evt.course === '50m' ? 'LC' : 'SC'}</span>
+                            <span className="mobile-supplement card-inline-time">{evt.time}</span>
+                          </div>
+                          <div className="mobile-supplement card-meta-row">{evt.date}</div>
                         </td>
-                        <td data-label="PB Time">{evt.time}<br/><small style={{ color: 'var(--gray-400)' }}>{evt.date}</small></td>
+                        <td data-label="PB Time" className="hide-on-mobile">{evt.time}<br/><small style={{ color: 'var(--gray-400)' }}>{evt.date}</small></td>
                         <td data-label={selectedCountyName}>
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minHeight: '2.5rem' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <button
                               onClick={() => fetchRanking(evt.key, 'C')}
                               disabled={loading || isEventLoading(evt.key, 'C')}
@@ -494,12 +512,12 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
                                 <span style={{ color: 'var(--gray-400)' }}>Not ranked</span>
                               )
                             ) : (
-                              <span style={{ color: 'var(--gray-400)', fontStyle: 'italic' }}>Click to fetch</span>
+                              <span className="hide-on-mobile" style={{ color: 'var(--gray-400)', fontStyle: 'italic' }}>Click to fetch</span>
                             )}
                           </div>
                         </td>
                         <td data-label="National">
-                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', minHeight: '2.5rem' }}>
+                          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
                             <button
                               onClick={() => fetchRanking(evt.key, 'N')}
                               disabled={loading || isEventLoading(evt.key, 'N')}
@@ -532,12 +550,12 @@ const Rankings: React.FC<RankingsProps> = ({ swimmerData, loading, setLoading, s
                                       {cached.national.entry.time} • {cached.national.entry.date}
                                     </small>
                                   </div>
-                                </a>                                
+                                </a>
                               ) : (
                                 <span style={{ color: 'var(--gray-400)' }}>Not ranked</span>
                               )
                             ) : (
-                              <span style={{ color: 'var(--gray-400)', fontStyle: 'italic' }}>Click to fetch</span>
+                              <span className="hide-on-mobile" style={{ color: 'var(--gray-400)', fontStyle: 'italic' }}>Click to fetch</span>
                             )}
                           </div>
                         </td>

@@ -113,6 +113,8 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
   const [lookAhead, setLookAhead] = useState(false);
   const [showStandardsModal, setShowStandardsModal] = useState(false);
 
+  useEffect(() => { setComparison(null); onComparisonChange?.(null); }, [swimmerData.tiref]);
+
   const activeCountyNames = countyNames.filter(name => activeStandards.includes(name));
 
   const handleSelectCounty = (county: string) => {
@@ -135,7 +137,7 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
     setSelectedCounty(detected);
   }, [activeStandards, countyTimesStore, swimmerData.region, selectedCounty]);
 
-  const handleCompare = async () => {
+  const handleCompare = async (lookAheadOverride?: boolean) => {
     if (!swimmerData.birthYear || !swimmerData.gender) {
       showToast('Swimmer birth year or gender not available for comparison', 'error');
       return;
@@ -147,12 +149,13 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
       return;
     }
 
+    const effectiveLookAhead = lookAheadOverride ?? lookAhead;
     setLoading(true);
     try {
       const allTimes = countyTimesStore[selectedCounty];
       const age = calculateAge(swimmerData.birthYear);
-      const targetAge = lookAhead ? age + 1 : age;
-      const adjustedBirthYear = lookAhead
+      const targetAge = effectiveLookAhead ? age + 1 : age;
+      const adjustedBirthYear = effectiveLookAhead
         ? (parseInt(swimmerData.birthYear) - 1).toString()
         : swimmerData.birthYear;
 
@@ -316,18 +319,13 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
         {activeCountyNames.length === 1 && (
           <div style={{ fontSize: '0.95em' }}><strong>Standard:</strong> {activeCountyNames[0]}</div>
         )}
-        <button onClick={handleCompare} disabled={loading || activeCountyNames.length === 0}>
+        <button onClick={() => handleCompare()} disabled={loading || activeCountyNames.length === 0}>
           Compare with {selectedCounty || 'Standards'}
         </button>
-        <label style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', fontSize: '0.95em', cursor: 'pointer' }}>
-          <input
-            type="checkbox"
-            checked={lookAhead}
-            onChange={e => setLookAhead(e.target.checked)}
-            style={{ cursor: 'pointer' }}
-          />
-          <span>Look ahead to next year's age category</span>
-        </label>
+        <div className="segmented-toggle">
+          <button className={!lookAhead ? 'active' : ''} onClick={() => { setLookAhead(false); handleCompare(false); }}>Current Year</button>
+          <button className={lookAhead ? 'active' : ''} onClick={() => { setLookAhead(true); handleCompare(true); }}>Next Year</button>
+        </div>
       </div>
 
       {comparison && (
@@ -376,21 +374,21 @@ const CountyComparison: React.FC<CountyComparisonProps> = ({
               </div>
             </div>
           </div>
-          <div className="table-container">
-            <div style={{ marginBottom: '10px', padding: '10px', backgroundColor: 'var(--card-bg)', borderRadius: '5px' }}>
-              <strong>Comparing Against: </strong>
-              {selectedCounty} Standards
-              {swimmerData.birthYear && (
-                <>
-                  {' — '}Age {lookAhead ? calculateAge(swimmerData.birthYear) + 1 : calculateAge(swimmerData.birthYear)}
-                  {lookAhead && (
-                    <span style={{ marginLeft: '0.5rem', color: 'var(--primary)', fontWeight: 'bold' }}>
-                      (Next Year)
-                    </span>
-                  )}
-                </>
-              )}
-            </div>
+          <div style={{ marginBottom: '10px', padding: '10px', backgroundColor: 'var(--card-bg)', borderRadius: '5px' }}>
+            <strong>Comparing Against: </strong>
+            {selectedCounty} Standards
+            {swimmerData.birthYear && (
+              <>
+                {' — '}Age {lookAhead ? calculateAge(swimmerData.birthYear) + 1 : calculateAge(swimmerData.birthYear)}
+                {lookAhead && (
+                  <span style={{ marginLeft: '0.5rem', color: 'var(--primary)', fontWeight: 'bold' }}>
+                    (Next Year)
+                  </span>
+                )}
+              </>
+            )}
+          </div>
+          <div className="table-container" style={{ overflowX: 'auto' }}>
             <table>
               <thead>
                 <tr>
