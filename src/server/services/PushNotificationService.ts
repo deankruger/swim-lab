@@ -89,7 +89,7 @@ export class PushNotificationService {
             } catch (err: any) {
                 const status = err && err.statusCode ? err.statusCode : 500;
                 results.push({ endpoint: entry.subscription.endpoint, status, error: err?.message });
-                if (status === 410 || status === 404) {
+                if (status === 410 || status === 404 || status === 400) {
                     await this.removeSubscription(entry.id, entry.userOid, entry.subscription.endpoint);
                 }
             }

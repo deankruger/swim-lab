@@ -26,8 +26,13 @@ export default function usePush() {
       return;
     }
 
-    navigator.serviceWorker.getRegistration().then(r => {
-      setEnabled(!!r && Notification.permission === 'granted');
+    navigator.serviceWorker.getRegistration().then(async r => {
+      if (r && Notification.permission === 'granted') {
+        const sub = await r.pushManager.getSubscription();
+        setEnabled(!!sub);
+      } else {
+        setEnabled(false);
+      }
       setChecking(false);
     }).catch(() => setChecking(false));
   }, []);
