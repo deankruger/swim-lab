@@ -13,6 +13,8 @@ function urlBase64ToUint8Array(base64String: string) {
   return outputArray;
 }
 
+const VAPID_KEY_STORAGE_KEY = 'push_vapid_public_key';
+
 export default function usePush() {
   const [supported, setSupported] = useState(true);
   const [enabled, setEnabled] = useState(false);
@@ -26,15 +28,39 @@ export default function usePush() {
       return;
     }
 
-    navigator.serviceWorker.getRegistration().then(async r => {
-      if (r && Notification.permission === 'granted') {
-        const sub = await r.pushManager.getSubscription();
-        setEnabled(!!sub);
-      } else {
+    const checkSubscription = async () => {
+      const r = await navigator.serviceWorker.getRegistration();
+      if (!r || Notification.permission !== 'granted') {
         setEnabled(false);
+        return;
       }
-      setChecking(false);
-    }).catch(() => setChecking(false));
+
+      const sub = await r.pushManager.getSubscription();
+      if (!sub) {
+        setEnabled(false);
+        return;
+      }
+
+      // If the VAPID key has rotated since this subscription was created,
+      // the subscription is stale — unsubscribe so the user is prompted to re-subscribe.
+      const resp = await fetch('/api/push/vapid-public-key');
+      if (resp.ok) {
+        const { publicKey } = await resp.json();
+        const storedKey = localStorage.getItem(VAPID_KEY_STORAGE_KEY);
+        if (storedKey !== publicKey) {
+          await sub.unsubscribe();
+          localStorage.removeItem(VAPID_KEY_STORAGE_KEY);
+          setEnabled(false);
+          return;
+        }
+      }
+
+      setEnabled(true);
+    };
+
+    checkSubscription()
+      .catch(() => setEnabled(false))
+      .finally(() => setChecking(false));
   }, []);
 
   const enablePush = useCallback(async () => {
@@ -69,6 +95,7 @@ export default function usePush() {
         throw new Error(serverMessage);
       }
 
+      localStorage.setItem(VAPID_KEY_STORAGE_KEY, publicKey);
       setEnabled(true);
       return true;
     } catch (err) {
